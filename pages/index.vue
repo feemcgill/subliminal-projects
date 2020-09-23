@@ -18,20 +18,14 @@
       </div>      
     </section>
     <section class="features container">
-        <div class="feature" v-for="feature in page.HomeFields.features" :key="feature.slug" >
-          <div class="feature-img">
-            <FadeImage v-bind:src="feature.featuredImage.node.sourceUrl" />
-          </div>
-          <h1 v-html="feature.title"></h1>
-          <div v-if="feature.ExhibitionSubtitle" v-html="feature.ExhibitionSubtitle.subTitle" />
-        </div>      
+      <ExhibitionThumb v-for="feature in page.HomeFields.features" :key="feature.slug" v-bind:exhibition="feature" />
     </section>
   </div>
 </template>
 
 <script>
 import gql from 'graphql-tag';
-import FadeImage from '~/components/FadeImage'
+import ExhibitionThumb from '~/components/ExhibitionThumb'
 export default {
   data () {
     return {
@@ -39,7 +33,7 @@ export default {
     }
   },
   components: {
-    FadeImage
+    ExhibitionThumb
   },
   methods: {
     next () {
@@ -175,23 +169,6 @@ export default {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  .feature {
-    width: 48.5%;
-    margin-bottom: $factor;
-    .feature-img {
-      width: 100%;
-      padding-bottom: 57%;
-      position: relative;
-      border: 2px solid $dark;
-      margin-bottom: $factor * 0.25;
-      img {
-        position: absolute;
-        height: 100%;
-        width: 100%;
-        object-fit: cover;
-      }
-    }
-  }
 }
 .tranz-enter-active, .tranz-leave-active {
   transition: opacity 1.52s ease-out;
