@@ -1,11 +1,11 @@
 <template>
-  <div class="exhibition-thumb">
+  <nuxt-link :to="'/exhibitions/'+exhibition.slug" class="exhibition-thumb">
     <div class="feature-img">
       <FadeImage v-bind:src="exhibition.featuredImage.node.sourceUrl" />
     </div>
     <h1 v-html="exhibition.title"></h1>
     <div v-if="exhibition.ExhibitionSubtitle" v-html="exhibition.ExhibitionSubtitle.subTitle" />    
-  </div>
+  </nuxt-link>
 </template>
 <script>
 import FadeImage from '~/components/FadeImage'
