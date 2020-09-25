@@ -78,3 +78,43 @@ img {
   top: 0;
   left: 0;
 }
+
+
+@mixin button {
+  @include sans;
+  background-color: $dark;
+  color: $light;
+  font-size: 1em;
+  font-weight: bold;
+}
+
+input:not([type="submit"]), select, textarea {
+  @include sans;
+  width: 100%;
+  border: 0;
+  border-bottom: 2px solid $dark;
+  outline: none;
+  font-size: 1.5em;
+  &::placeholder {
+    color: $grey;
+  }
+}
+
+input[type='submit'] {
+  background: transparent;
+  outline: none;
+  border: 0;
+  cursor: pointer;
+  @include button;
+}
+
+.primary-button {
+  @include button;
+  display: inline-block;
+  padding: $factor * 0.5;
+  cursor: pointer;
+  transition: all .2s ease-in-out;
+  &:hover {
+    padding:  $factor * 0.5 $factor * 0.7;
+  }
+}

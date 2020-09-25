@@ -9,3 +9,9 @@ a {
 h1, h2, h3, h4 {
   @include sans;
 }
+
+.page-title,
+.section-title {
+  text-align: center;
+  padding: $factor * 2  
+}

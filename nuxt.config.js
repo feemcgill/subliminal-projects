@@ -44,7 +44,7 @@ export default {
   */
   pageTransition: {
     name: 'fade',
-    mode: ' ',
+    mode: '',
     // beforeEnter (el) {
     //   console.log('Before enter...');
     // }

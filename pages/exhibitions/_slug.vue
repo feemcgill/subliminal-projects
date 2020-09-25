@@ -182,7 +182,7 @@ export default {
     grid-auto-flow: dense;
     gap: $factor * 2;
     img {
-      border: 2px solid red;
+      //border: 2px solid red;
     }  
   }
 </style>

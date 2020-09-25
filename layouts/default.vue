@@ -52,16 +52,14 @@
         <div class="forms">
           <form class="search">
             <div class="input">
-              <label for="search">Search</label>
-              <input id="search" type="text">
+              <input id="search" placeholder="search" type="text">
             </div>
             <input type="submit">
           </form>
 
           <form class="newsletter">
             <div class="input">
-              <label for="newsletter">Newsletter Signup</label>
-              <input id="newsletter" type="text" />
+              <input id="newsletter" placeholder="Newsletter Signup" type="text" />
             </div>
             <input type="submit" />
           </form>          

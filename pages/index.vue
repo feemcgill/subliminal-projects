@@ -3,20 +3,31 @@
     <section class="hero">
       <div class="carousel-view">
       <transition-group class='carousel' tag="div">
-        <div class="slide" v-for="(slide, index) in slides" :key="'slide-'+slide.image.sourceUrl" >
-          <img v-bind:src="slide.image.sourceUrl" alt="">
+        <div class="slide" v-for="slide in slides" :key="'slide-'+slide.link[0].slug" >
+          <img v-bind:src="slide.link[0].featuredImage.node.sourceUrl" alt="">
           <div class="carousel-info">
             <div class="lockup">
-              <h2 v-html="slide.link[0].title"></h2>
+              <div>
+                <h2 v-html="slide.link[0].title"></h2>
+                <h3 v-html="slide.link[0].ExhibitionSubtitle.subTitle"></h3>
+                <div class="dates">
+                  <span v-html="slide.link[0].ExhibitionFields.startDate" /> — <span v-html="slide.link[0].ExhibitionFields.endDate" />
+                </div>
+              </div>
             </div>
           </div>          
         </div>
       </transition-group>
       </div>
 
-      <div class='carousel-controls'>
+      <div v-if="slides.length > 1" class='carousel-controls'>
         <!-- <a class='carousel-controls__button' @click="previous">◀</a> -->
-        <a class='carousel-controls__button' @click="next">▶</a>
+        <a class='carousel-controls__button' @click="() => {
+          next()
+          stopCycle()
+          }">
+          ▶
+        </a>
       </div>      
     </section>
     <section class="features container">
@@ -31,7 +42,8 @@ import ExhibitionThumb from '~/components/ExhibitionThumb'
 export default {
   data () {
     return {
-      slides: null
+      slides: null,
+      cycleSlides: null
     }
   },
   components: {
@@ -45,8 +57,22 @@ export default {
     previous () {
       const last = this.slides.pop()
       this.slides = [last].concat(this.slides)
+    },
+    startCycle() {
+      this.cycleSlides = setInterval(() => {
+        this.next()
+      }, 5000)
+    },
+    stopCycle() {
+      clearInterval(this.cycleSlides)
     }
-  },  
+  },
+  mounted() {
+    this.startCycle()
+  },
+  beforeDestroy() {
+    this.stopCycle()
+  },
   apollo: {
     page: {
     result({data}) {
@@ -79,11 +105,19 @@ export default {
                   id
                   slug
                   title
-                }
-                ... on Project {
-                  id
-                  slug
-                  title
+
+                  ExhibitionSubtitle {
+                    subTitle
+                  }
+                  featuredImage {
+                    node {
+                      sourceUrl(size: LARGE)
+                    }
+                  }
+                  ExhibitionFields {
+                    startDate
+                    endDate
+                  }
                 }
               }
             }
@@ -122,33 +156,7 @@ export default {
 
 <style lang="scss">
 
-/* 
-.carousel-view {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.carousel {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-  
-  width: 24em;
-  min-height: 25em;
-}
-.slide {
-  flex: 0 0 20em;
-  height: 20em;
-  transition: transform 0.3s ease-in-out;
-} */
-/* .slide:first-of-type {
-  opacity: 0;
-}
-.slide:last-of-type {
-  opacity: 0;
-} */
-
+$carouselHeight: 80vh;
 
 .hero {
   position: relative;
@@ -156,17 +164,18 @@ export default {
 .carousel-view {
   overflow: hidden;
   width: 100vw;
-  height: 100vh;
+  height: $carouselHeight;
   margin-bottom: $factor;
   flex-wrap: wrap;  
+  background-color: $dark;
 }
 .carousel {
-  margin-top: -100vh;
+  margin-top: -$carouselHeight;
 }
 .slide {
   position: relative;
   width: 100vw;
-  height: 100vh;
+  height: $carouselHeight;
   transition: transform 1.2s ease-in-out;
   &.v-move {
     .lockup {
@@ -182,25 +191,25 @@ export default {
     object-fit: cover;
     object-position: center;
   }
-  .lockup {
+  .carousel-info {
     position: absolute;
     left: 0;
     width: 100%;
     height: 100%;   
     display: flex;
-    align-items: center;
-    justify-content: center;
+    align-items: flex-end;
+    justify-content: flex-start;
     z-index: 100;
+  }
+  .lockup {
+    font-size: 2em;
     transition: all 0.2s ease-in;
+    background: $light;
+    padding: $factor * 0.5;
+    //text-align: center;
+    margin: $factor;
   }
-  .carousel-info {
-    background: $dark;
-    color: $light;
-    z-index: 1000;
-    h2 {
-      font-size: 5vw;
-    }
-  }
+
 }
 
 .carousel-controls {
