@@ -1,0 +1,11 @@
+body {
+  color: $dark;
+}
+
+a {
+  color: $grey;
+}
+
+h1, h2, h3, h4 {
+  @include sans;
+}

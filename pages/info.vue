@@ -1,6 +1,6 @@
 <template>
-  <div id="page-info">
-    <section class="hero">
+  <div id="page-info" class="container">
+    <section class="hero grid">
       <div class="quote-wrap">
         <div class="quote">
           The driving principle of Subliminal Projects is that art should be accessible to everyone and that art can come from many different per- spectives and cultural niches. Good art is good art, whether it’s done on an album cover, a skateboard, canvas, or found cardboard.
@@ -14,7 +14,7 @@
     <section class="about">
       Subliminal Projects is a multi-functional project space and gallery established by Shepard Fairey and Blaize Blouin in 1995 as a way to introduce skateboard culture and design to the art world. The concept grew and found roots later in Los Angeles, at a time when many artists found themselves shut out by the “art scene.” Subliminal Projects emerged as a gallery that championed emerging and marginalized artists, built out of cultural importance to serve as a center for the community to openly express and spark dialogue about art, music and activism. Now located in the historic neighborhood of Echo Park, Subliminal Projects continues to offer a platform for artistic exploration and innovation.
     </section>
-    <section class="contact">
+    <section class="contact grid">
       <div class="contact-deets">
         <h5>Contact</h5>
         <div class="email">
@@ -50,3 +50,37 @@
     </section>
   </div>
 </template>
+
+<style lang="scss" scoped>
+  section {
+    margin-bottom: $factor;
+  }
+  .hero {
+    align-items: center;
+    .quote-wrap {
+      width: 48.5%;
+    }
+    .img {
+      width:50%;
+    }
+  }
+  .contact {
+    .collabs {
+      text-align: right;
+      .icons {
+        display: flex;
+        align-items: center;
+        margin-top: $factor * 0.25;
+        li {
+          a {
+            display: block;
+          }
+        }
+        img {
+          width: 80px;
+          display: block;
+        }
+      }
+    }
+  }
+</style>

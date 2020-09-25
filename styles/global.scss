@@ -1,7 +1,9 @@
 @import 'resources/_vars';
+@import 'resources/_mixins';
 
 html {
-  font-family: "Sentinel SSm A","Sentinel SSm B";
+  //font-family: "Sentinel SSm A","Sentinel SSm B";
+  font-family: "din-2014", sans-serif;
   font-weight: normal;
   font-style: normal;
   font-size: 6.25%;
@@ -14,7 +16,7 @@ html {
 }
 
 body {
-  font-size: 22rem;
+  font-size: 16rem;
   background-color: $white;
 }
 
@@ -31,10 +33,6 @@ body {
   }
 }
 
-h1, h2, h3, h4 {
-  font-family:  "Knockout 27 A","Knockout 27 B";
-}
-
 ul, li {
   margin: 0;
   padding: 0;
@@ -43,4 +41,40 @@ ul, li {
 ul {
   display: flex;
 }
+
+img {
+  max-width: 100%;
+  height: auto;
+}
 @import 'grid';
+@import 'type';
+
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter,
+.fade-leave-active {
+  opacity: 0;
+}
+
+
+.page-enter-active,
+.page-leave-active {
+  transition: all 0.5s;
+}
+
+.page-enter {
+  transform: rotate(0deg) translateX(-100vw);
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.page-leave-active {
+  //opacity: 0;
+  transform: rotate(0deg) translateX(100vw);
+  position: absolute;
+  top: 0;
+  left: 0;
+}

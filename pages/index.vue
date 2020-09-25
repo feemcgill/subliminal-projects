@@ -1,8 +1,9 @@
 <template>
   <div v-if="page && slides" id="page-home">
     <section class="hero">
-      <transition-group name="tranz" class='carousel' tag="div">
-        <div class="slide" v-for="(slide, index) in slides" :key="'slide-'+index" >
+      <div class="carousel-view">
+      <transition-group class='carousel' tag="div">
+        <div class="slide" v-for="(slide, index) in slides" :key="'slide-'+slide.image.sourceUrl" >
           <img v-bind:src="slide.image.sourceUrl" alt="">
           <div class="carousel-info">
             <div class="lockup">
@@ -11,9 +12,10 @@
           </div>          
         </div>
       </transition-group>
+      </div>
 
       <div class='carousel-controls'>
-        <a class='carousel-controls__button' @click="previous">◀</a>
+        <!-- <a class='carousel-controls__button' @click="previous">◀</a> -->
         <a class='carousel-controls__button' @click="next">▶</a>
       </div>      
     </section>
@@ -119,17 +121,59 @@ export default {
 
 
 <style lang="scss">
+
+/* 
+.carousel-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .carousel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  
+  width: 24em;
+  min-height: 25em;
+}
+.slide {
+  flex: 0 0 20em;
+  height: 20em;
+  transition: transform 0.3s ease-in-out;
+} */
+/* .slide:first-of-type {
+  opacity: 0;
+}
+.slide:last-of-type {
+  opacity: 0;
+} */
+
+
+.hero {
+  position: relative;
+}
+.carousel-view {
   overflow: hidden;
   width: 100vw;
   height: 100vh;
   margin-bottom: $factor;
-  //flex-wrap: wrap;
+  flex-wrap: wrap;  
+}
+.carousel {
+  margin-top: -100vh;
 }
 .slide {
   position: relative;
   width: 100vw;
   height: 100vh;
+  transition: transform 1.2s ease-in-out;
+  &.v-move {
+    .lockup {
+      opacity: 0;
+      transform: translateX(-100px);
+    }
+  }
   img {
     position: absolute;
     left: 0;
@@ -147,6 +191,7 @@ export default {
     align-items: center;
     justify-content: center;
     z-index: 100;
+    transition: all 0.2s ease-in;
   }
   .carousel-info {
     background: $dark;
@@ -157,24 +202,26 @@ export default {
     }
   }
 }
-  .carousel-controls {
-    position: absolute;
-    bottom: $factor;
-    right: $factor; 
-    z-index: 1000;
-    background: $light;
-   
+
+.carousel-controls {
+  position: absolute;
+  bottom: $factor;
+  right: $factor; 
+  z-index: 1000;
+  //background: $light;
+  //font-size: 3em;
+  a {
+    color: $light;
+    cursor: pointer;
+    font-size: 3em;
+    text-shadow: 2px 2px 10px $dark;
   }
+}
 .features {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
 }
-.tranz-enter-active, .tranz-leave-active {
-  transition: opacity 1.52s ease-out;
-}
-.tranz-enter, .tranz-leave-active {
-  opacity: 0;
-}
+
  
 </style>

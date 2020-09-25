@@ -1,9 +1,10 @@
 <template>
     <div v-if="exhibitions">
-      <div>
-        <ExhibitionThumb v-for="item in exhibitions.edges" v-bind:key="item.node.slug" v-bind:exhibition="item.node" />
-
-
+      <div class="page-title">
+        <h1>All Exhibitions</h1>
+      </div>
+      <div class="container grid">
+        <ExhibitionThumb class="past-exhibition" v-for="item in exhibitions.edges" v-bind:key="item.node.slug" v-bind:exhibition="item.node" />
       </div>
 
       <div v-if="exhibitions.pageInfo.hasNextPage" class="load-more">
@@ -39,7 +40,7 @@ export default {
       this.$apollo.queries.exhibitions.fetchMore({
         variables: {
           after: this.exhibitions.pageInfo.endCursor,
-          first: 3          
+          first: 8         
         },
         updateQuery: (previousResult, { fetchMoreResult }) => {
           const newEdges = fetchMoreResult.exhibitions.edges;
@@ -62,7 +63,7 @@ export default {
         },        
         variables: {
           after: null,
-          first: 3
+          first: 8
         },
         query: gql`
           query L8estPosts (
@@ -101,3 +102,10 @@ export default {
 }  
 // https://hackernoon.com/how-to-build-a-load-more-button-with-vue-js-and-graphql-5e6de1b61a6b
 </script>
+
+<style lang="scss" scoped>
+  .exhibition-thumb,
+  .past-exhibition {
+    @include fourths;
+  }
+</style>

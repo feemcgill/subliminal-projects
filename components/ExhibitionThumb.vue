@@ -3,8 +3,12 @@
     <div class="feature-img">
       <FadeImage v-bind:src="exhibition.featuredImage.node.sourceUrl" />
     </div>
-    <h1 v-html="exhibition.title"></h1>
-    <div v-if="exhibition.ExhibitionSubtitle" v-html="exhibition.ExhibitionSubtitle.subTitle" />    
+    <h2 v-html="exhibition.title"></h2>
+    <div class="subtitle" v-if="exhibition.ExhibitionSubtitle" v-html="exhibition.ExhibitionSubtitle.subTitle" />    
+    <ul class="artists" v-if="exhibition.artists" >
+      <li v-for="artist in exhibition.artists.nodes" v-bind:key="artist.slug">{{artist.name}}</li>
+    </ul>
+
   </nuxt-link>
 </template>
 <script>
@@ -22,8 +26,11 @@ export default {
 
 <style lang="scss" scoped>
   .exhibition-thumb {
-    width: 48.5%;
+    @include halves;
+    display: block;
     margin-bottom: $factor;
+    color: $dark;
+    text-decoration: none;
     .feature-img {
       width: 100%;
       padding-bottom: 57%;
@@ -35,6 +42,26 @@ export default {
         height: 100%;
         width: 100%;
         object-fit: cover;
+      }
+    }
+    .subtitle {
+      margin-bottom: $factor * 0.125;
+      @include sans;
+      text-transform: uppercase;
+    }
+    .artists {
+      display: block;
+      font-size: 0.8em;
+      li {
+        display: inline-block;
+        margin-right: 20px;
+        &:before {
+          content: "  ";
+        }
+        &:first-of-type:before {
+          content: " ";
+        }
+        
       }
     }
   }

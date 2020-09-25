@@ -24,3 +24,34 @@ $tiny: 480px;
     @media (max-width: $tiny - 1px)  { @content ; }
   }
 }
+
+@mixin halves {
+  width: 48.5%;
+  @include breakpoint(small) {
+    width: 100%;
+  }
+}
+
+@mixin thirds {
+  width: 30%;
+  @include breakpoint(small) {
+    width: 100%;
+  }
+}
+
+@mixin fourths {
+  width: 22%;
+  @include breakpoint(small) {
+    width: 100%;
+  }
+}
+
+
+@mixin serif {}
+
+@mixin sans {
+  // font-family:  "Knockout 27 A","Knockout 27 B";
+  font-family: "din-2014", sans-serif;
+  // text-transform: uppercase;
+  // letter-spacing: 0.025em;
+}
