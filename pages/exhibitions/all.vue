@@ -21,7 +21,7 @@
 <script>
 import gql from 'graphql-tag'
 import ExhibitionThumb from  '~/components/ExhibitionThumb'
-const exhibitions_per_load = 16;
+const exhibitions_per_load = 16
 
 export default {
   components: {
@@ -138,7 +138,7 @@ export default {
   }
   .exhibition-thumb,
   .past-exhibition {
-    @include fourths;
+    @include thirds;
   }
   .pagination {
     margin: $factor;

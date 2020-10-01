@@ -55,3 +55,23 @@ $tiny: 480px;
   // text-transform: uppercase;
   // letter-spacing: 0.025em;
 }
+
+@mixin type-big {
+  font-size: 43px;
+}
+
+@mixin type-big-sub {
+  font-size: 33px;
+}
+
+@mixin type-regs-plus {
+  font-size: 23px;
+}
+
+@mixin type-regs {
+  font-size: 16px;
+}
+
+@mixin type-regs {
+  font-size: 10px;
+}
