@@ -8,8 +8,10 @@
           <div class="carousel-info">
             <div class="lockup">
               <div>
-                <h2 v-html="slide.link[0].title"></h2>
-                <h3 v-html="slide.link[0].ExhibitionSubtitle.subTitle"></h3>
+                <h2>Artist Name</h2>
+                <h2>Show Title</h2>
+                <!-- <h2 v-html="slide.link[0].title"></h2>
+                <h3 v-html="slide.link[0].ExhibitionSubtitle.subTitle"></h3> -->
                 <div class="dates">
                   <span v-html="slide.link[0].ExhibitionFields.startDate" /> — <span v-html="slide.link[0].ExhibitionFields.endDate" />
                 </div>
@@ -21,17 +23,35 @@
       </div>
 
       <div v-if="slides.length > 1" class='carousel-controls'>
-        <!-- <a class='carousel-controls__button' @click="previous">◀</a> -->
-        <a class='carousel-controls__button' @click="() => {
+        <div class='carousel-controls__button prev' @click="() => {
+          previous()
+          stopCycle()          
+          }">◀</div>
+        <div class='carousel-controls__button next' @click="() => {
           next()
           stopCycle()
           }">
           ▶
-        </a>
+        </div>
       </div>      
     </section>
     <section class="features container">
-      <ExhibitionThumb v-for="feature in page.HomeFields.features" :key="feature.slug" v-bind:exhibition="feature" />
+      <div class="feature" v-for="feature in page.HomeFields.features" :key="feature.slug">
+        <div class="img-wrap">
+          <div class="img">
+            <img v-bind:src="feature.featuredImage.node.sourceUrl" :alt="feature.title">
+          </div>
+        </div>
+        <div class="info">
+          <h5>Lorem ipsum</h5>
+          <div class="content">
+            Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, consectetuer adipisc- ing elit, sed diam nonummy nibh euis
+          </div>
+          <div class="link">
+            <a href="">Read More</a>
+          </div>
+        </div>
+      </div>
     </section>
   </div>
 </template>
@@ -165,7 +185,7 @@ $carouselHeight: 80vh;
   overflow: hidden;
   width: 100vw;
   height: $carouselHeight;
-  margin-bottom: $factor;
+  margin-bottom: $factor * 1.5;
   flex-wrap: wrap;  
   background-color: $dark;
 }
@@ -197,39 +217,92 @@ $carouselHeight: 80vh;
     width: 100%;
     height: 100%;   
     display: flex;
-    align-items: flex-end;
-    justify-content: flex-start;
+    align-items: center;
+    justify-content: center;
     z-index: 100;
+    text-align: center;
   }
   .lockup {
-    font-size: 2em;
+    //font-size: 2em;
     transition: all 0.2s ease-in;
-    background: $light;
+    //background: $light;
     padding: $factor * 0.5;
     //text-align: center;
     margin: $factor;
+    font-weight: bold;
+    //text-shadow: 0px 0px 2px $light;
+    h2, h3 {
+      @include type-big;
+    }
+    .dates {
+      @include type-big-sub;
+    }
   }
 
 }
 
 .carousel-controls {
   position: absolute;
-  bottom: $factor;
-  right: $factor; 
+  width: 100%;
+  bottom: calc(50% + 1.5em);
   z-index: 1000;
   //background: $light;
   //font-size: 3em;
-  a {
-    color: $light;
+  &__button {
+    color: $dark;
     cursor: pointer;
     font-size: 3em;
-    text-shadow: 2px 2px 10px $dark;
+    //text-shadow: 2px 2px 10px $light;
+    position: absolute;
+    &.prev {
+      left: $factor * 0.33;
+    }
+    &.next {
+      right: $factor * 0.33;
+    }
   }
 }
 .features {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  margin-bottom: $factor;
+  .feature {
+    @include halves;
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: $factor;
+    align-items: flex-end;
+
+    .img-wrap {
+      width: 65%;
+    }
+    .img {
+      width: 100%;
+      padding-bottom: 60%;
+      position: relative;
+      align-self: flex-start;
+      img {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+      }      
+    }
+    .info {
+      width: 35%;
+      padding-left: 20px;
+      .link {
+        margin-top: 10px;
+        text-transform: uppercase;
+        a {
+          color: $grey;
+          text-decoration: none;
+          border-bottom: 2px solid $black;
+        }
+      }
+    }
+  }
 }
 
  

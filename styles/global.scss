@@ -16,7 +16,7 @@ html {
 }
 
 body {
-  font-size: 16px;
+  font-size: 16pt;
   background-color: $white;
 }
 
@@ -90,11 +90,13 @@ img {
 
 input:not([type="submit"]), select, textarea {
   @include sans;
+  @include type-regs;
   width: 100%;
   border: 0;
-  border-bottom: 2px solid $dark;
+  border: 2px solid $dark;
+  padding-left: 10px;
   outline: none;
-  font-size: 1.5em;
+  text-transform: uppercase;
   &::placeholder {
     color: $grey;
   }
@@ -106,6 +108,7 @@ input[type='submit'] {
   border: 0;
   cursor: pointer;
   @include button;
+  text-transform: uppercase;
 }
 
 .primary-button {

@@ -35,7 +35,6 @@ export default {
       width: 100%;
       padding-bottom: 57%;
       position: relative;
-      border: 2px solid $dark;
       margin-bottom: $factor * 0.25;
       img {
         position: absolute;
@@ -47,11 +46,9 @@ export default {
     .subtitle {
       margin-bottom: $factor * 0.125;
       @include sans;
-      text-transform: uppercase;
     }
     .artists {
       display: block;
-      font-size: 0.8em;
       li {
         display: inline-block;
         margin-right: 20px;

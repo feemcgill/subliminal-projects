@@ -7,7 +7,8 @@ a {
 }
 
 h1, h2, h3, h4 {
-  @include sans;
+  line-height: 1;
+  font-size: 16pt;
 }
 
 .page-title,
@@ -15,3 +16,11 @@ h1, h2, h3, h4 {
   text-align: center;
   padding: $factor * 2  
 }
+
+// h2 {
+//   @include type-big;
+// }
+
+// h3 {
+//   @include type-big-sub;
+// }

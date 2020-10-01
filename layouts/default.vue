@@ -1,16 +1,15 @@
 <template>
   <div>
+    <div class="header-push"></div>
     <header>
       <!-- <Nav /> -->
-      <div v-on:click="close">
-        <nuxt-link to="/">
-          <Logo   class="logo" />
-        </nuxt-link>
-      </div>
-    <transition name="nav">
+      <nuxt-link class="logo" to="/">
+        <Logo />
+      </nuxt-link>
 
-      <nav id="main-nav" v-if="open">
+      <nav id="main-nav">
         <ul class="main">
+          <li v-on:click="close"><nuxt-link to="/info" exact tabindex="0">Info</nuxt-link></li>
           <li v-on:click="close">
             <nuxt-link to="/exhibitions" exact tabindex="0">Exhibitions</nuxt-link>
             <ul class="sub">
@@ -22,13 +21,38 @@
               </li>              
             </ul>      
           </li>
-          <li v-on:click="close"><nuxt-link to="/info" exact tabindex="0">Info</nuxt-link></li>
           <li v-on:click="close"><nuxt-link to="/artists" exact tabindex="0">Artists</nuxt-link></li>  
         </ul>
+        <ul class="socials">
+          <li>
+            <a href="#">
+              <img src="~/assets/socials/ig.svg" alt="">
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <img src="~/assets/socials/twitter.svg" alt="">
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <img src="~/assets/socials/fb.svg" alt="">
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <img src="~/assets/socials/spotify.svg" alt="">
+            </a>
+          </li>  
+          <li>
+            <a href="#">
+              <img src="~/assets/socials/vimeo.svg" alt="">
+            </a>
+          </li>                                        
+        </ul>
       </nav>
-    </transition>
-      <div class="burger-btn" v-on:click="toggle"><div></div><div></div><div></div></div>
-      <div class="close-btn" v-on:click="toggle"></div>      
+      <!-- <div class="burger-btn" v-on:click="toggle"><div></div><div></div><div></div></div>
+      <div class="close-btn" v-on:click="toggle"></div>       -->
     </header>
     <div class="page-wrapper">
       <Nuxt />
@@ -102,28 +126,31 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  .header-push {
+    padding-top: 100px;
+  }
   header {
     position: fixed;
-    //background: $light;
+    background: $light;
+    top: 0;
     width: 100%;
     z-index: 5000;
     padding: $factor*.125 $factor;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     color: $white;
     .logo {
-      position: absolute;
-      width: 50px;
-      background: $light;
+      //position: absolute;
+      width: 166px;
       padding: $factor*.125;
       z-index: 10000;
     }
   }
   footer {
-    background: $light;
     overflow: hidden;
     padding-top: $factor;
+    border-top: 2px solid $dark;
     .footer-row {
       display: flex;
       justify-content: space-between;
@@ -146,6 +173,16 @@ export default {
       form {
         display: flex;
       }
+      .input {
+        margin-right: 5px;
+      }
+    }
+    .copyright, 
+    .legal-menu {
+      @include type-tiny;
+      li {
+        margin-right: 10px;
+      }
     }
   }
 
@@ -161,12 +198,14 @@ export default {
     display: flex;
     background-color: $light;
     padding: 5px;
+    display: none;
     > div {
       width: 100%;
       height: 5px;
       background-color: $dark;
     }
   }
+  /*
   #main-nav {
     position: absolute;
     width: 100vw;
@@ -190,12 +229,7 @@ export default {
       }
       .sub {
         font-size: 0.5em;
-        /* display: flex;
-        justify-content: center; */
         li {
-          /* border: 2px solid $dark;
-          padding: 0 5px; */
-          //margin: 0 15px; 
         }
       }
     }
@@ -204,8 +238,56 @@ export default {
       text-decoration: none;
     }
   }
-
-
+  */
+  #main-nav {
+    margin-top: 20px;
+    display: flex;
+    font-size: 21pt;
+    li {
+      margin-right: $factor * 0.5;
+      font-weight: bold;
+      text-transform: uppercase;
+      position: relative;
+      &:hover {
+        .sub {
+          display: block;
+        }
+      }
+    }
+    a {
+      color: $dark;
+      text-decoration: none;
+    }
+    .sub {
+      //display: none;
+      position: absolute;
+      width: 300px;
+      display: none;
+      padding: 10px;
+      background: $light;
+      margin-left: -10px;
+      li {
+        display: block;
+        a {
+          @include type-regs;
+        }
+        &:hover {
+          a {
+            color: $grey;
+          }
+        }
+      }
+    }
+    .socials {
+      margin-top: 2px;
+      img {
+        height: 24px;
+      }
+      li {
+        margin-right: 10px;
+      }
+    }
+  }
   .nav-enter-active {
     transition: all .3s ease;
     ul {
