@@ -1,40 +1,58 @@
 <template>
   <div v-if="page && slides" id="page-home">
+
+
+
+
+
+
     <section class="hero">
       <div class="carousel-view">
-      <transition-group class='carousel' tag="div">
-        <div class="slide" v-for="slide in slides" :key="'slide-'+slide.link[0].slug" >
-          <img v-bind:src="slide.link[0].featuredImage.node.sourceUrl" alt="">
-          <div class="carousel-info">
-            <div class="lockup">
-              <div>
-                <h2>Artist Name</h2>
-                <h2>Show Title</h2>
-                <!-- <h2 v-html="slide.link[0].title"></h2>
-                <h3 v-html="slide.link[0].ExhibitionSubtitle.subTitle"></h3> -->
-                <div class="dates">
-                  <span v-html="slide.link[0].ExhibitionFields.startDate" /> — <span v-html="slide.link[0].ExhibitionFields.endDate" />
+        <div class="carousel-wrap">
+          <transition-group class='carousel' tag="div">
+            <div class="slide" v-for="slide in slides" :key="'slide-'+slide.link[0].slug" >
+              <img v-bind:src="slide.link[0].featuredImage.node.sourceUrl" alt="">
+              <div class="carousel-info">
+                <div class="lockup">
+                  <div>
+                    <h2>Artist Name</h2>
+                    <h2>Show Title</h2>
+                    <!-- <h2 v-html="slide.link[0].title"></h2>
+                    <h3 v-html="slide.link[0].ExhibitionSubtitle.subTitle"></h3> -->
+                    <div class="dates">
+                      <span v-html="slide.link[0].ExhibitionFields.startDate" /> — <span v-html="slide.link[0].ExhibitionFields.endDate" />
+                    </div>
+                  </div>
                 </div>
-              </div>
+              </div>          
             </div>
-          </div>          
+          </transition-group>
         </div>
-      </transition-group>
       </div>
 
       <div v-if="slides.length > 1" class='carousel-controls'>
-        <div class='carousel-controls__button prev' @click="() => {
-          previous()
-          stopCycle()          
-          }">◀</div>
-        <div class='carousel-controls__button next' @click="() => {
-          next()
-          stopCycle()
-          }">
-          ▶
+        <div class="container">
+          <div class='carousel-controls__button prev' @click="() => {
+            previous()
+            stopCycle()          
+            }">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32.826" height="57.653" viewBox="0 0 32.826 57.653">
+                <path id="Path_11" data-name="Path 11" d="M407.739,614.292l-28,26,28,26" transform="translate(-377.739 -611.466)" fill="none" stroke="#b3b3b3" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="4"/>
+              </svg>
+            </div>
+          <div class='carousel-controls__button next' @click="() => {
+            next()
+            stopCycle()
+            }">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32.827" height="57.653" viewBox="0 0 32.827 57.653">
+              <path id="Path_12" data-name="Path 12" d="M1509.739,666.292l28-26-28-26" transform="translate(-1506.912 -611.466)" fill="none" stroke="#b3b3b3" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="4"/>
+            </svg>
+          </div>
         </div>
       </div>      
     </section>
+
+    
     <section class="features container">
       <div class="feature" v-for="feature in page.HomeFields.features" :key="feature.slug">
         <div class="img-wrap">
@@ -188,21 +206,27 @@ $carouselHeight: 80vh;
   margin-bottom: $factor * 1.5;
   flex-wrap: wrap;  
   background-color: $dark;
+  position: relative;
 }
 .carousel {
   margin-top: -$carouselHeight;
+}
+.carousel-wrap {
+  /* min-height: 10000px;
+  background: red;
+  position: absolute; */
 }
 .slide {
   position: relative;
   width: 100vw;
   height: $carouselHeight;
   transition: transform 1.2s ease-in-out;
-  &.v-move {
+  /* &.v-move {
     .lockup {
       opacity: 0;
       transform: translateX(-100px);
     }
-  }
+  } */
   img {
     position: absolute;
     left: 0;
@@ -248,6 +272,9 @@ $carouselHeight: 80vh;
   z-index: 1000;
   //background: $light;
   //font-size: 3em;
+  .container {
+    position: relative;
+  }
   &__button {
     color: $dark;
     cursor: pointer;
@@ -267,15 +294,19 @@ $carouselHeight: 80vh;
   flex-wrap: wrap;
   justify-content: space-between;
   margin-bottom: $factor;
+  max-width: 1160px;
   .feature {
     @include halves;
-    display: flex;
+    /* display: flex;
     flex-wrap: wrap;
-    margin-bottom: $factor;
-    align-items: flex-end;
+    align-items: flex-end;     */
+    margin-bottom: $factor * 2;
+    max-width: 423px;
+
 
     .img-wrap {
-      width: 65%;
+      /* width: 65%; */
+      margin-bottom: 1em;
     }
     .img {
       width: 100%;
@@ -290,13 +321,15 @@ $carouselHeight: 80vh;
       }      
     }
     .info {
-      width: 35%;
-      padding-left: 20px;
+      /* width: 35%;
+      padding-left: 20px; */
       .link {
         margin-top: 10px;
         text-transform: uppercase;
+        text-align: right;
         a {
           color: $grey;
+          color: $dark;
           text-decoration: none;
           border-bottom: 2px solid $black;
         }

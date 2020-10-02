@@ -3,56 +3,58 @@
     <div class="header-push"></div>
     <header>
       <!-- <Nav /> -->
-      <nuxt-link class="logo" to="/">
-        <Logo />
-      </nuxt-link>
+      <div class="container">
+        <nuxt-link class="logo" to="/">
+          <Logo />
+        </nuxt-link>
 
-      <nav id="main-nav">
-        <ul class="main">
-          <li v-on:click="close"><nuxt-link to="/info" exact tabindex="0">Info</nuxt-link></li>
-          <li v-on:click="close">
-            <nuxt-link to="/exhibitions" exact tabindex="0">Exhibitions</nuxt-link>
-            <ul class="sub">
-              <li v-on:click="close">
-                <nuxt-link to="/exhibitions" exact tabindex="0">Current & Upcoming</nuxt-link>
-              </li>
-              <li v-on:click="close">
-                <nuxt-link to="/exhibitions/all" exact tabindex="0">All</nuxt-link>
-              </li>              
-            </ul>      
-          </li>
-          <li v-on:click="close"><nuxt-link to="/artists" exact tabindex="0">Artists</nuxt-link></li>  
-        </ul>
-        <ul class="socials">
-          <li>
-            <a href="#">
-              <img src="~/assets/socials/ig.svg" alt="">
-            </a>
-          </li>
-          <li>
-            <a href="#">
-              <img src="~/assets/socials/twitter.svg" alt="">
-            </a>
-          </li>
-          <li>
-            <a href="#">
-              <img src="~/assets/socials/fb.svg" alt="">
-            </a>
-          </li>
-          <li>
-            <a href="#">
-              <img src="~/assets/socials/spotify.svg" alt="">
-            </a>
-          </li>  
-          <li>
-            <a href="#">
-              <img src="~/assets/socials/vimeo.svg" alt="">
-            </a>
-          </li>                                        
-        </ul>
-      </nav>
-      <!-- <div class="burger-btn" v-on:click="toggle"><div></div><div></div><div></div></div>
-      <div class="close-btn" v-on:click="toggle"></div>       -->
+        <nav id="main-nav">
+          <ul class="main">
+            <li v-on:click="close"><nuxt-link to="/info" exact tabindex="0">Info</nuxt-link></li>
+            <li v-on:click="close">
+              <nuxt-link to="/exhibitions" exact tabindex="0">Exhibitions</nuxt-link>
+              <ul class="sub">
+                <li v-on:click="close">
+                  <nuxt-link to="/exhibitions" exact tabindex="0">Current & Upcoming</nuxt-link>
+                </li>
+                <li v-on:click="close">
+                  <nuxt-link to="/exhibitions/all" exact tabindex="0">All</nuxt-link>
+                </li>              
+              </ul>      
+            </li>
+            <li v-on:click="close"><nuxt-link to="/artists" exact tabindex="0">Artists</nuxt-link></li>  
+          </ul>
+          <ul class="socials">
+            <li>
+              <a href="#">
+                <img src="~/assets/socials/ig.svg" alt="">
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <img src="~/assets/socials/twitter.svg" alt="">
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <img src="~/assets/socials/fb.svg" alt="">
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <img src="~/assets/socials/spotify.svg" alt="">
+              </a>
+            </li>  
+            <li>
+              <a href="#">
+                <img src="~/assets/socials/vimeo.svg" alt="">
+              </a>
+            </li>                                        
+          </ul>
+        </nav>
+        <!-- <div class="burger-btn" v-on:click="toggle"><div></div><div></div><div></div></div>
+        <div class="close-btn" v-on:click="toggle"></div>       -->
+      </div>
     </header>
     <div class="page-wrapper">
       <Nuxt />
@@ -136,10 +138,11 @@ export default {
     width: 100%;
     z-index: 5000;
     padding: $factor*.125 $factor;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    color: $white;
+    .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;      
+    }
     .logo {
       //position: absolute;
       width: 166px;
@@ -242,7 +245,7 @@ export default {
   #main-nav {
     margin-top: 20px;
     display: flex;
-    font-size: 21pt;
+    font-size: 20px;
     li {
       margin-right: $factor * 0.5;
       font-weight: bold;
@@ -281,7 +284,7 @@ export default {
     .socials {
       margin-top: 2px;
       img {
-        height: 24px;
+        height: 18px;
       }
       li {
         margin-right: 10px;

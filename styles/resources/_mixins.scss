@@ -57,21 +57,21 @@ $tiny: 480px;
 }
 
 @mixin type-big {
-  font-size: 43pt;
+  font-size: 60px;
 }
 
 @mixin type-big-sub {
-  font-size: 33pt;
+  font-size: 40px;
 }
 
 @mixin type-regs-plus {
-  font-size: 23pt;
+  font-size: 18px;
 }
 
 @mixin type-regs {
-  font-size: 16pt;
+  font-size: 14px;
 }
 
 @mixin type-tiny {
-  font-size: 10pt;
+  font-size: 11px;
 }
