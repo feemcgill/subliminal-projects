@@ -1,25 +1,55 @@
 <template>
-    <div v-if="gotArtists">
-      <div>
-        <div v-for="item in artists.edges" v-bind:key="item.node.slug">
-          {{item.node.name}}
+  <div>
+    <section v-if="pageData" class="intro container">
+      <div class="img">
+        <FadeImage v-bind:src="pageData.featuredImage.node.sourceUrl" v-bind:alt="pageData.featuredImage.node.altText" v-bind:srcset="pageData.featuredImage.node.srcSet" />
+      </div>
+      <div class="content" v-html="pageData.content" />
+    </section>
+    <section class="artists-list">
+      <div v-if="gotArtists">
+        <div class="container">
+          <div class="artists">
+            <div  class="artist" v-for="item in filteredArtists" v-bind:key="item.node.slug">
+              <h4>{{item.node.name}}</h4>
+              <div v-if="item.node.ArtistFields.instagramHandle || item.node.ArtistFields.link" class="links">
+                  <a target="_blank" v-if="item.node.ArtistFields.link" v-bind:href="item.node.ArtistFields.link"> 
+                    <span v-if="item.node.ArtistFields.linkText" v-html="item.node.ArtistFields.linkText" />
+                    <span v-else v-html="item.node.ArtistFields.link">Website </span>
+                  </a>
+                  <a target="_blank" v-if="item.node.ArtistFields.instagramHandle" v-bind:href="'https://instagram.com/' + item.node.ArtistFields.instagramHandle"> 
+                    @{{item.node.ArtistFields.instagramHandle}}
+                  </a>                
+              </div>
+              <div v-else-if="item.node.ArtistFields.siteLink">
+                <a target="_blank" v-bind:href="item.node.ArtistFields.siteLink">Website</a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-    <div v-else>
-      <h1>Loading Artists</h1>
-    </div>  
+      <div v-else>
+        <h1>Loading Artists</h1>
+      </div>       
+    </section>
+  </div>
+ 
 </template>
 
 
 
 
 <script>
+import FadeImage from '~/components/FadeImage'
 import gql from 'graphql-tag';
 export default {
+  components: {
+    FadeImage
+  },
   data: () => {
     return {
       gotArtists: false,
+      pageData: null
     }
   },
   methods: {
@@ -51,6 +81,18 @@ export default {
   },
   beforeDestroy() {
   },
+  computed: {
+    filteredArtists() {
+      const filteredGuys = []
+      for (let i = 0; i < this.artists.edges.length; i++) {
+        const element = this.artists.edges[i];
+        if (!element.node.ArtistFields.hideInArtistList) {
+          filteredGuys.push(element)
+        }
+      }
+      return filteredGuys;
+    }
+  },
   apollo: {
     artists: {
       variables: {
@@ -58,6 +100,8 @@ export default {
         first: 100
       },      
       result({data}) {
+        this.pageData = data.page
+        console.log('PAGE', this.pageData)
         console.log('artists', data.artists)
         console.log(data.artists.pageInfo.hasNextPage, data.artists.pageInfo.endCursor, 'GET MORE')
         if (data.artists.pageInfo.hasNextPage) {
@@ -88,13 +132,44 @@ export default {
                   siteLink
                   instagramHandle
                   link
+                  linkText
+                  hideInArtistList
                 }
               }
             }
           }
+          page(id: "67427", idType: DATABASE_ID) {
+            id
+            title
+            content(format: RENDERED)
+            featuredImage {
+              node {
+                sourceUrl(size: LARGE)
+                srcSet(size: LARGE)
+                altText
+              }
+            }
+          }          
         }
-    `
+      `
     }
   }
 }
 </script>
+
+
+<style lang="scss" scoped>
+  .artists {    
+    column-count: 3;
+    column-gap: $factor;
+    margin-bottom: $factor;
+  }
+  .artist {
+    break-inside: avoid;
+    margin-bottom: $factor;
+    h4 {
+      @include type-regs-plus;
+      text-transform: uppercase;
+    }
+  }
+</style>

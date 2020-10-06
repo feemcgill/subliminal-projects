@@ -129,7 +129,7 @@ export default {
 
 <style lang="scss" scoped>
   .header-push {
-    padding-top: 100px;
+    padding-top: 150px;
   }
   header {
     position: fixed;

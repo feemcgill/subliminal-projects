@@ -1,18 +1,16 @@
 <template>
-  <div id="page-info" class="container">
+  <div id="page-info" class="container" v-if="page">
     <section class="hero grid">
       <div class="quote-wrap">
-        <div class="quote">
-          The driving principle of Subliminal Projects is that art should be accessible to everyone and that art can come from many different per- spectives and cultural niches. Good art is good art, whether it’s done on an album cover, a skateboard, canvas, or found cardboard.
-        </div>
-        <div class="attr">– Shepard Fairey</div>
+        <div class="quote" v-html="page.InfoFields.quote"/>
+        <div class="attr">– {{page.InfoFields.quoteAttribute}}</div>
       </div>
       <div class="img">
-        <img src="https://subliminalprojects.d-e-v.group/wp-content/uploads/2020/02/IMG_2856-1591x1600.jpg" alt="">
+        <FadeImage v-bind:src="page.featuredImage.node.sourceUrl" v-bind:alt="page.featuredImage.node.altText" v-bind:srcset="page.featuredImage.node.srcSet" />
       </div>
     </section>
     <section class="about">
-      Subliminal Projects is a multi-functional project space and gallery established by Shepard Fairey and Blaize Blouin in 1995 as a way to introduce skateboard culture and design to the art world. The concept grew and found roots later in Los Angeles, at a time when many artists found themselves shut out by the “art scene.” Subliminal Projects emerged as a gallery that championed emerging and marginalized artists, built out of cultural importance to serve as a center for the community to openly express and spark dialogue about art, music and activism. Now located in the historic neighborhood of Echo Park, Subliminal Projects continues to offer a platform for artistic exploration and innovation.
+      <div class="content" v-html="page.content" />
     </section>
     <section class="contact grid">
       <div class="contact-deets">
@@ -46,11 +44,54 @@
       </div>
     </section>
     <section class="feed">
-
+      <h1>Is this thing on?</h1>
+      <IgFeed />
     </section>
   </div>
 </template>
+<script>
+import IgFeed from "~/components/IgFeed"
+import FadeImage from '~/components/FadeImage'
+import gql from 'graphql-tag';
 
+export default {
+  components: {
+    IgFeed,
+    FadeImage
+  },
+  apollo: {
+    page: {  
+      result({data}) {
+        console.log('INFODATA', data)
+      },
+      error: function(error) {
+        console.log(error)
+      }, 
+      query: gql`
+        query InfoPageQuery {
+          page(id: "67432", idType: DATABASE_ID) {
+            id
+            title
+            content(format: RENDERED)
+            featuredImage {
+              node {
+                sourceUrl(size: LARGE)
+                srcSet(size: LARGE)
+                altText
+              }
+            }
+            InfoFields {
+              quote
+              quoteAttribute
+            }
+          }
+        }
+      `
+    }
+  }  
+  
+}
+</script>
 <style lang="scss" scoped>
   section {
     margin-bottom: $factor;
