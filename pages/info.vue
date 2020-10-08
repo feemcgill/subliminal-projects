@@ -44,7 +44,6 @@
       </div>
     </section>
     <section class="feed">
-      <h1>Is this thing on?</h1>
       <IgFeed />
     </section>
   </div>
