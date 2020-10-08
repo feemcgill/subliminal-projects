@@ -159,10 +159,29 @@ export default {
 
 
 <style lang="scss" scoped>
+  .intro {
+    .img {
+      padding-bottom: 38%;
+      position: relative;
+      margin-bottom: $factor;
+      img {
+        position: absolute;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+    .content {
+      margin-bottom: $factor * 2;
+      font-size: 1.2em;
+    }
+  }
   .artists {    
     column-count: 3;
     column-gap: $factor;
     margin-bottom: $factor;
+    @include breakpoint(small) {
+      column-count: 2;
+    }
   }
   .artist {
     break-inside: avoid;

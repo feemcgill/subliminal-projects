@@ -98,16 +98,59 @@ export default {
   }
   .hero {
     align-items: center;
+
     .quote-wrap {
       width: 48.5%;
+      font-size: 2em;
+      line-height: 1.5em;
+      font-weight: bold;
+      position: relative;
+      @include breakpoint(small) {
+        width: 100%;
+        margin-bottom: $factor;
+      }
+      .quote {
+        padding-top: 30px;
+        margin-bottom: $factor * 0.5;
+       &:before {
+          content: "\201C";
+          font-size: 3em;
+          position: absolute;
+          margin-top: -30px;
+        }        
+        &:after {
+          content: "\201D";
+        }
+      }
     }
     .img {
       width:50%;
+      @include breakpoint(small) {
+        width: 100%;
+      }      
     }
   }
+  .about {
+    font-size: 1.2em;
+  }
   .contact {
+    .contact-deets {
+      h5, .email {
+        font-size: 1.2em;
+        a {
+          color: $dark;
+        }
+      }
+      h5 {
+        text-transform: uppercase;
+        margin-bottom: $factor * 0.25;
+      }
+      @include breakpoint(small) {
+        margin-bottom: $factor;
+      }       
+    }
     .collabs {
-      text-align: right;
+      text-align: left;
       .icons {
         display: flex;
         align-items: center;
