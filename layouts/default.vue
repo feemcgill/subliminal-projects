@@ -135,7 +135,7 @@ export default {
 
 <style lang="scss" scoped>
   .header-push {
-    padding-top: 150px;
+    padding-top: 103px;
     @include breakpoint(small) {
       padding-top: 75px;
     }

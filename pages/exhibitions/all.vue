@@ -1,8 +1,8 @@
 <template>
-    <div v-if="exhibitions">
-      <div class="page-title">
+    <div class="all-exhibitions" v-if="exhibitions">
+      <!-- <div class="page-title">
         <h1>All Exhibitions</h1>
-      </div>
+      </div> -->
       <div class="container grid">
         <ExhibitionThumb class="past-exhibition" v-for="item in exhibitions.edges" v-bind:key="item.node.slug" v-bind:exhibition="item.node" />
       </div>
@@ -129,9 +129,12 @@ export default {
     text-transform: uppercase;
     padding: 2px;
   }
+  .all-exhibitions {
+    padding: $factor * 2
+
+  }
   .page-title {
     text-align: center;
-    padding: $factor * 2
   }
   .exhibition-thumb {
     position: relative;

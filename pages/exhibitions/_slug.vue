@@ -131,6 +131,7 @@ export default {
 
 <style lang="scss" scoped>
   .hero {
+    margin-top: $factor;
     @include breakpoint(small) {
       display: flex;
       flex-direction: column-reverse;

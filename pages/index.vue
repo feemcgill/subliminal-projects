@@ -5,7 +5,7 @@
     <section class="hero">
       <div class="carousel-view">
         <div class="carousel-wrap">
-            <div v-show="slides[0].featuredImage.node.sourceUrl" class="slide" >
+            <nuxt-link v-bind:to="'/exhibitions/'+slides[0].slug" v-show="slides[0].featuredImage.node.sourceUrl" class="slide" >
               <img v-bind:src="slides[0].featuredImage.node.sourceUrl" alt="">
               <div class="carousel-info">
                 <div class="lockup">
@@ -27,7 +27,7 @@
                   </div>
                 </div>
               </div>          
-            </div>
+            </nuxt-link>
         </div>
       </div>
 
@@ -205,7 +205,9 @@ $carouselHeight: 80vh;
   position: relative;
   width: 100%;
   height: $carouselHeight;
-  transition: transform 1.2s ease-in-out;
+  //transition: transform 1.2s ease-in-out;
+  display: block;
+  color: $dark;
   &.v-move {
     .lockup {
       opacity: 0;

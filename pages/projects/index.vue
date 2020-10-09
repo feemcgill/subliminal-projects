@@ -66,6 +66,7 @@
     }
   }
   .projects {
+    margin-bottom: $factor * 2;
     .project {
       @include thirds;
       .img {
