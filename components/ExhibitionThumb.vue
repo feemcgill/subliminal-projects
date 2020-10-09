@@ -39,16 +39,25 @@ export default {
     margin-bottom: $factor;
     color: $dark;
     text-decoration: none;
+  	&:hover {
+		  .feature-img  img {
+        transform: scale(1.03);
+        transform-origin: center;
+		  }
+	  }   
     .feature-img {
       width: 100%;
       padding-bottom: 57%;
       position: relative;
       margin-bottom: $factor * 0.25;
+      overflow: hidden;
       img {
+    		transition: all 0.3s ease-out;
         position: absolute;
         height: 100%;
         width: 100%;
         object-fit: cover;
+			  transform: scale(1);
       }
     }
     .subtitle {

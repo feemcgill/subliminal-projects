@@ -1,14 +1,14 @@
 <template>
   <div v-if="page">
     <section class="current-show container">
-      <div class="current-show-wrap">
+      <nuxt-link v-bind:to="'/exhibitions/'+ page.ExhibitionsLandingFields.featuredExhibition[0].slug" class="current-show-wrap">
         <div class="feature-img">
           <FadeImage v-bind:src="page.ExhibitionsLandingFields.featuredExhibition[0].featuredImage.node.sourceUrl" />
         </div>
         <div class="lockup">
           <div class="label">Current Show</div>
         </div>
-      </div>
+      </nuxt-link>
       <div class="lockdown">
         <ul class="artists" v-if="page.ExhibitionsLandingFields.featuredExhibition[0].artists && page.ExhibitionsLandingFields.featuredExhibition[0].artists.nodes.length > 3" >
           <li>Group Show</li>
@@ -121,6 +121,8 @@ export default {
   .current-show-wrap {
     position: relative;
     margin-bottom: $factor;
+    display: block;
+    color: $dark;
     .lockup {
       position: absolute;
       bottom: $factor * 0.5;

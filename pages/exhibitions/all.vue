@@ -131,7 +131,6 @@ export default {
   }
   .all-exhibitions {
     padding: $factor * 2
-
   }
   .page-title {
     text-align: center;
