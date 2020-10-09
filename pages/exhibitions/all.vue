@@ -88,8 +88,20 @@ export default {
                       }                      
                     }
                   }
-                  excerpt
-                  date                 
+                  artists {
+                    nodes {
+                      name
+                      slug
+                    }
+                  }                                  
+                  ExhibitionSubtitle {
+                    subTitle
+                  }
+                  ExhibitionFields {
+                    startDate
+                    endDate
+                    groupShow
+                  }                
                 }
               }
               pageInfo {

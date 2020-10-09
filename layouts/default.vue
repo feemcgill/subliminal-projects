@@ -222,40 +222,7 @@ export default {
       background-color: $dark;
     }
   }
-  /*
-  #main-nav {
-    position: absolute;
-    width: 100vw;
-    height: 100vh;
-    top: 0;
-    right: 0;
-    background: $light;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    ul, li {
-      display: block;
-    }
-    .main {
-      width: 40vw;
-      font-size: 3em;
-      text-align: center;
-      font-weight: bold;
-      li {
 
-      }
-      .sub {
-        font-size: 0.5em;
-        li {
-        }
-      }
-    }
-    a {
-      color: $dark;
-      text-decoration: none;
-    }
-  }
-  */
   #main-nav {
     margin-top: 20px;
     display: flex;
@@ -280,7 +247,7 @@ export default {
       position: absolute;
       width: 300px;
       display: none;
-      padding: 10px;
+      padding: 0px 10px;
       background: $light;
       margin-left: -10px;
       li {

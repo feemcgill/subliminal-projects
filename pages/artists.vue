@@ -28,8 +28,8 @@
           </div>
         </div>
       </div>
-      <div v-else>
-        <h1>Loading Artists</h1>
+      <div class="loader" v-else>
+        <h1>Loading Artists...</h1>
       </div>       
     </section>
   </div>
@@ -173,6 +173,12 @@ export default {
     .content {
       margin-bottom: $factor * 2;
       font-size: 1.2em;
+    }
+  }
+  .artists-list {
+    .loader {
+      text-align: center;
+      opacity: 0.5;
     }
   }
   .artists {    
