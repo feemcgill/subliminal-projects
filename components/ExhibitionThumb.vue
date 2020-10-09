@@ -55,6 +55,9 @@ export default {
       margin-bottom: $factor * 0.125;
       @include sans;
     }
+    h2 {
+      font-weight: normal;
+    }
     .artists {
       display: block;
       li {

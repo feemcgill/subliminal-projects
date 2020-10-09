@@ -4,60 +4,63 @@
     <header>
       <!-- <Nav /> -->
       <div class="container">
-        <nuxt-link class="logo" to="/">
-          <Logo />
-        </nuxt-link>
+        <div class="nav-in">
+          <nuxt-link class="logo" to="/">
+            <Logo />
+          </nuxt-link>
 
-        <nav id="main-nav" v-bind:class="open? 'nav-open' : 'nav-closed'">
-          <ul class="main">
-            <li v-on:click="close"><nuxt-link to="/info" exact tabindex="0">Info</nuxt-link></li>
-            <li v-on:click="close">
-              <nuxt-link to="/exhibitions" exact tabindex="0">Exhibitions</nuxt-link>
-              <ul class="sub">
-                <li v-on:click="close">
-                  <nuxt-link to="/exhibitions" exact tabindex="0">Current & Upcoming</nuxt-link>
-                </li>
-                <li v-on:click="close">
-                  <nuxt-link to="/exhibitions/all" exact tabindex="0">All</nuxt-link>
-                </li>              
-              </ul>      
-            </li>
-            <li v-on:click="close"><nuxt-link to="/projects" exact tabindex="0">Projects</nuxt-link></li>  
-            <li v-on:click="close"><nuxt-link to="/artists" exact tabindex="0">Artists</nuxt-link></li>  
-            <li v-on:click="close"><a target="_blank" href="https://store.subliminalprojects.com/">Shop</a></li>  
+          <nav id="main-nav" v-bind:class="open? 'nav-open' : 'nav-closed'">
+            <ul class="main">
+              <li v-on:click="close"><nuxt-link to="/info" exact tabindex="0">Info</nuxt-link></li>
+              <li v-on:click="close">
+                <nuxt-link to="/exhibitions" exact tabindex="0">Exhibitions</nuxt-link>
+                <ul class="sub">
+                  <li v-on:click="close">
+                    <nuxt-link to="/exhibitions" exact tabindex="0">Current & Upcoming</nuxt-link>
+                  </li>
+                  <li v-on:click="close">
+                    <nuxt-link to="/exhibitions/all" exact tabindex="0">All</nuxt-link>
+                  </li>              
+                </ul>      
+              </li>
+              <li v-on:click="close"><nuxt-link to="/projects" exact tabindex="0">Projects</nuxt-link></li>  
+              <li v-on:click="close"><nuxt-link to="/artists" exact tabindex="0">Artists</nuxt-link></li>  
+              <li v-on:click="close"><a target="_blank" href="https://store.subliminalprojects.com/">Shop</a></li>  
 
-          </ul>
-          <ul class="socials">
-            <li>
-              <a href="#">
-                <img src="~/assets/socials/ig.svg" alt="">
-              </a>
-            </li>
-            <li>
-              <a href="#">
-                <img src="~/assets/socials/twitter.svg" alt="">
-              </a>
-            </li>
-            <li>
-              <a href="#">
-                <img src="~/assets/socials/fb.svg" alt="">
-              </a>
-            </li>
-            <li>
-              <a href="#">
-                <img src="~/assets/socials/spotify.svg" alt="">
-              </a>
-            </li>  
-            <li>
-              <a href="#">
-                <img src="~/assets/socials/vimeo.svg" alt="">
-              </a>
-            </li>                                        
-          </ul>
-          <!-- <div class="close-btn" v-on:click="toggle"></div>     -->
-        </nav>
-        <div v-bind:class="open? 'nav-open burger-btn' : 'nav-closed burger-btn'"  v-on:click="toggle"><div></div><div></div><div></div></div>
+            </ul>
+            <ul class="socials">
+              <li>
+                <a href="#">
+                  <img src="~/assets/socials/ig.svg" alt="">
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <img src="~/assets/socials/twitter.svg" alt="">
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <img src="~/assets/socials/fb.svg" alt="">
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <img src="~/assets/socials/spotify.svg" alt="">
+                </a>
+              </li>  
+              <li>
+                <a href="#">
+                  <img src="~/assets/socials/vimeo.svg" alt="">
+                </a>
+              </li>                                        
+            </ul>
+            <!-- <div class="close-btn" v-on:click="toggle"></div>     -->
+          </nav>
+          <div v-bind:class="open? 'nav-open burger-btn' : 'nav-closed burger-btn'"  v-on:click="toggle"><div></div><div></div><div></div></div>
+        </div>
       </div>
+
     </header>
     <div class="page-wrapper">
       <Nuxt />
@@ -133,6 +136,9 @@ export default {
 <style lang="scss" scoped>
   .header-push {
     padding-top: 150px;
+    @include breakpoint(small) {
+      padding-top: 75px;
+    }
   }
   header {
     position: fixed;
@@ -147,85 +153,32 @@ export default {
       margin: 0;
     }       
     .container {
+
+    
+    }
+    .logo {
+      //position: absolute;
+      width: 130px;
+      padding: $factor*.125 0;
+      z-index: 10000;
+      @include breakpoint(small) {
+        width: 100px;
+      }
+    }
+  }
+  .nav-in {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
       position: relative;
-      @include breakpoint(small) {
-        /* width: auto;
-        padding: 0;
-        margin: 0; */
-      }      
-    }
-    .logo {
-      //position: absolute;
-      width: 166px;
-      padding: $factor*.125;
-      z-index: 10000;
-      @include breakpoint(small) {
-        width: 120px;
-      }
-    }
-  }
-  footer {
-    overflow: hidden;
-    padding-top: $factor;
-    border-top: 2px solid $dark;
-    .footer-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: $factor;
-      @include breakpoint(small) {
-        width: 100%;
-        display: block;
-      }      
-    }
-    .address {
-      @include breakpoint(small) {
-        margin-bottom: $factor;
-      }      
-      p {
-        margin-bottom: $factor*.5;
-        &:last-of-type {
-          margin-bottom: 0;
-        }
-      }
-    }
-    .forms {
-      display: flex;
-      @include breakpoint(small) {
-        width: 100%;
-        display: block;
-      }        
-      form:first-of-type {
-        margin-right: $factor;
-        @include breakpoint(small) {
-          margin-bottom: $factor * 0.25;
-        }          
-      };
-      form {
-        display: flex;
-      }
-      .input {
-        margin-right: 5px;
-      }
-    }
-    .copyright, 
-    .legal-menu {
-      @include type-tiny;
-      li {
-        margin-right: 10px;
-      }
-    }
   }
 
   .burger-btn {
     flex-direction: column;
     justify-content: space-between;
     position: absolute;
-    top: 20px;
-    right: 15px;
+    top: 26px;
+    right: 0;
     width: 40px;
     height: 24px;
     cursor: pointer;
@@ -268,11 +221,11 @@ export default {
       position: relative;
       background: $light;
       position: absolute;
-      left: 0;
+      left: -2em;
       top: 0;
       margin: 0;
       height: 100vh;
-      width: 100%;
+      width: calc(100vw + 2em);
       align-items: center;
       justify-content: center;
       flex-wrap: wrap;
@@ -355,6 +308,70 @@ export default {
       }
     }
   }
+
+
+
+
+
+
+
+  footer {
+    overflow: hidden;
+    padding-top: $factor;
+    border-top: 2px solid $dark;
+    .footer-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: $factor;
+      @include breakpoint(small) {
+        width: 100%;
+        display: block;
+      }      
+    }
+    .address {
+      @include breakpoint(small) {
+        margin-bottom: $factor;
+      }      
+      p {
+        margin-bottom: $factor*.5;
+        &:last-of-type {
+          margin-bottom: 0;
+        }
+      }
+    }
+    .forms {
+      display: flex;
+      @include breakpoint(small) {
+        width: 100%;
+        display: block;
+      }        
+      form:first-of-type {
+        margin-right: $factor;
+        @include breakpoint(small) {
+          margin-bottom: $factor * 0.25;
+        }          
+      };
+      form {
+        display: flex;
+      }
+      .input {
+        margin-right: 5px;
+      }
+    }
+    .copyright, 
+    .legal-menu {
+      @include type-tiny;
+      li {
+        margin-right: 10px;
+      }
+    }
+  }
+
+
+
+
+
   .nav-enter-active {
     transition: all .3s ease;
     ul {

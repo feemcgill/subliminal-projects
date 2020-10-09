@@ -22,7 +22,7 @@ export default {
       { hid: 'description', name: 'description', content: process.env.npm_package_description || '' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      // { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       { rel: 'stylesheet', type: 'text/css', href: 'https://cloud.typography.com/6029974/778648/css/fonts.css' },
       { rel: 'stylesheet', type: 'text/css', href: 'https://use.typekit.net/ust4ikr.css' }
     ]
@@ -44,7 +44,7 @@ export default {
   */
   pageTransition: {
     name: 'fade',
-    mode: '',
+    // mode: '',
     // beforeEnter (el) {
     //   console.log('Before enter...');
     // }
@@ -75,7 +75,12 @@ export default {
         httpEndpoint: 'https://subliminalprojects.d-e-v.group/graphql',          
       }
     }
-  },  
+  },
+  pwa: {
+    icon: {
+      /* icon options */
+    }
+  },
   /*
   ** Build configuration
   ** See https://nuxtjs.org/api/configuration-build/

@@ -228,20 +228,17 @@ $carouselHeight: 80vh;
     width: 100%;
     height: 100%;   
     display: flex;
-    align-items: center;
-    justify-content: center;
+    align-items: flex-end;
+    justify-content: flex-start;
     z-index: 100;
-    text-align: center;
+    text-align: left;
   }
   .lockup {
-    //font-size: 2em;
     transition: all 0.2s ease-in;
-    //background: $light;
+    background: $light;
     padding: $factor * 0.5;
-    //text-align: center;
     margin: $factor;
     font-weight: bold;
-    //text-shadow: 0px 0px 2px $light;
     h2, h3 {
       @include type-big;
     }

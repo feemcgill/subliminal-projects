@@ -6,7 +6,7 @@
           <FadeImage v-bind:src="page.ExhibitionsLandingFields.featuredExhibition[0].featuredImage.node.sourceUrl" />
         </div>
         <div class="lockup">
-          <div class="label">Current Exhibition</div>
+          <div class="label">Current Show</div>
         </div>
       </div>
       <div class="lockdown">
@@ -16,17 +16,18 @@
         <ul class="artists" v-else-if="page.ExhibitionsLandingFields.featuredExhibition[0].artists" >
           <li v-for="artist in page.ExhibitionsLandingFields.featuredExhibition[0].artists.nodes" v-bind:key="artist.slug">{{artist.name}}</li>
         </ul>
-        <h1 v-html="page.ExhibitionsLandingFields.featuredExhibition[0].title"></h1>
+        <div class="title" v-html="page.ExhibitionsLandingFields.featuredExhibition[0].title"></div>
         <div class="dates">
           <span v-html="page.ExhibitionsLandingFields.featuredExhibition[0].ExhibitionFields.startDate" /> — <span v-html="page.ExhibitionsLandingFields.featuredExhibition[0].ExhibitionFields.endDate" />
         </div>              
       </div>      
     </section>
-    <div class="section-title">
-      <h2>Upcoming Shows</h2>
-    </div>
-    <section class="upcoming-shows container grid">
-      <ExhibitionThumb class="show" v-for="feature in page.ExhibitionsLandingFields.upcomingExhibitions" :key="feature.slug" v-bind:exhibition="feature" />
+
+    <section class="upcoming-shows container">
+      <h2 class="upcoming-shows-title">Upcoming Shows</h2>
+      <div class="grid">
+        <ExhibitionThumb class="show" v-for="feature in page.ExhibitionsLandingFields.upcomingExhibitions" :key="feature.slug" v-bind:exhibition="feature" />
+      </div>
     </section>
   </div>
 </template>
@@ -115,21 +116,20 @@ export default {
 
 <style lang="scss" scoped>
   .current-show {
-    padding-top: $factor * 2;
+    margin-bottom: $factor * 2;
   }
   .current-show-wrap {
     position: relative;
     margin-bottom: $factor;
     .lockup {
       position: absolute;
-      bottom: $factor;
-      left: $factor;
+      bottom: $factor * 0.5;
+      left: $factor * 0.5;
       font-size: 2em;
       transition: all 0.2s ease-in;
       background: $light;
-      padding: $factor * 0.5;
+      padding: $factor * 0.25;
       //text-align: center;
-      margin: $factor;      
     }
     .feature-img {
       padding-bottom: 38%;
@@ -142,7 +142,27 @@ export default {
       }      
     }
   }
+  .lockdown {
+    display: flex;
+    font-size: 1.5em;
+    font-weight: bold;
+    .title,
+    .artists {
+      &:after {
+        content: ' / ';
+        margin: 0 $factor * 0.25;
+        font-weight: 100;
+      }
+    }
+  }
   .upcoming-shows {
+    .upcoming-shows-title {
+      text-align: left;
+      font-size: 2em;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin-bottom: $factor * 0.5;
+    }
     .exhibition-thumb {
       @include thirds;
     }
