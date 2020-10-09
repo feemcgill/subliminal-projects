@@ -102,7 +102,7 @@ export default {
     startCycle() {
       this.cycleSlides = setInterval(() => {
         this.next()
-      }, 1500)
+      }, 5000)
     },
     stopCycle() {
       clearInterval(this.cycleSlides)
