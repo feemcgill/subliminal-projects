@@ -2,38 +2,32 @@
   <div v-if="page && slides" id="page-home">
 
 
-
-
-
-
     <section class="hero">
       <div class="carousel-view">
         <div class="carousel-wrap">
-          <transition-group class='carousel' tag="div">
-            <div class="slide" v-for="slide in slides" :key="'slide-'+slide.slug" >
-              <img v-bind:src="slide.featuredImage.node.sourceUrl" alt="">
+            <div v-show="slides[0].featuredImage.node.sourceUrl" class="slide" >
+              <img v-bind:src="slides[0].featuredImage.node.sourceUrl" alt="">
               <div class="carousel-info">
                 <div class="lockup">
                   <div>
 
-                    <ul class="artists" v-if="slide.artists && slide.artists.nodes.length > 3" >
+                    <ul class="artists" v-if="slides[0].artists && slides[0].artists.nodes.length > 3" >
                       <h2>Group Show</h2>
                     </ul>
 
-                    <ul class="artists" v-else-if="slide.artists" >
-                      <li v-for="artist in slide.artists.nodes" v-bind:key="artist.slug"><h2>{{artist.name}}</h2></li>
+                    <ul class="artists" v-else-if="slides[0].artists" >
+                      <li v-for="artist in slides[0].artists.nodes" v-bind:key="artist.slug"><h2>{{artist.name}}</h2></li>
                     </ul>
 
-                    <h2 v-html="slide.title"></h2>
+                    <h2 v-html="slides[0].title"></h2>
                     <div class="dates">
-                      <span v-html="slide.ExhibitionFields.startDate" /> — <span v-html="slide.ExhibitionFields.endDate" />
+                      <span v-html="slides[0].ExhibitionFields.startDate" /> — <span v-html="slides[0].ExhibitionFields.endDate" />
                     </div>
 
                   </div>
                 </div>
               </div>          
             </div>
-          </transition-group>
         </div>
       </div>
 
@@ -86,6 +80,7 @@ export default {
   data () {
     return {
       slides: null,
+      slide: null,
       cycleSlides: null
     }
   },
@@ -93,6 +88,9 @@ export default {
     ExhibitionThumb
   },
   methods: {
+    shuffle() {
+      this.slides = _.shuffle(this.slides);
+    },    
     next () {
       const first = this.slides.shift()
       this.slides = this.slides.concat(first)
@@ -104,7 +102,7 @@ export default {
     startCycle() {
       this.cycleSlides = setInterval(() => {
         this.next()
-      }, 5000)
+      }, 1500)
     },
     stopCycle() {
       clearInterval(this.cycleSlides)
@@ -121,6 +119,7 @@ export default {
     result({data}) {
         console.log('data', data.page)
         this.slides = data.page.HomeFields.hero
+        // this.slide = this.slides[0]
         console.log(this.slides)
       },
       error: function(error) {
@@ -192,28 +191,27 @@ $carouselHeight: 80vh;
   height: $carouselHeight;
   margin-bottom: $factor * 1.5;
   flex-wrap: wrap;  
-  background-color: $dark;
   position: relative;
 }
 .carousel {
-  margin-top: -$carouselHeight;
+  //margin-top: -$carouselHeight;
+  //position: absolute;
+  // \width: 100%;
 }
 .carousel-wrap {
-  /* min-height: 10000px;
-  background: red;
-  position: absolute; */
+
 }
 .slide {
   position: relative;
-  width: 100vw;
+  width: 100%;
   height: $carouselHeight;
   transition: transform 1.2s ease-in-out;
-  /* &.v-move {
+  &.v-move {
     .lockup {
       opacity: 0;
       transform: translateX(-100px);
     }
-  } */
+  }
   img {
     position: absolute;
     left: 0;

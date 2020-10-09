@@ -25,7 +25,11 @@ export default {
       // { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       { rel: 'stylesheet', type: 'text/css', href: 'https://cloud.typography.com/6029974/778648/css/fonts.css' },
       { rel: 'stylesheet', type: 'text/css', href: 'https://use.typekit.net/ust4ikr.css' }
-    ]
+      //
+    ],
+    script: [
+      { src: `https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js`, body: true },
+    ],       
   },
   /*
   ** Global CSS
