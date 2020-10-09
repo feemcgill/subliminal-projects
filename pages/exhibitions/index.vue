@@ -122,7 +122,7 @@ export default {
     position: relative;
     margin-bottom: $factor;
     display: block;
-    color: $dark;
+    color: $dark; 
     .lockup {
       position: absolute;
       bottom: $factor * 0.5;
