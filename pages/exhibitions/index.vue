@@ -7,22 +7,26 @@
         </div>
         <div class="lockup">
           <div class="label">Current Exhibition</div>
-          <h1 v-html="page.ExhibitionsLandingFields.featuredExhibition[0].title"></h1>
-          <h2 v-if="page.ExhibitionsLandingFields.featuredExhibition[0].ExhibitionSubtitle" v-html="page.ExhibitionsLandingFields.featuredExhibition[0].ExhibitionSubtitle.subTitle"></h2>
-          <ul class="artists" v-if="page.ExhibitionsLandingFields.featuredExhibition[0].artists" >
-            <li v-for="artist in page.ExhibitionsLandingFields.featuredExhibition[0].artists.nodes" v-bind:key="artist.slug">{{artist.name}}</li>
-          </ul>
-          <div class="dates">
-            <span v-html="page.ExhibitionsLandingFields.featuredExhibition[0].ExhibitionFields.startDate" /> — <span v-html="page.ExhibitionsLandingFields.featuredExhibition[0].ExhibitionFields.endDate" />
-          </div>      
         </div>
       </div>
+      <div class="lockdown">
+        <ul class="artists" v-if="page.ExhibitionsLandingFields.featuredExhibition[0].artists && page.ExhibitionsLandingFields.featuredExhibition[0].artists.nodes.length > 3" >
+          <li>Group Show</li>
+        </ul>
+        <ul class="artists" v-else-if="page.ExhibitionsLandingFields.featuredExhibition[0].artists" >
+          <li v-for="artist in page.ExhibitionsLandingFields.featuredExhibition[0].artists.nodes" v-bind:key="artist.slug">{{artist.name}}</li>
+        </ul>
+        <h1 v-html="page.ExhibitionsLandingFields.featuredExhibition[0].title"></h1>
+        <div class="dates">
+          <span v-html="page.ExhibitionsLandingFields.featuredExhibition[0].ExhibitionFields.startDate" /> — <span v-html="page.ExhibitionsLandingFields.featuredExhibition[0].ExhibitionFields.endDate" />
+        </div>              
+      </div>      
     </section>
     <div class="section-title">
-      <h2>Upcoming</h2>
+      <h2>Upcoming Shows</h2>
     </div>
     <section class="upcoming-shows container grid">
-      <ExhibitionThumb v-for="feature in page.ExhibitionsLandingFields.upcomingExhibitions" :key="feature.slug" v-bind:exhibition="feature" />
+      <ExhibitionThumb class="show" v-for="feature in page.ExhibitionsLandingFields.upcomingExhibitions" :key="feature.slug" v-bind:exhibition="feature" />
     </section>
   </div>
 </template>
@@ -64,6 +68,7 @@ export default {
                     subTitle
                   }
                   ExhibitionFields {
+                    groupShow
                     startDate
                     endDate
                   }                  
@@ -80,12 +85,6 @@ export default {
                   slug
                   artists {
                     nodes {
-                      ArtistFields {
-                        instagramHandle
-                        link
-                        siteLink
-                        hideInArtistList
-                      }
                       name
                       slug
                     }
@@ -96,6 +95,7 @@ export default {
                   ExhibitionFields {
                     startDate
                     endDate
+                    groupShow
                   }                  
                   featuredImage {
                     node {
@@ -119,7 +119,7 @@ export default {
   }
   .current-show-wrap {
     position: relative;
-    border: 2px solid $dark;
+    margin-bottom: $factor;
     .lockup {
       position: absolute;
       bottom: $factor;
@@ -132,12 +132,19 @@ export default {
       margin: $factor;      
     }
     .feature-img {
+      padding-bottom: 38%;
+      position: relative;
       img {
-        display: block;
+        position: absolute;
         width: 100%;
-        height: 75vh;
+        height: 100%;
         object-fit: cover;
-      }
+      }      
     }
   }
+  .upcoming-shows {
+    .exhibition-thumb {
+      @include thirds;
+    }
+  }  
 </style>

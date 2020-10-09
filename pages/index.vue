@@ -10,18 +10,25 @@
       <div class="carousel-view">
         <div class="carousel-wrap">
           <transition-group class='carousel' tag="div">
-            <div class="slide" v-for="slide in slides" :key="'slide-'+slide.link[0].slug" >
-              <img v-bind:src="slide.link[0].featuredImage.node.sourceUrl" alt="">
+            <div class="slide" v-for="slide in slides" :key="'slide-'+slide.slug" >
+              <img v-bind:src="slide.featuredImage.node.sourceUrl" alt="">
               <div class="carousel-info">
                 <div class="lockup">
                   <div>
-                    <h2>Artist Name</h2>
-                    <h2>Show Title</h2>
-                    <!-- <h2 v-html="slide.link[0].title"></h2>
-                    <h3 v-html="slide.link[0].ExhibitionSubtitle.subTitle"></h3> -->
+
+                    <ul class="artists" v-if="slide.artists && slide.artists.nodes.length > 3" >
+                      <h2>Group Show</h2>
+                    </ul>
+
+                    <ul class="artists" v-else-if="slide.artists" >
+                      <li v-for="artist in slide.artists.nodes" v-bind:key="artist.slug"><h2>{{artist.name}}</h2></li>
+                    </ul>
+
+                    <h2 v-html="slide.title"></h2>
                     <div class="dates">
-                      <span v-html="slide.link[0].ExhibitionFields.startDate" /> — <span v-html="slide.link[0].ExhibitionFields.endDate" />
+                      <span v-html="slide.ExhibitionFields.startDate" /> — <span v-html="slide.ExhibitionFields.endDate" />
                     </div>
+
                   </div>
                 </div>
               </div>          
@@ -54,19 +61,17 @@
 
     
     <section class="features container">
-      <div class="feature" v-for="feature in page.HomeFields.features" :key="feature.slug">
+      <div class="feature" v-for="feature in page.HomeFields.features" :key="feature.title">
         <div class="img-wrap">
           <div class="img">
-            <img v-bind:src="feature.featuredImage.node.sourceUrl" :alt="feature.title">
+            <img v-bind:src="feature.image.sourceUrl" :alt="feature.title">
           </div>
         </div>
         <div class="info">
-          <h5>Lorem ipsum</h5>
-          <div class="content">
-            Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, consectetuer adipisc- ing elit, sed diam nonummy nibh euis
-          </div>
-          <div class="link">
-            <a href="">Read More</a>
+          <h5>{{feature.title}}</h5>
+          <div class="content" v-html="feature.blurb"></div>
+          <div v-if="feature.link" class="link">
+            <a v-bind:target="feature.linkInNewWindow ? '_blank' : '_self'" v-bind:href="feature.link">{{feature.linkText}}</a>
           </div>
         </div>
       </div>
@@ -128,60 +133,42 @@ export default {
           title
           HomeFields {
             hero {
-              mobileImage {
-                srcSet(size: LARGE)
-                sourceUrl(size: LARGE)
-                altText
-              }
-              image {
-                srcSet(size: LARGE)
-                sourceUrl(size: LARGE)
-                altText
-              }
-              link {
-                ... on Exhibition {
-                  id
-                  slug
-                  title
-
-                  ExhibitionSubtitle {
-                    subTitle
-                  }
-                  featuredImage {
-                    node {
-                      sourceUrl(size: LARGE)
-                    }
-                  }
-                  ExhibitionFields {
-                    startDate
-                    endDate
-                  }
-                }
-              }
-            }
-            features {
-              ... on Project {
-                title
-                slug                
-                featuredImage {
-                  node {
-                    sourceUrl(size: MEDIUM)
-                  }
-                }                
-              }            
               ... on Exhibition {
+                id
+                slug
                 title
-                slug                
+
                 ExhibitionSubtitle {
                   subTitle
                 }
                 featuredImage {
                   node {
-                    sourceUrl(size: MEDIUM)
+                    sourceUrl(size: LARGE)
                   }
                 }
+                ExhibitionFields {
+                  startDate
+                  endDate
+                }
+                artists {
+                  nodes {
+                    name
+                    slug
+                  }
+                }                   
               }
-            }               
+            }
+            features {
+              title
+              blurb
+              image {
+                id
+                sourceUrl(size: MEDIUM)
+              }
+              link
+              linkInNewWindow
+              linkText
+            }
           }       
         }
       }

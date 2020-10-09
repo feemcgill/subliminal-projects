@@ -3,11 +3,20 @@
     <div class="feature-img">
       <FadeImage v-bind:src="exhibition.featuredImage.node.sourceUrl" />
     </div>
-    <h2 v-html="exhibition.title"></h2>
-    <div class="subtitle" v-if="exhibition.ExhibitionSubtitle" v-html="exhibition.ExhibitionSubtitle.subTitle" />    
-    <ul class="artists" v-if="exhibition.artists" >
+
+    <ul class="artists" v-if="exhibition.artists && exhibition.artists.nodes.length > 3" >
+      Group Show
+    </ul>
+
+    <ul class="artists" v-else-if="exhibition.artists" >
       <li v-for="artist in exhibition.artists.nodes" v-bind:key="artist.slug">{{artist.name}}</li>
     </ul>
+
+    <h2 v-html="exhibition.title"></h2>
+
+    <div class="date">
+      <span v-html="exhibition.ExhibitionFields.startDate" /> — <span v-html="exhibition.ExhibitionFields.endDate" />
+    </div>
 
   </nuxt-link>
 </template>
@@ -26,7 +35,6 @@ export default {
 
 <style lang="scss" scoped>
   .exhibition-thumb {
-    @include halves;
     display: block;
     margin-bottom: $factor;
     color: $dark;
