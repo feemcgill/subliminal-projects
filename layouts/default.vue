@@ -8,7 +8,7 @@
           <Logo />
         </nuxt-link>
 
-        <nav id="main-nav">
+        <nav id="main-nav" v-bind:class="open? 'nav-open' : 'nav-closed'">
           <ul class="main">
             <li v-on:click="close"><nuxt-link to="/info" exact tabindex="0">Info</nuxt-link></li>
             <li v-on:click="close">
@@ -22,7 +22,10 @@
                 </li>              
               </ul>      
             </li>
+            <li v-on:click="close"><nuxt-link to="/projects" exact tabindex="0">Projects</nuxt-link></li>  
             <li v-on:click="close"><nuxt-link to="/artists" exact tabindex="0">Artists</nuxt-link></li>  
+            <li v-on:click="close"><a target="_blank" href="https://store.subliminalprojects.com/">Shop</a></li>  
+
           </ul>
           <ul class="socials">
             <li>
@@ -51,9 +54,9 @@
               </a>
             </li>                                        
           </ul>
+          <!-- <div class="close-btn" v-on:click="toggle"></div>     -->
         </nav>
-        <!-- <div class="burger-btn" v-on:click="toggle"><div></div><div></div><div></div></div>
-        <div class="close-btn" v-on:click="toggle"></div>       -->
+        <div v-bind:class="open? 'nav-open burger-btn' : 'nav-closed burger-btn'"  v-on:click="toggle"><div></div><div></div><div></div></div>
       </div>
     </header>
     <div class="page-wrapper">
@@ -138,16 +141,30 @@ export default {
     width: 100%;
     z-index: 5000;
     padding: $factor*.125 $factor;
+    @include breakpoint(small) {
+      width: 100%;
+      padding: 0;
+      margin: 0;
+    }       
     .container {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;      
+      align-items: flex-start;
+      position: relative;
+      @include breakpoint(small) {
+        /* width: auto;
+        padding: 0;
+        margin: 0; */
+      }      
     }
     .logo {
       //position: absolute;
       width: 166px;
       padding: $factor*.125;
       z-index: 10000;
+      @include breakpoint(small) {
+        width: 120px;
+      }
     }
   }
   footer {
@@ -207,19 +224,39 @@ export default {
     flex-direction: column;
     justify-content: space-between;
     position: absolute;
-    top: 26px;
+    top: 20px;
     right: 15px;
-    width: 50px;
-    height: 34px;
+    width: 40px;
+    height: 24px;
     cursor: pointer;
     display: flex;
-    background-color: $light;
-    padding: 5px;
+    padding: 0px;
     display: none;
+    @include breakpoint(small) {
+      display: flex;
+    }
     > div {
       width: 100%;
-      height: 5px;
+      height: 4px;
       background-color: $dark;
+      transition: all 0.1s ease-in;
+    }
+    &.nav-open {
+      >div:nth-last-of-type(2) {
+        position: absolute;
+        top: 50%;        
+        opacity: 0.0;
+      }
+      >div:nth-last-of-type(1) {
+        position: absolute;
+        top: 50%;
+        transform: rotate(-45deg);
+      }  
+      >div:nth-last-of-type(3) {
+        position: absolute;
+        top: 50%;
+        transform: rotate(45deg);
+      }            
     }
   }
 
@@ -227,6 +264,52 @@ export default {
     margin-top: 20px;
     display: flex;
     font-size: 20px;
+    @include breakpoint(small) {
+      position: relative;
+      background: $light;
+      position: absolute;
+      left: 0;
+      top: 0;
+      margin: 0;
+      height: 100vh;
+      width: 100%;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      flex-direction: column;
+      font-size: 2em;
+      &.nav-closed {
+        display: none;
+      }
+      ul {
+        display: block;
+        width: 100%;
+        text-align: center;
+        li {
+          width: 100%;
+          .sub {
+            display: block;
+            background: transparent;
+            position: relative;
+            width: auto;
+            padding: 0;
+            margin: 0;
+            li {
+              line-height: 1;
+            }
+            a {
+              font-size: 0.5em;
+            }
+          }
+        }
+        &.socials {
+          display: flex;
+          width: auto;
+          margin-top: $factor;
+        }
+      }
+    }
+
     li {
       margin-right: $factor * 0.5;
       font-weight: bold;
