@@ -20,7 +20,7 @@
       </div>
       <div class="exhibition-title container">
         <div class="info">
-          <ul class="artists" v-if="exhibition.artists" >
+          <ul v-bind:class="exhibition.artists.nodes.length > 1 ? 'artists list' : 'artists'" v-if="exhibition.artists" >
             <li v-for="artist in exhibition.artists.nodes" v-bind:key="artist.slug">{{artist.name}}</li>
           </ul>             
           <h1>{{exhibition.title}}</h1>
@@ -30,7 +30,7 @@
         </div>             
       </div>      
     </section>
-    <section class="gallery container">
+    <section v-if="exhibition.ExhibitionFields.images" class="gallery container">
       <div class="gallery-wrap grid">
         <div class="gallery-item" v-for="image in exhibition.ExhibitionFields.images" v-bind:key="image.sourceUrl" >
           <FadeImage v-bind:src="image.sourceUrl" />
@@ -189,27 +189,44 @@ export default {
   }
 
   .exhibition-title {
-
     margin-bottom: $factor * 3;
+    @include breakpoint(small) {
+      margin-bottom: $factor;
+    }        
     .info {
       font-size: 2em;
+      width: 50%;
+      @include breakpoint(small) {
+        margin-bottom: $factor;
+        width: 100%;
+      }          
       h1 {
         font-size: 1em;
         font-weight: normal;
         text-transform: unset;
       }
+      .artists {
+        &.list {
+          font-size: 0.5em;
+          display: block;
+          margin-bottom: 1em;
+          li {
+            display: inline;
+            &:after {
+              content: " / ";
+              opacity: 0.5;
+            }
+            &:last-of-type {
+              &:after {
+                display: none;
+              }
+            }
+          }
+        }
+      }
     }
   }
-  .details {
-    .artists {
-      display: block;
-      font-size: 0.8em;
-      li {
-        display: inline-block;
-        margin-right: 20px;        
-      }
-    }        
-  }
+
   .gallery {
     margin-bottom: $factor;
   }
