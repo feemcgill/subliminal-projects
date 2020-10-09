@@ -2,31 +2,46 @@
 <template>
   <div v-if="exhibition" id="page-exhibition">
     <section class="hero">
-      <FadeImage v-bind:src="exhibition.featuredImage.node.sourceUrl" />
-      <div class="lockup">
-        <div class="lockup-content">
+      <div class="container img-intro">
+        <div class="image-title">
+          <div class="img">
+            <FadeImage v-bind:src="exhibition.featuredImage.node.sourceUrl" />
+          </div>
+        </div>
+        <div class="content">
+          <div class="intro">
+            Lorem ipsum dolor sit Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volut- pat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo con- sequat. Duis autem vel eum iriure dolor in        
+          </div>
+          <ul class="links">
+            <li>Link to RSVP</li>
+            <li>Download PR</li>
+          </ul>
+        </div>
+      </div>
+      <div class="exhibition-title container">
+        <div class="info">
+          <ul class="artists" v-if="exhibition.artists" >
+            <li v-for="artist in exhibition.artists.nodes" v-bind:key="artist.slug">{{artist.name}}</li>
+          </ul>             
           <h1>{{exhibition.title}}</h1>
-          <h2>{{exhibition.ExhibitionSubtitle.subTitle}}</h2>
+          <div class="date">
+            <span v-html="exhibition.ExhibitionFields.startDate" /> — <span v-html="exhibition.ExhibitionFields.endDate" />
+          </div>
+        </div>             
+      </div>      
+    </section>
+    <section class="gallery container">
+      <div class="gallery-wrap grid">
+        <div class="gallery-item" v-for="image in exhibition.ExhibitionFields.images" v-bind:key="image.sourceUrl" >
+          <FadeImage v-bind:src="image.sourceUrl" />
+          <div class="caption">
+            caption will go here
+          </div>
         </div>
       </div>
     </section>
-    <section class="main-content container">
-    </section>
-
-    <section class="gallery container">
-      <div class="gallery-wrap grid">
-        <div class="content" v-html="exhibition.content" />
-        <div class="details">
-          <ul class="artists" v-if="exhibition.artists" >
-            <li v-for="artist in exhibition.artists.nodes" v-bind:key="artist.slug">{{artist.name}}</li>
-          </ul>        
-          <div v-html="exhibition.ExhibitionFields.startDate" />
-          <div v-html="exhibition.ExhibitionFields.endDate" />
-          <div v-html="exhibition.ExhibitionFields.openingReceptionDate" />
-          <div v-html="exhibition.ExhibitionFields.openingReceptionTime" />        
-        </div>        
-        <FadeImage v-for="image in exhibition.ExhibitionFields.images" v-bind:key="image.sourceUrl" v-bind:src="image.sourceUrl" />
-      </div>
+    <section class="additonal-content container">
+        <div class="content formatted-content" v-html="exhibition.content" />
     </section>
   </div>
 </template>
@@ -81,7 +96,9 @@ export default {
                   sourceUrl
                 }
                 images {
-                  altText
+                  caption
+                  description(format: RENDERED)
+                  altText                  
                   sourceUrl(size: LARGE)
                 }
           
@@ -114,53 +131,76 @@ export default {
 
 <style lang="scss" scoped>
   .hero {
+    @include breakpoint(small) {
+      display: flex;
+      flex-direction: column-reverse;
+    }    
+  }
+  .img-intro {
     position: relative;
     width: 100vw;
-    height: 100vh;
-    margin-bottom: $factor * 2;
-    img {
-      position: absolute;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
+    margin-bottom: $factor;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    .image-title {
+      width: 50%;
+      @include breakpoint(small) {
+        width: 100%;
+        margin-bottom: $factor;
+      }
+      .img {
+        position: relative;
+        padding-bottom: 65%;
+        img {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center;
+        }
+      }
     }
-    .lockup {
-      position: absolute;
-      left: 0;
-      width: 100%;
-      height: 100%;   
+    .content {
+      width: calc(50% - 50px);
+      @include breakpoint(small) {
+        width: 100%;
+
+      }      
       display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 100;
-      .lockup-content {
-        text-align: center;
-        background: $light;
-        padding: $factor;
+      flex-direction: column;
+      justify-content: space-between;
+      .intro {
+        font-size: 1.5em;
+        @include breakpoint(small) {
+          margin-bottom: $factor;
+        }        
+      }
+      .links {
+        font-size: 1.5em;
+        text-transform: uppercase;
+        font-weight: bold;
+        display: block;
+        li {
+          display: block;
+        }
       }
     }
   }
 
-  /* .main-content {
-    max-width: 1000px;
-    display: flex;
-    flex-wrap: wrap;
-    margin-bottom: $factor;
-    justify-content: space-between;
-    .main {
-      @include halves;
-      width: 80%;
+  .exhibition-title {
+
+    margin-bottom: $factor * 3;
+    .info {
+      font-size: 2em;
+      h1 {
+        font-size: 1em;
+        font-weight: normal;
+        text-transform: unset;
+      }
     }
-  } */
-  .content {
-    grid-column-end: span 2;
-    grid-row-end: span 2;    
   }
   .details {
-    /* @include halves;
-    width: 20%; */
     .artists {
       display: block;
       font-size: 0.8em;
@@ -181,8 +221,19 @@ export default {
     grid-auto-rows: minmax(min-content, max-content);
     grid-auto-flow: dense;
     gap: $factor * 2;
-    img {
-      //border: 2px solid red;
-    }  
+    @include breakpoint(small) {
+      grid-template-columns: repeat(2, 25fr);
+      gap: $factor;
+    }      
+  }
+  .additonal-content {
+    margin-bottom: $factor;
+    .content {
+      width: 75%;
+      display: block;
+      @include breakpoint(small) {
+        width: 100%;
+      }      
+    }
   }
 </style>

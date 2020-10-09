@@ -159,8 +159,15 @@ export default {
       justify-content: space-between;
       align-items: flex-start;
       margin-bottom: $factor;
+      @include breakpoint(small) {
+        width: 100%;
+        display: block;
+      }      
     }
     .address {
+      @include breakpoint(small) {
+        margin-bottom: $factor;
+      }      
       p {
         margin-bottom: $factor*.5;
         &:last-of-type {
@@ -170,8 +177,15 @@ export default {
     }
     .forms {
       display: flex;
+      @include breakpoint(small) {
+        width: 100%;
+        display: block;
+      }        
       form:first-of-type {
         margin-right: $factor;
+        @include breakpoint(small) {
+          margin-bottom: $factor * 0.25;
+        }          
       };
       form {
         display: flex;
