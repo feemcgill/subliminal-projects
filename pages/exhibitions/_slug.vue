@@ -64,9 +64,9 @@ export default {
           console.log(error)
         },
         result({data}) {
-          if(!data.exhibition){
-            this.$nuxt.error({ statusCode: 404 })
-          }  
+          if (data.exhibition.featuredImage) {
+            this.$store.commit('setLogoBg', data.exhibition.featuredImage.node.sourceUrl)
+          }
         },        
         variables() {
           return {

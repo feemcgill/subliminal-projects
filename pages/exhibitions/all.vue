@@ -60,8 +60,10 @@ export default {
   },
   apollo: {
       exhibitions: {
-        result(data) {
-          console.log('past data', data)
+        result({data}) {
+          if (data.exhibitions.edges[0].node.featuredImage) {
+            this.$store.commit('setLogoBg', data.exhibitions.edges[0].node.featuredImage.node.sourceUrl)
+          }
         },        
         variables: {
           after: null,

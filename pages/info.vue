@@ -61,7 +61,9 @@ export default {
   apollo: {
     page: {  
       result({data}) {
-        console.log('INFODATA', data)
+        if (data.page.featuredImage) {
+          this.$store.commit('setLogoBg', data.page.featuredImage.node.sourceUrl)
+        }
       },
       error: function(error) {
         console.log(error)

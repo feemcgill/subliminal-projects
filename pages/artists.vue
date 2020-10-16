@@ -103,9 +103,9 @@ export default {
       },      
       result({data}) {
         this.pageData = data.page
-        console.log('PAGE', this.pageData)
-        console.log('artists', data.artists)
-        console.log(data.artists.pageInfo.hasNextPage, data.artists.pageInfo.endCursor, 'GET MORE')
+        if (this.pageData.featuredImage) {
+          this.$store.commit('setLogoBg', this.pageData.featuredImage.node.sourceUrl)
+        }
         if (data.artists.pageInfo.hasNextPage) {
           this.loadMore();
         } else {

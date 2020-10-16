@@ -43,6 +43,11 @@ export default {
   },
   apollo: {
     page: {
+      result({data}) {
+        if (data.page.ExhibitionsLandingFields.featuredExhibition[0].featuredImage) {
+          this.$store.commit('setLogoBg', data.page.ExhibitionsLandingFields.featuredExhibition[0].featuredImage.node.sourceUrl)
+        }
+      },       
       query: gql`
         query ExhibitionsQuery {
           page(id: "71006", idType: DATABASE_ID) {

@@ -40,9 +40,9 @@ export default {
           console.log(error)
         },
         result({data}) {
-          if(!data.project){
-            this.$nuxt.error({ statusCode: 404 })
-          }  
+          if (data.project.featuredImage) {
+            this.$store.commit('setLogoBg', data.project.featuredImage.node.sourceUrl)
+          }
         },        
         variables() {
           return {
@@ -55,6 +55,11 @@ export default {
               id
               slug
               title
+              featuredImage {
+                node {
+                  sourceUrl(size: MEDIUM)
+                }
+              }              
               ProjectBuilder {
                 project {
                   ... on Project_Projectbuilder_Project_Row {

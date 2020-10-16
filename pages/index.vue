@@ -119,8 +119,9 @@ export default {
     result({data}) {
         console.log('data', data.page)
         this.slides = data.page.HomeFields.hero
-        // this.slide = this.slides[0]
-        console.log(this.slides)
+        if (this.slides[0].featuredImage) {
+          this.$store.commit('setLogoBg', this.slides[0].featuredImage.node.sourceUrl)
+        }
       },
       error: function(error) {
         console.log(error)

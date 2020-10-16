@@ -58,7 +58,7 @@ export default {
     };
   },  
   mounted() {
-    //this.$store.commit('setNavColor', 'black')
+    
   },
   methods: {
     loadMore(){
@@ -86,6 +86,7 @@ export default {
         result({data}) {
           console.log('past data', data)
           this.pageData = data.page
+          this.$store.commit('setLogoBg', this.pageData.ProjectPageFields.featuredProject.featuredImage.node.sourceUrl)
         },        
         variables: {
           after: null,
