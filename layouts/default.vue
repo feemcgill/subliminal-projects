@@ -25,7 +25,17 @@
               </li>
               <li v-on:click="close"><nuxt-link to="/projects" exact tabindex="0">Projects</nuxt-link></li>  
               <li v-on:click="close"><nuxt-link to="/artists" exact tabindex="0">Artists</nuxt-link></li>  
-              <li v-on:click="close"><a target="_blank" href="https://store.subliminalprojects.com/">Shop</a></li>  
+              <li v-on:click="close">
+                <a target="_blank" href="https://store.subliminalprojects.com/">Shop</a>
+                <ul class="sub">
+                  <li v-on:click="close">
+                    <a target="_blank" href=" https://www.artsy.net/subliminal-projects">Fine Art</a>
+                  </li>
+                  <li v-on:click="close">
+                    <a target="_blank" href="https://store.subliminalprojects.com/">Store</a>
+                  </li> 
+                </ul>
+              </li>  
 
             </ul>
             <ul class="socials">
@@ -137,7 +147,7 @@ export default {
   .header-push {
     padding-top: 103px;
     @include breakpoint(small) {
-      padding-top: 75px;
+      padding-top: 78px;
     }
   }
   header {
@@ -146,7 +156,6 @@ export default {
     top: 0;
     width: 100%;
     z-index: 5000;
-    padding: $factor*.125 $factor;
     @include breakpoint(small) {
       width: 100%;
       padding: 0;
@@ -269,14 +278,23 @@ export default {
       text-transform: uppercase;
       position: relative;
       &:hover {
+        a {
+          color: $grey;
+        }
         .sub {
           display: block;
+          li a {
+            color: $dark;
+          }
         }
       }
     }
     a {
       color: $dark;
       text-decoration: none;
+      &.nuxt-link-active {
+        color: $grey;
+      }
     }
     .sub {
       //display: none;
@@ -293,7 +311,7 @@ export default {
         }
         &:hover {
           a {
-            color: $grey;
+            color: $grey!important;
           }
         }
       }
@@ -305,6 +323,9 @@ export default {
       }
       li {
         margin-right: 10px;
+        &:hover {
+          opacity: 0.4;
+        }
       }
     }
   }
@@ -394,7 +415,7 @@ export default {
     }    
   }  
   .page-wrapper {
-    min-height: 100vh;
+    min-height: 90vh;
     position: relative;
   }
 </style>

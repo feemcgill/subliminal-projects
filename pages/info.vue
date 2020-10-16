@@ -100,16 +100,17 @@ export default {
 
     .quote-wrap {
       width: 48.5%;
-      font-size: 2em;
+      font-size: 2vw;
       line-height: 1.5em;
       font-weight: bold;
       position: relative;
       @include breakpoint(small) {
         width: 100%;
         margin-bottom: $factor;
+        font-size: 2em;
       }
       .quote {
-        padding-top: 30px;
+        padding-top: 2em;
         margin-bottom: $factor * 0.5;
        &:before {
           content: "\201C";
@@ -124,6 +125,14 @@ export default {
     }
     .img {
       width:50%;
+      padding-bottom: 50%;
+      position: relative;
+      img {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
       @include breakpoint(small) {
         width: 100%;
       }      

@@ -6,7 +6,7 @@
       <div v-for="(column, colindex) in row.columns" v-bind:key="colindex" v-bind:class="'project-col '+ column.type+ ' '+column.verticalAlign">
       
         <div v-if="column.type == 'image'" v-bind:class="'image-wrap ' + column.imageFit">
-          <FadeImage :src="column.image.sourceUrl" :srcset="column.image.srcSet" :alt="column.image.altText" />
+          <FadeImage :src="column.image.sourceUrl" :srcset="column.image.srcSet" :alt="column.image.altText" :width="column.image.mediaDetails.width" :height="column.image.mediaDetails.height" />
           <div v-if="column.imageCaption"  class="caption" v-html="column.imageCaption"></div>
         </div>
       
@@ -69,6 +69,10 @@ export default {
                         altText
                         sourceUrl(size: LARGE)
                         srcSet(size: LARGE)
+                        mediaDetails {
+                          width
+                          height
+                        }                        
                       }
                     }
                   }

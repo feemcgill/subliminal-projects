@@ -109,6 +109,9 @@ input[type='submit'] {
   cursor: pointer;
   @include button;
   text-transform: uppercase;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;  
 }
 
 .primary-button {

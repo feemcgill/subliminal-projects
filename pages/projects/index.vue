@@ -1,15 +1,14 @@
 <template>
   <div>
-    <section class="featured-project container">
-      <div class="thumb">
+    <section v-if="pageData" class="featured-project container">
+      <nuxt-link :to="'/projects/' + pageData.ProjectPageFields.featuredProject.slug" class="thumb">
         <div class="img">
-          <img src="https://subliminalprojects.d-e-v.group/wp-content/uploads/2017/09/Sarah-Eiseman_Diminished-Reality-1005x1600.jpg" alt="">
+          <FadeImage :src="pageData.ProjectPageFields.featuredProject.featuredImage.node.sourceUrl" :srcset="pageData.ProjectPageFields.featuredProject.featuredImage.node.srcSet" :alt="pageData.ProjectPageFields.featuredProject.featuredImage.node.altText" />
         </div>
         <h2>Featured Project</h2>
-      </div>
-      <div class="info">
-        In addition to creating brick and mortar and online art projects, Subliminal Projects curates, consults and produces a multide of projects and collaborations with like-minded brands, retail spaces, event venues and comercial spaces. To inquire on a collaborative project please email info@subliminalprojects.com.
-      </div>
+      </nuxt-link>
+      <div class="info" v-html="pageData.content" />
+
     </section>
     <section v-if="projects" class="projects container grid">
 
@@ -22,17 +21,18 @@
         </div>
       </nuxt-link>
     </section>
-      <div v-if="projects" class="pagination">
-        <div v-if="projects.pageInfo.hasNextPage" class="load-more">
-          <div v-if="$apollo.loading" class="loading">Loading...</div>
-          <div v-else @click="loadMore()" class="primary-button">Load More</div>
-        </div>    
-        <div v-else class="all-loaded">
-          <div v-if="projects.edges.length == 0" class="none-found">Sorry, we couldn't find any projects matching this criteria.</div>
-          <!-- <div v-else>All {{projects.edges.length}} projects loaded</div> -->
-        </div>
-      </div>
 
+    <section v-if="projects" class="pagination">
+      <div v-if="projects.pageInfo.hasNextPage" class="load-more">
+        <div v-if="$apollo.loading" class="loading">Loading...</div>
+        <div v-else @click="loadMore()" class="primary-button">Load More</div>
+      </div>    
+      <div v-else class="all-loaded">
+        <div v-if="projects.edges.length == 0" class="none-found">Sorry, we couldn't find any projects matching this criteria.</div>
+        <!-- <div v-else>All {{projects.edges.length}} projects loaded</div> -->
+      </div>
+    </section>
+    
   </div>
 </template>
 
@@ -53,7 +53,8 @@ export default {
     return {
       foundPosts: null,
       queryCursor: null,
-      displayedPosts: []
+      displayedPosts: [],
+      pageData: null
     };
   },  
   mounted() {
@@ -82,8 +83,9 @@ export default {
   },
   apollo: {
       projects: {
-        result(data) {
+        result({data}) {
           console.log('past data', data)
+          this.pageData = data.page
         },        
         variables: {
           after: null,
@@ -114,6 +116,31 @@ export default {
                 endCursor
               }
             }
+            page(id: "projects", idType: URI) {
+              id
+              title
+              content
+              ProjectPageFields {
+                featuredProject {
+                  ... on Project {
+                    id
+                    slug
+                    title
+                    featuredImage {
+                      node {
+                        sourceUrl(size: MEDIUM)
+                        altText
+                        srcSet(size: MEDIUM)
+                        mediaDetails {
+                          width
+                          height
+                        }
+                      }
+                    }                     
+                  }
+                }
+              }
+            }            
           }
         `
     }
@@ -147,6 +174,12 @@ export default {
     margin-bottom: $factor * 3;
     .thumb {
       width: 46%;
+      color: $dark;
+      text-decoration: none;
+      @include breakpoint(small) {
+        width: 100%;
+        margin-bottom: $factor;
+      }     
     }
     .img {
       padding-bottom: 88%;
@@ -162,12 +195,18 @@ export default {
     .info {
       width: 50%;
       font-size: 1.5em;
+      @include breakpoint(small) {
+        width: 100%;
+      }        
     }
   }
   .projects {
     margin-bottom: $factor * 2;
     .project {
       @include thirds;
+      color: $dark;
+      text-decoration: none;
+      display: block;
       .img {
         position: relative;
         padding-bottom: 100%;

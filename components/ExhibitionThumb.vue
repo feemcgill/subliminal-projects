@@ -71,14 +71,22 @@ export default {
       display: block;
       li {
         display: inline-block;
-        margin-right: 20px;
-        &:before {
+        //margin-right: 20px;
+        /* &:before {
           content: "  ";
         }
         &:first-of-type:before {
           content: " ";
+        } */
+        &:after {
+          content: ',';
+          margin-right: 0.5em;
         }
-        
+        &:last-of-type {
+          &:after {
+            display: none;
+          }
+        }        
       }
     }
   }

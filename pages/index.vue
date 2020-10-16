@@ -241,9 +241,12 @@ $carouselHeight: 80vh;
     font-weight: bold;
     h2, h3 {
       @include type-big;
+      font-size: 2rem;
     }
     .dates {
       @include type-big-sub;
+      font-size: 1.7rem;
+
     }
   }
 
@@ -278,7 +281,6 @@ $carouselHeight: 80vh;
   flex-wrap: wrap;
   justify-content: space-between;
   margin-bottom: $factor;
-  max-width: 1160px;
   .feature {
     @include halves;
     /* display: flex;

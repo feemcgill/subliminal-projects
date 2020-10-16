@@ -132,10 +132,16 @@ export default {
       background: $light;
       padding: $factor * 0.25;
       //text-align: center;
+      @include breakpoint(small) {
+        font-size: 1rem;
+      }
     }
     .feature-img {
       padding-bottom: 38%;
       position: relative;
+      @include breakpoint(small) {
+        padding-bottom: 65vh;
+      }      
       img {
         position: absolute;
         width: 100%;
@@ -146,14 +152,34 @@ export default {
   }
   .lockdown {
     display: flex;
-    font-size: 1.5em;
+    font-size: 1.5rem;
     font-weight: bold;
+    @include breakpoint(small) {
+      display: block;
+    }       
     .title,
     .artists {
       &:after {
         content: ' / ';
         margin: 0 $factor * 0.25;
         font-weight: 100;
+        @include breakpoint(small) {
+          display: none;
+        }          
+      }
+    }
+    .artists {
+      li {
+        display: inline-block;
+        &:after {
+          content: ',';
+          margin-right: 0.5rem;
+        }
+        &:last-of-type {
+          &:after {
+            display: none;
+          }
+        }
       }
     }
   }

@@ -88,6 +88,8 @@ export default {
         const element = this.artists.edges[i];
         if (!element.node.ArtistFields.hideInArtistList) {
           filteredGuys.push(element)
+        } else {
+          console.log('not showing', element.node.name);
         }
       }
       return filteredGuys;
