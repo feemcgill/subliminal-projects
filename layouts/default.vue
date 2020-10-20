@@ -92,13 +92,12 @@
           </p>
         </div>
         <div class="forms">
-          <form class="search">
+          <form class="form" v-on:submit.prevent="searchIt">
             <div class="input">
-              <input id="search" placeholder="search" type="text">
+              <input id="search" v-model="inputTerm"  placeholder="search" type="text">
             </div>
             <input type="submit">
           </form>
-
           <form class="newsletter">
             <div class="input">
               <input id="newsletter" placeholder="Newsletter Signup" type="text" />
@@ -127,11 +126,14 @@ export default {
   data() {
     return {
       open: false,
+      inputTerm: null,
     }
   }, 
   components: {
     Nav
   },
+
+  
   methods: {
     toggle: function() {
       this.open = !this.open
@@ -139,6 +141,11 @@ export default {
     close: function () {
       this.open = false
     },
+    searchIt() {
+      window.scrollTo(0,0)
+      this.$router.push("/search/" + this.inputTerm)
+      this.inputTerm = null;
+    }    
   }  
 }
 </script>

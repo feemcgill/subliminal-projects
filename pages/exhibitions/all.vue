@@ -156,11 +156,5 @@ export default {
   .past-exhibition {
     @include thirds;
   }
-  .pagination {
-    margin: $factor;
-    text-align: center;
-  }
-  .load-more {
-    min-height: $factor * 2;
-  }
+
 </style>

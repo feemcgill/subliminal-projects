@@ -129,3 +129,12 @@ input[type='submit'] {
   @include wysiwyg;
 }
 
+
+.pagination {
+  margin: $factor;
+  text-align: center;
+}
+.load-more {
+  min-height: $factor * 2;
+}
+
