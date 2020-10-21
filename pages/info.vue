@@ -13,33 +13,17 @@
       <div class="content" v-html="page.content" />
     </section>
     <section class="contact grid">
-      <div class="contact-deets">
-        <h5>Contact</h5>
-        <div class="email">
-          <a href="mailto:info@subliminalprojects.com">info@subliminalprojects.com</a>
-        </div>
-        <div class="message">
-          We are currently not accepting art submissions
-        </div>
+      <div class="contact-deets" v-html="page.InfoFields.contactSection">
+
       </div>
       <div class="collabs">
         <h5>In Collaboration With</h5>
         <ul class="icons">
-          <li>
-            <a href="#">
-              <img src="~/assets/Obey-BW.svg" alt="">
+          <li v-for="collab in page.InfoFields.collabs" v-bind:key="collab.link">
+            <a v-bind:href="collab.link" target="_blank">
+              <img v-bind:src="collab.image.sourceUrl" alt="">
             </a>   
           </li>
-          <li>
-            <a href="#">
-              <img src="~/assets/OG-BW.svg" alt="">
-            </a>   
-          </li>
-          <li>
-            <a href="#">
-              <img src="~/assets/SNO-STACKED-BW.svg" alt="">
-            </a>   
-          </li>                     
         </ul>
       </div>
     </section>
@@ -84,6 +68,13 @@ export default {
             InfoFields {
               quote
               quoteAttribute
+              contactSection              
+              collabs {
+                image {
+                  sourceUrl
+                }
+                link
+              }
             }
           }
         }
@@ -99,7 +90,7 @@ export default {
   }
   .hero {
     align-items: center;
-
+    margin-bottom: $factor * 2;
     .quote-wrap {
       width: 48.5%;
       font-size: 2vw;
@@ -142,6 +133,7 @@ export default {
   }
   .about {
     font-size: 1.2em;
+    margin-bottom: $factor * 2;
   }
   .contact {
     .contact-deets {

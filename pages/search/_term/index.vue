@@ -13,7 +13,7 @@
         </div>    
         <div v-else class="all-loaded">
           <div v-if="exhibitions.edges.length == 0" class="none-found">Sorry, we couldn't find any articles matching this criteria.</div>
-          <div v-else>All {{exhibitions.edges.length}} exhibitions loaded</div>
+          <div v-else>{{exhibitions.edges.length}} exhibition<span v-if="exhibitions.edges.length > 1">s</span> found</div>
         </div>
       </div>      
   </div>

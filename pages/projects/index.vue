@@ -1,37 +1,30 @@
 <template>
   <div>
     <section v-if="pageData" class="featured-project container">
+
       <nuxt-link :to="'/projects/' + pageData.ProjectPageFields.featuredProject.slug" class="thumb">
         <div class="img">
           <FadeImage :src="pageData.ProjectPageFields.featuredProject.featuredImage.node.sourceUrl" :srcset="pageData.ProjectPageFields.featuredProject.featuredImage.node.srcSet" :alt="pageData.ProjectPageFields.featuredProject.featuredImage.node.altText" />
         </div>
         <h2>Featured Project</h2>
       </nuxt-link>
+
+
       <div class="info" v-html="pageData.content" />
 
     </section>
-    <section v-if="projects" class="projects container grid">
-
-      <nuxt-link :to="'/projects/'+project.node.slug" class="project" v-for="project in projects.edges" v-bind:key="project.node.slug" >
-        <div class="img" v-if="project.node.featuredImage">
-          <FadeImage :src="project.node.featuredImage.node.sourceUrl" :srcset="project.node.featuredImage.node.srcSet" :alt="project.node.featuredImage.node.altText" />
+    <section v-if="pageData" class="projects container grid">
+      <nuxt-link :to="'/projects/'+project.slug" class="project" v-for="project in pageData.ProjectPageFields.projects" v-bind:key="project.slug" >
+        <div class="img" v-if="project.featuredImage">
+          <FadeImage :src="project.featuredImage.node.sourceUrl" :srcset="project.featuredImage.node.srcSet" :alt="project.featuredImage.node.altText" />
         </div>
         <div class="details">
-          <h3>{{project.node.title}}</h3>
+          <h3>{{project.title}}</h3>
         </div>
       </nuxt-link>
     </section>
 
-    <section v-if="projects" class="pagination">
-      <div v-if="projects.pageInfo.hasNextPage" class="load-more">
-        <div v-if="$apollo.loading" class="loading">Loading...</div>
-        <div v-else @click="loadMore()" class="primary-button">Load More</div>
-      </div>    
-      <div v-else class="all-loaded">
-        <div v-if="projects.edges.length == 0" class="none-found">Sorry, we couldn't find any projects matching this criteria.</div>
-        <!-- <div v-else>All {{projects.edges.length}} projects loaded</div> -->
-      </div>
-    </section>
+
     
   </div>
 </template>
@@ -86,7 +79,6 @@ export default {
         result({data}) {
           console.log('past data', data)
           this.pageData = data.page
-          this.$store.commit('setLogoBg', this.pageData.ProjectPageFields.featuredProject.featuredImage.node.sourceUrl)
         },        
         variables: {
           after: null,
@@ -117,7 +109,7 @@ export default {
                 endCursor
               }
             }
-            page(id: "projects", idType: URI) {
+            page(id: "71102", idType: DATABASE_ID) {
               id
               title
               content
@@ -137,9 +129,27 @@ export default {
                           height
                         }
                       }
-                    }                     
+                    }                       
                   }
-                }
+                } 
+                projects {
+                  ... on Project {
+                    id
+                    slug
+                    title
+                    featuredImage {
+                      node {
+                        sourceUrl(size: MEDIUM)
+                        altText
+                        srcSet(size: MEDIUM)
+                        mediaDetails {
+                          width
+                          height
+                        }
+                      }
+                    }                       
+                  }
+                }                                
               }
             }            
           }

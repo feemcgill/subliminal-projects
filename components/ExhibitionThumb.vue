@@ -1,14 +1,13 @@
 <template>
   <nuxt-link :to="'/exhibitions/'+exhibition.slug" class="exhibition-thumb">
+    <div class="labels" v-if="exhibition.exhibition_categories">
+      <li v-for="label in exhibition.exhibition_categories.nodes" v-bind:key="label.slug">{{label.name}}</li>
+    </div>  
     <div class="feature-img">
       <FadeImage v-bind:src="exhibition.featuredImage.node.sourceUrl" />
     </div>
 
-    <ul class="artists" v-if="exhibition.artists && exhibition.artists.nodes.length > 3" >
-      Group Show
-    </ul>
-
-    <ul class="artists" v-else-if="exhibition.artists" >
+    <ul class="artists"  v-if="exhibition.artists && exhibition.artists.nodes.length < 3" >
       <li v-for="artist in exhibition.artists.nodes" v-bind:key="artist.slug">{{artist.name}}</li>
     </ul>
 
@@ -87,6 +86,16 @@ export default {
             display: none;
           }
         }        
+      }
+    }
+    .labels {
+      position: absolute;
+      z-index: 1;
+      top: 0;
+      right: 0;
+      display: flex;
+      li {
+        @include badge;
       }
     }
   }

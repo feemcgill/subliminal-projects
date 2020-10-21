@@ -5,15 +5,10 @@
         <div class="feature-img">
           <FadeImage v-bind:src="page.ExhibitionsLandingFields.featuredExhibition[0].featuredImage.node.sourceUrl" />
         </div>
-        <div class="lockup">
-          <div class="label">Current Show</div>
-        </div>
       </nuxt-link>
       <div class="lockdown">
-        <ul class="artists" v-if="page.ExhibitionsLandingFields.featuredExhibition[0].artists && page.ExhibitionsLandingFields.featuredExhibition[0].artists.nodes.length > 3" >
-          <li>Group Show</li>
-        </ul>
-        <ul class="artists" v-else-if="page.ExhibitionsLandingFields.featuredExhibition[0].artists" >
+
+        <ul class="artists" v-if="page.ExhibitionsLandingFields.featuredExhibition[0].artists && page.ExhibitionsLandingFields.featuredExhibition[0].artists.nodes.length < 3" >
           <li v-for="artist in page.ExhibitionsLandingFields.featuredExhibition[0].artists.nodes" v-bind:key="artist.slug">{{artist.name}}</li>
         </ul>
         <div class="title" v-html="page.ExhibitionsLandingFields.featuredExhibition[0].title"></div>
@@ -31,6 +26,7 @@
     </section>
   </div>
 </template>
+
 <script>
 import gql from 'graphql-tag';
 import FadeImage from '~/components/FadeImage'
@@ -101,7 +97,6 @@ export default {
                   ExhibitionFields {
                     startDate
                     endDate
-                    groupShow
                   }                  
                   featuredImage {
                     node {

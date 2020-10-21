@@ -13,7 +13,7 @@
         </div>    
         <div v-else class="all-loaded">
           <div v-if="exhibitions.edges.length == 0" class="none-found">Sorry, we couldn't find any articles matching this criteria.</div>
-          <div v-else>All {{exhibitions.edges.length}} exhibitions loaded</div>
+          <div v-else>All {{exhibitions.edges.length}} exhibition<span v-if="exhibitions.edges.length > 1">s</span> loaded</div>
         </div>
       </div>
     </div>  
@@ -90,6 +90,12 @@ export default {
                       }                      
                     }
                   }
+                  exhibition_categories {
+                    nodes {
+                      slug
+                      name
+                    }
+                  }                  
                   artists {
                     nodes {
                       name
@@ -101,8 +107,7 @@ export default {
                   }
                   ExhibitionFields {
                     startDate
-                    endDate
-                    groupShow
+                    endDate                   
                   }                
                 }
               }
@@ -116,21 +121,9 @@ export default {
     }
   }   
 }  
-// https://hackernoon.com/how-to-build-a-load-more-button-with-vue-js-and-graphql-5e6de1b61a6b
 </script>
 
 <style lang="scss" scoped>
-  @mixin badge {
-    position: absolute;
-    z-index: 1;
-    top: 0;
-    right: 0;
-    background: $white;
-    border: 2px solid $dark;
-    font-weight: bold;
-    text-transform: uppercase;
-    padding: 2px;
-  }
   .all-exhibitions {
     //padding: $factor * 2
   }
@@ -138,19 +131,7 @@ export default {
     text-align: center;
   }
   .exhibition-thumb {
-    position: relative;
-    &:nth-child(-n+5) {
-      &:before {
-        content: 'Upcoming';
-        @include badge;
-      }
-    }
-    &:first-of-type {
-      &:before {
-        content: 'Current';
-        @include badge;
-      }
-    }    
+    position: relative;   
   }
   .exhibition-thumb,
   .past-exhibition {

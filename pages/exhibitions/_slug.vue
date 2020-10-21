@@ -10,39 +10,44 @@
         </div>
         <div class="content">
           <div class="intro">
-            Lorem ipsum dolor sit Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volut- pat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo con- sequat. Duis autem vel eum iriure dolor in        
+            <div class="exhibition-title">
+              <div class="info">
+                <ul v-bind:class="exhibition.artists.nodes.length > 1 ? 'artists list' : 'artists'" v-if="exhibition.artists" >
+                  <li v-for="artist in exhibition.artists.nodes" v-bind:key="artist.slug">{{artist.name}}</li>
+                </ul>             
+                <h1>{{exhibition.title}}</h1>
+                <div class="date">
+                  <span v-html="exhibition.ExhibitionFields.startDate" /> — <span v-html="exhibition.ExhibitionFields.endDate" />
+                </div>
+                <div class="opening" v-if="exhibition.ExhibitionFields.openingReceptionDate || exhibition.ExhibitionFields.openingReceptionTime">
+                  Opening Reception: <span v-html="exhibition.ExhibitionFields.openingReceptionDate" /> @ <span v-html="exhibition.ExhibitionFields.openingReceptionTime" />
+                </div>                
+              </div>             
+            </div>   
           </div>
           <ul class="links">
-            <li>Link to RSVP</li>
-            <li>Download PR</li>
+            <li v-for="link in exhibition.ExhibitionFields.links" v-bind:key="link.link.url">
+              
+              <a v-bind:href="link.link.url" v-bind:target="link.link.target" >{{link.link.title}}</a>
+            </li>
           </ul>
         </div>
-      </div>
-      <div class="exhibition-title container">
-        <div class="info">
-          <ul v-bind:class="exhibition.artists.nodes.length > 1 ? 'artists list' : 'artists'" v-if="exhibition.artists" >
-            <li v-for="artist in exhibition.artists.nodes" v-bind:key="artist.slug">{{artist.name}}</li>
-          </ul>             
-          <h1>{{exhibition.title}}</h1>
-          <div class="date">
-            <span v-html="exhibition.ExhibitionFields.startDate" /> — <span v-html="exhibition.ExhibitionFields.endDate" />
-          </div>
-        </div>             
-      </div>      
+      </div>   
     </section>
+
+    <section class="additonal-content container">
+        <div class="content formatted-content" v-html="exhibition.content" />
+    </section>
+
     <section v-if="exhibition.ExhibitionFields.images" class="gallery container">
       <div class="gallery-wrap grid">
         <div class="gallery-item" v-for="image in exhibition.ExhibitionFields.images" v-bind:key="image.sourceUrl" >
           <FadeImage v-bind:src="image.sourceUrl" />
-          <div class="caption">
-            caption will go here
-          </div>
+          <div class="caption" v-html="image.caption" />
         </div>
       </div>
     </section>
-    <section class="additonal-content container">
-        <div class="content formatted-content" v-html="exhibition.content" />
-    </section>
+
   </div>
 </template>
 <script>
@@ -91,23 +96,20 @@ export default {
                 startDate
                 endDate
                 openingReceptionDate
-                openingReceptionTime      
-                flyer {
-                  sourceUrl
-                }
+                openingReceptionTime
+                links {
+                  link {
+                    url
+                    title
+                    target
+                  }
+                }                    
                 images {
                   caption
                   description(format: RENDERED)
                   altText                  
                   sourceUrl(size: LARGE)
-                }
-          
-                priceSheet {
-                  sourceUrl(size: LARGE)
-                }
-                pageThumbnail {
-                  sourceUrl(size: LARGE)
-                }
+                }      
               }
               artists {
                 nodes {
@@ -172,7 +174,6 @@ export default {
       flex-direction: column;
       justify-content: space-between;
       .intro {
-        font-size: 1.5em;
         @include breakpoint(small) {
           margin-bottom: $factor;
         }        
@@ -247,7 +248,7 @@ export default {
   .additonal-content {
     margin-bottom: $factor;
     .content {
-      width: 75%;
+      //width: 75%;
       display: block;
       @include breakpoint(small) {
         width: 100%;
