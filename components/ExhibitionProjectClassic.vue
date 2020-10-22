@@ -37,15 +37,24 @@
     <section class="additonal-content container">
         <div class="content formatted-content" v-html="content.content" />
     </section>
-
     <section v-if="content.ExhibitionFields.images" class="gallery container">
       <div class="gallery-wrap grid">
-        <div class="gallery-item" v-for="image in content.ExhibitionFields.images" v-bind:key="image.sourceUrl" >
+        <div class="gallery-item" @click="launchLightbox(index)" v-for="(image, index) in content.ExhibitionFields.images" v-bind:key="image.sourceUrl" >
           <FadeImage v-bind:src="image.sourceUrl" />
           <div class="caption" v-html="image.caption" />
         </div>
       </div>
+      <div v-if="showLightbox" class="lightbox">
+        <a @click="showLightbox = null" href="#">Close</a>
+        <div class="image">
+          <FadeImage v-bind:src="showLightbox.url" />
+        </div>
+        <div v-if="showLightbox.prev" @click="launchLightbox(showLightbox.prev)" class="prev">Prev</div>
+        <div v-if="showLightbox.next" @click="launchLightbox(showLightbox.next)" class="next">Next</div>
+      </div>
     </section>
+    
+{{showLightbox}}
 
   </div>  
 </template>
@@ -57,8 +66,55 @@ export default {
   props: {
     content: Object
   },
+  data() {
+    return {
+      showLightbox: null,
+    }
+  },
   components: {
     FadeImage
+  },
+  methods: {
+    launchLightbox(index) {
+      console.log('LB', index)
+      const imgArray = this.content.ExhibitionFields.images[index].mediaDetails.sizes
+      const lbObj = {};
+
+      if (index == 0) {
+        lbObj.prev = null
+      } else {
+        lbObj.prev = index-1
+      }
+
+      if (index == this.content.ExhibitionFields.images.length) {
+        lbObj.next = null
+      } else {
+        lbObj.next = index+1
+      }
+
+      lbObj.url = null
+      this.showLightbox = lbObj;
+
+
+      if (imgArray) {
+        imgArray.forEach(size => {
+          if (size.name == 'large') {
+            console.log('found a large')
+            lbObj.url = size.sourceUrl
+          } else {
+            lbObj.url = this.content.ExhibitionFields.images[index].sourceUrl
+          } 
+        })       
+      } else {
+        lbObj.url = this.content.ExhibitionFields.images[index].sourceUrl
+      }
+
+
+
+
+      this.showLightbox = lbObj;
+
+    }
   }
 }
 </script>
