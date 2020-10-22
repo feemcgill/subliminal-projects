@@ -38,12 +38,7 @@ export default {
     ExhibitionThumb
   },
   apollo: {
-    page: {
-      result({data}) {
-        if (data.page.ExhibitionsLandingFields.featuredExhibition[0].featuredImage) {
-          this.$store.commit('setLogoBg', data.page.ExhibitionsLandingFields.featuredExhibition[0].featuredImage.node.sourceUrl)
-        }
-      },       
+    page: {    
       query: gql`
         query ExhibitionsQuery {
           page(id: "71006", idType: DATABASE_ID) {
@@ -66,11 +61,7 @@ export default {
                       slug
                     }
                   }                                  
-                  ExhibitionSubtitle {
-                    subTitle
-                  }
                   ExhibitionFields {
-                    groupShow
                     startDate
                     endDate
                   }                  
@@ -90,10 +81,7 @@ export default {
                       name
                       slug
                     }
-                  }                                  
-                  ExhibitionSubtitle {
-                    subTitle
-                  }
+                  }                                 
                   ExhibitionFields {
                     startDate
                     endDate

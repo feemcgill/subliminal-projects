@@ -188,10 +188,15 @@ $tiny: 480px;
     list-style: disc;
     margin-bottom: 1em;
     padding-left: 2em;
+    display: block;
+    li {
+      list-style: disc;
+    }
   }
   ol {
     margin-bottom: 1em;
     padding-left: 2em;
+    display: block;
   }
   iframe {
     display: block;

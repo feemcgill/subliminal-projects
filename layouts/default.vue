@@ -111,8 +111,8 @@
       </div>
       <div class="container footer-row">
         <ul class="legal-menu">
-          <li><a href="#">Terms of Use</a></li>
-          <li><a href="#">Privacy Policy</a></li>
+          <li><nuxt-link to="/terms-of-use">Terms of Use</nuxt-link></li>
+          <li><nuxt-link to="/privacy-policy">Privacy Policy</nuxt-link></li>
         </ul>
         <div class="copyright">
           ©2020 Subliminal Projects 
