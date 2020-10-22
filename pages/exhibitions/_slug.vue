@@ -84,7 +84,13 @@ export default {
                   caption
                   description(format: RENDERED)
                   altText                  
-                  sourceUrl(size: LARGE)
+                  sourceUrl(size: MEDIUM)
+                  mediaDetails {
+                    sizes {
+                      sourceUrl
+                      name
+                    }
+                  }                  
                 }      
               }          
               artists {
