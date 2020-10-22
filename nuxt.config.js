@@ -53,7 +53,7 @@ export default {
     //   console.log('Before enter...');
     // }
   }, 
-  plugins: [
+  plugins: [   
   ],
   /*
   ** Auto import components
