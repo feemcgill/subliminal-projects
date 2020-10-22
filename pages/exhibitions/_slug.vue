@@ -1,17 +1,20 @@
 
 <template>
   <div v-if="exhibition">
-    <ExhibitionProjectClassic v-bind:content="exhibition"/>
+    <PageBuilder v-if="exhibition.ProjectBuilder.project.length" v-bind:content="exhibition"/>
+    <ExhibitionProjectClassic v-else v-bind:content="exhibition"/>    
   </div>
 </template>
 <script>
 
 import gql from 'graphql-tag'
 import ExhibitionProjectClassic from '~/components/ExhibitionProjectClassic'
+import PageBuilder from '~/components/PageBuilder'
 
 export default {
   components: {
-    ExhibitionProjectClassic
+    ExhibitionProjectClassic,
+    PageBuilder
   },
   updated() {
   },
@@ -22,10 +25,8 @@ export default {
         error: function(error) {
           console.log(error)
         },
-        result({data}) {
-          if (data.exhibition.featuredImage) {
-            this.$store.commit('setLogoBg', data.exhibition.featuredImage.node.sourceUrl)
-          }
+        result(data) {
+          console.log(data, 'got yr data here')
         },        
         variables() {
           return {
@@ -43,6 +44,30 @@ export default {
                   sourceUrl(size: LARGE)
                 }
               }
+              ProjectBuilder {
+                project {
+                  ... on Exhibition_Projectbuilder_Project_Row {
+                    fieldGroupName
+
+                    columns {
+                      type
+                      imageFit
+                      imageCaption
+                      content
+                      verticalAlign
+                      image {
+                        altText
+                        sourceUrl(size: LARGE)
+                        srcSet(size: LARGE)
+                        mediaDetails {
+                          width
+                          height
+                        }                        
+                      }
+                    }
+                  }
+                }
+              }              
               ExhibitionFields {
                 startDate
                 endDate
@@ -61,7 +86,7 @@ export default {
                   altText                  
                   sourceUrl(size: LARGE)
                 }      
-              }
+              }          
               artists {
                 nodes {
                   ArtistFields {

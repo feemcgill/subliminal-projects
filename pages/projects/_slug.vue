@@ -1,17 +1,20 @@
 
 <template>
   <div v-if="project">
-    <ExhibitionProjectClassic v-bind:content="project"/>
+    <PageBuilder v-if="project.ProjectBuilder.project.length" v-bind:content="project"/>
+    <ExhibitionProjectClassic v-else v-bind:content="project"/>
   </div>
 </template>
 <script>
 
 import gql from 'graphql-tag'
 import ExhibitionProjectClassic from '~/components/ExhibitionProjectClassic'
+import PageBuilder from '~/components/PageBuilder'
 
 export default {
   components: {
-    ExhibitionProjectClassic
+    ExhibitionProjectClassic,
+    PageBuilder
   },
   updated() {
   },
@@ -41,6 +44,29 @@ export default {
                   sourceUrl(size: LARGE)
                 }
               }
+              ProjectBuilder {
+                project {
+                  ... on Project_Projectbuilder_Project_Row {
+                    fieldGroupName
+                    columns {
+                      type
+                      imageFit
+                      imageCaption
+                      content
+                      verticalAlign
+                      image {
+                        altText
+                        sourceUrl(size: LARGE)
+                        srcSet(size: LARGE)
+                        mediaDetails {
+                          width
+                          height
+                        }                        
+                      }
+                    }
+                  }
+                }
+              }               
               ExhibitionFields {
                 startDate
                 endDate
