@@ -111,9 +111,9 @@
 	<path class="st1" d="M657.5,377.4v12.5h-5.9v-12.5l-9.2-18h6.5l5.7,12.3l5.6-12.3h6.5L657.5,377.4z"/>
 </g>
 </svg>
-	<div class="overlay">
+	<!-- <div class="overlay">
 		<img v-bind:src="(getLogoBg == 'default')? 'https://subliminalprojects.d-e-v.group/wp-content/uploads/2020/02/IMG_2856-2036x2048.jpg' : getLogoBg" alt="">
-	</div>
+	</div> -->
 </div>
 </template>
 <script>

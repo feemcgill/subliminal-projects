@@ -36,32 +36,32 @@
                   </li> 
                 </ul>
               </li>  
-
             </ul>
+
             <ul class="socials">
               <li>
-                <a href="#">
-                  <img src="~/assets/socials/ig.svg" alt="">
+                <a target="_blank" href="https://www.instagram.com/subliminalprojects/">
+                  <img src="~/assets/socials/ig.svg" alt="Instagram Logo">
                 </a>
               </li>
               <li>
-                <a href="#">
-                  <img src="~/assets/socials/twitter.svg" alt="">
+                <a target="_blank" href="https://twitter.com/subliminal_art">
+                  <img src="~/assets/socials/twitter.svg" alt="Twitter Logo">
                 </a>
               </li>
               <li>
-                <a href="#">
-                  <img src="~/assets/socials/fb.svg" alt="">
+                <a target="_blank" href="https://www.facebook.com/subliminalprojects/">
+                  <img src="~/assets/socials/fb.svg" alt="Facebook Logo">
                 </a>
               </li>
               <li>
-                <a href="#">
-                  <img src="~/assets/socials/spotify.svg" alt="">
+                <a target="_blank" href="https://open.spotify.com/user/subliminalprojects?si=fcuyvR7zRFqlcrnRPdpjCQ">
+                  <img src="~/assets/socials/spotify.svg" alt="Spotify Logo">
                 </a>
               </li>  
               <li>
-                <a href="#">
-                  <img src="~/assets/socials/vimeo.svg" alt="">
+                <a target="_blank" href="https://vimeo.com/user59428909">
+                  <img src="~/assets/socials/vimeo.svg" alt="Vimeo Logo">
                 </a>
               </li>                                        
             </ul>
@@ -98,12 +98,15 @@
             </div>
             <input type="submit">
           </form>
-          <form class="newsletter">
-            <div class="input">
-              <input id="newsletter" placeholder="Newsletter Signup" type="text" />
-            </div>
-            <input type="submit" />
-          </form>          
+
+
+			<form class="newsletter" action="https://obeygiant.us19.list-manage.com/subscribe/post?u=8f0a9fb5f4fb8db04b8004379&amp;id=3cab23a91b" method="POST" accept-charset="utf-8" target="_blank">
+				<div class="newsletter-form-input input">
+					<input type="text" name="EMAIL" id="email" class="required email"  placeholder="Email Address">
+				</div>
+        <input type="hidden" name="list" value="17zwLGUQk8OEGeH763YlIseQ">
+        <input type="submit" name="submit" id="submit" value="Subscribe" class="button-standard">
+      </form>
         </div>
       </div>
       <div class="container footer-row">
@@ -152,7 +155,7 @@ export default {
 
 <style lang="scss" scoped>
   .header-push {
-    padding-top: 103px;
+    padding-top: 105px;
     @include breakpoint(small) {
       padding-top: 78px;
     }
@@ -163,6 +166,7 @@ export default {
     top: 0;
     width: 100%;
     z-index: 5000;
+    height: 105px;
     @include breakpoint(small) {
       width: 100%;
       padding: 0;

@@ -75,40 +75,13 @@ export default {
     }    
   },
   apollo: {
-      projects: {
+      page: {
         result({data}) {
           console.log('past data', data)
           this.pageData = data.page
         },        
-        variables: {
-          after: null,
-          first: projects_per_load
-        },
         query: gql`
-          query Projects($first: Int, $after: String) {
-            projects(first: $first, after: $after) {
-              edges {
-                node {
-                  slug
-                  title
-                  featuredImage {
-                    node {
-                      sourceUrl(size: MEDIUM)
-                      altText
-                      srcSet(size: MEDIUM)
-                      mediaDetails {
-                        width
-                        height
-                      }
-                    }
-                  }
-                }
-              }
-              pageInfo {
-                hasNextPage
-                endCursor
-              }
-            }
+          query Projects {
             page(id: "71102", idType: DATABASE_ID) {
               id
               title
