@@ -137,10 +137,6 @@ export default {
                 id
                 slug
                 title
-
-                ExhibitionSubtitle {
-                  subTitle
-                }
                 featuredImage {
                   node {
                     sourceUrl(size: LARGE)
