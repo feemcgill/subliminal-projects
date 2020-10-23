@@ -23,7 +23,6 @@ export default {
     ],
     link: [
       // { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { rel: 'stylesheet', type: 'text/css', href: 'https://cloud.typography.com/6029974/778648/css/fonts.css' },
       { rel: 'stylesheet', type: 'text/css', href: 'https://use.typekit.net/ust4ikr.css' }
       //
     ],
