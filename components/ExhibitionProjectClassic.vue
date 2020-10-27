@@ -15,7 +15,7 @@
                   <li v-for="artist in content.artists.nodes" v-bind:key="artist.slug">{{artist.name}}</li>
                 </ul>             
                 <h1>{{content.title}}</h1>
-                <div class="date">
+                <div v-if="content.ExhibitionFields.startDate || content.ExhibitionFields.endDate" class="date">
                   <span v-html="content.ExhibitionFields.startDate" /> — <span v-html="content.ExhibitionFields.endDate" />
                 </div>
                 <div class="opening" v-if="content.ExhibitionFields.openingReceptionDate || content.ExhibitionFields.openingReceptionTime">
@@ -119,6 +119,9 @@ export default {
         display: block;
         li {
           display: block;
+          a {
+            color: $dark;
+          }
         }
       }
     }
@@ -131,7 +134,6 @@ export default {
     }        
     .info {
       font-size: 2em;
-      width: 50%;
       @include breakpoint(small) {
         margin-bottom: $factor;
         width: 100%;
@@ -141,7 +143,16 @@ export default {
         font-weight: normal;
         text-transform: unset;
       }
+      .date {
+        font-size: 0.75em;
+        //margin-bottom: 1em;
+      }
+      .opening {
+        font-size: 0.75em;
+      }
       .artists {
+        width: 50%;
+
         &.list {
           font-size: 0.5em;
           display: block;

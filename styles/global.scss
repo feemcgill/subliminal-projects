@@ -97,10 +97,13 @@ input:not([type="submit"]), select, textarea {
   @include type-regs;
   width: 100%;
   border: 0;
+  border-radius: 0;
   border: 2px solid $dark;
   padding-left: 10px;
   outline: none;
   text-transform: uppercase;
+  -webkit-appearance: none;
+  -moz-appearance: none;  
   &::placeholder {
     color: $grey;
   }
@@ -111,6 +114,8 @@ input[type='submit'] {
   outline: none;
   border: 0;
   cursor: pointer;
+  border-radius: 0;
+  border: none;
   @include button;
   text-transform: uppercase;
   -webkit-appearance: none;

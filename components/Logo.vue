@@ -127,7 +127,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 	#site-logo {
-		background-color: $dark;
 		position: relative;
 		overflow: hidden;
 		.overlay {
@@ -147,6 +146,7 @@ export default {
 			}
 		}
 		svg {
+			background-color: $dark;
 			display: block;
 			position: relative;
 			z-index: 100;

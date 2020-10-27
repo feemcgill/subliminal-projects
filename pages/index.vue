@@ -11,11 +11,7 @@
                 <div class="lockup">
                   <div>
 
-                    <ul class="artists" v-if="slides[0].artists && slides[0].artists.nodes.length > 3" >
-                      <h2>Group Show</h2>
-                    </ul>
-
-                    <ul class="artists" v-else-if="slides[0].artists" >
+                    <ul class="artists" v-if="slides[0].artists && slides[0].artists && slides[0].artists.nodes.length < 3" >
                       <li v-for="artist in slides[0].artists.nodes" v-bind:key="artist.slug"><h2>{{artist.name}}</h2></li>
                     </ul>
 
@@ -311,10 +307,14 @@ $carouselHeight: 80vh;
         text-transform: uppercase;
         text-align: right;
         a {
-          color: $grey;
           color: $dark;
           text-decoration: none;
           border-bottom: 2px solid $black;
+          transition: all 0.2s ease-out;
+          &:hover {
+            color: $grey;
+            border-bottom: 2px solid $grey;
+          }
         }
       }
     }
