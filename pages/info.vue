@@ -163,7 +163,7 @@ export default {
           }
         }
         img {
-          width: 80px;
+          width: 60px;
           display: block;
         }
       }
