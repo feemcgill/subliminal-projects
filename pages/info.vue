@@ -92,11 +92,12 @@ export default {
     align-items: center;
     margin-bottom: $factor * 2;
     .quote-wrap {
-      width: 48.5%;
+      width: 47%;
       font-size: 2vw;
       line-height: 1.5em;
       font-weight: bold;
       position: relative;
+      text-align: justify;
       @include breakpoint(small) {
         width: 100%;
         margin-bottom: $factor;
@@ -134,6 +135,8 @@ export default {
   .about {
     font-size: 1.2em;
     margin-bottom: $factor * 2;
+    text-align: justify;
+
   }
   .contact {
     .contact-deets {
@@ -163,7 +166,7 @@ export default {
           }
         }
         img {
-          width: 80px;
+          width: 60px;
           display: block;
         }
       }

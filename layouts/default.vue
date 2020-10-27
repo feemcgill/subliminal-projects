@@ -80,7 +80,8 @@
         <div class="address">
           <p>
           1331 W Sunset Blvd<br />
-          Los Angeles CA 90026
+          Los Angeles CA 90026<br />
+          <a target="_blank" href="https://www.google.com/maps/dir/''/1331+Sunset+Blvd,+Los+Angeles,+CA+90026/data=!4m5!4m4!1m0!1m2!1m1!1s0x80c2c6fdc692f445:0xd1c40714262209c3?sa=X&ved=0CDcQwwUwA2oVChMIpMmrubfCxwIVxT4-Ch0EpQRS">Directions</a>
           </p>
           <p>
           213.213.0078<br /> 
@@ -171,6 +172,7 @@ export default {
       width: 100%;
       padding: 0;
       margin: 0;
+      height: auto;
     }       
     .container {
 

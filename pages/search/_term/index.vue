@@ -90,13 +90,9 @@ export default {
                   slug
                 }
               }                                  
-              ExhibitionSubtitle {
-                subTitle
-              }
               ExhibitionFields {
                 startDate
                 endDate
-                groupShow
               }                            
             }
           }

@@ -178,7 +178,7 @@ export default {
     }
     .info {
       width: 50%;
-      font-size: 1.5em;
+      //font-size: 1.5em;
       @include breakpoint(small) {
         width: 100%;
       }        
@@ -191,15 +191,25 @@ export default {
       color: $dark;
       text-decoration: none;
       display: block;
+      margin-bottom: $factor * 2;
+      &:hover {
+        .img  img {
+          transform: scale(1.03);
+          transform-origin: center;
+        }      
+      }      
       .img {
         position: relative;
         padding-bottom: 100%;
         margin-bottom: $factor * 0.5;
+        overflow: hidden;
         img {
           position: absolute;
           width: 100%;
           height: 100%;
           object-fit: cover;
+          transition: all 0.3s ease-out;
+          transform: scale(1);          
         }        
       }
     }
