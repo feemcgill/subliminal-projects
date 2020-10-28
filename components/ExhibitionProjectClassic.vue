@@ -25,7 +25,7 @@
             </div>   
           </div>
           <ul class="links">
-            <li v-for="link in content.ExhibitionFields.links" v-bind:key="link.link.url">
+            <li v-for="(link, index) in content.ExhibitionFields.links" v-bind:key="link.link.url + index">
           
               <a v-bind:href="link.link.url" v-bind:target="link.link.target" >{{link.link.title}}</a>
             </li>
@@ -39,22 +39,29 @@
     </section>
     <section v-if="content.ExhibitionFields.images" class="gallery container">
       <div class="gallery-wrap grid">
-        <div class="gallery-item" @click="launchLightbox(index)" v-for="(image, index) in content.ExhibitionFields.images" v-bind:key="image.sourceUrl" >
+        <div class="gallery-item" @click="launchLightbox(index)" v-for="(image, index) in content.ExhibitionFields.images" v-bind:key="image.sourceUrl + index" >
           <FadeImage v-bind:src="image.sourceUrl" />
           <div class="caption" v-html="image.caption" />
         </div>
       </div>
+
       <div v-if="showLightbox" class="lightbox">
-        <a @click="showLightbox = null" href="#">Close</a>
-        <div class="image">
+        <a class="close" @click="showLightbox = null" href="#">Close</a>
+        <div class="image" @click="() => {
+           if(showLightbox.next != null) {
+             launchLightbox(showLightbox.next)
+           }
+          }">
           <FadeImage v-bind:src="showLightbox.url" />
         </div>
-        <div v-if="showLightbox.prev" @click="launchLightbox(showLightbox.prev)" class="prev">Prev</div>
-        <div v-if="showLightbox.next" @click="launchLightbox(showLightbox.next)" class="next">Next</div>
+        <div class="controls">
+          <div v-if="showLightbox.prev != null" @click="launchLightbox(showLightbox.prev)" class="prev">Prev</div>
+          <div v-if="showLightbox.next" @click="launchLightbox(showLightbox.next)" class="next">Next</div>
+        </div>
       </div>
+
     </section>
     
-{{showLightbox}}
 
   </div>  
 </template>
@@ -76,7 +83,6 @@ export default {
   },
   methods: {
     launchLightbox(index) {
-      console.log('LB', index)
       const imgArray = this.content.ExhibitionFields.images[index].mediaDetails.sizes
       const lbObj = {};
 
@@ -86,7 +92,7 @@ export default {
         lbObj.prev = index-1
       }
 
-      if (index == this.content.ExhibitionFields.images.length) {
+      if (index == this.content.ExhibitionFields.images.length - 1) {
         lbObj.next = null
       } else {
         lbObj.next = index+1
@@ -254,6 +260,44 @@ export default {
       @include breakpoint(small) {
         width: 100%;
       }      
+    }
+  }
+  .lightbox {
+    position: fixed;
+    z-index: 100000;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background:white;
+    img {
+      top: 5vw;
+      bottom: 5vw;
+      left: 5vw;
+      right: 5vw;
+      height: calc(100vh - 10vw);
+      width: calc(100vw - 10vw);
+      object-fit: contain;
+      position: absolute;
+    }
+    .close {
+      position: absolute;
+      top: $factor;
+      right: $factor;
+      cursor: pointer;
+      z-index: 100;
+
+    }
+    .controls {
+      position: absolute;
+      bottom: $factor;
+      right: $factor;
+      display: flex;
+      z-index: 100;
+      > div {
+        margin: 0 10px;
+        cursor: pointer;
+      }
     }
   }
 </style>
