@@ -7,8 +7,17 @@
 
 <script>
 import gql from 'graphql-tag'
+import meta, {metaGql} from '~/plugins/meta.js'
 
 export default {
+  head () {
+    if (this.page && this.page.seo) {
+      return {
+        title: this.page.seo.title,
+        meta: meta(this.page.seo)
+      }    
+    }
+  },    
   apollo: {
     page: {  
       result({data}) {
@@ -22,6 +31,7 @@ export default {
             id
             title
             content(format: RENDERED)
+            ${metaGql}              
           }
         }
       `

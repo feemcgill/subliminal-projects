@@ -10,12 +10,21 @@
 import gql from 'graphql-tag'
 import ExhibitionProjectClassic from '~/components/ExhibitionProjectClassic'
 import PageBuilder from '~/components/PageBuilder'
+import meta, {metaGql} from '~/plugins/meta.js'
 
 export default {
   components: {
     ExhibitionProjectClassic,
     PageBuilder
   },
+  head () {
+    if (this.exhibition && this.exhibition.seo) {
+      return {
+        title: this.exhibition.seo.title,
+        meta: meta(this.exhibition.seo)
+      }    
+    }
+  },    
   updated() {
   },
   mounted() {
@@ -39,6 +48,7 @@ export default {
               id
               title
               content
+              ${metaGql}
               featuredImage {
                 node {
                   sourceUrl(size: LARGE)

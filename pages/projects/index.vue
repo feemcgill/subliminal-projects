@@ -35,6 +35,7 @@
 <script>
 import gql from 'graphql-tag'
 import FadeImage from '~/components/FadeImage'
+import meta, {metaGql} from '~/plugins/meta.js'
 
 const projects_per_load = 3
 
@@ -49,7 +50,15 @@ export default {
       displayedPosts: [],
       pageData: null
     };
-  },  
+  },
+  head () {
+    if (this.page && this.page.seo) {
+      return {
+        title: this.page.seo.title,
+        meta: meta(this.page.seo)
+      }    
+    }
+  },    
   mounted() {
     
   },
@@ -86,6 +95,7 @@ export default {
               id
               title
               content
+              ${metaGql}              
               ProjectPageFields {
                 featuredProject {
                   ... on Project {

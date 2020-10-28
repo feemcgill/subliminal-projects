@@ -1,9 +1,9 @@
 const meta = function(data) {
   const output = [];
   output.push(
-    {hid: 'author', name: 'author', content: "Store Nº8" },
-    {hid: 'apple-mobile-web-app-title', name: 'apple-mobile-web-app-title', content: "Store Nº8" },
-    {hid: 'og:site_name', name: 'og:site_name', content: "Store Nº8" },
+    {hid: 'author', name: 'author', content: "Subliminal Projects" },
+    {hid: 'apple-mobile-web-app-title', name: 'apple-mobile-web-app-title', content: "Subliminal Projects" },
+    {hid: 'og:site_name', name: 'og:site_name', content: "Subliminal Projects" },
     {hid: 'theme-color', name: 'theme-color', content: "#FF536A" },    
   )
   if (data.metaDesc) {
@@ -25,5 +25,16 @@ const meta = function(data) {
   }  
   return output;
 }
+
+
+export const metaGql = `
+  seo {
+    metaDesc
+    title
+    opengraphImage {
+      sourceUrl
+    }
+  }      
+`
 
 export default meta;

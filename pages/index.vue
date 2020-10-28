@@ -1,5 +1,5 @@
 <template>
-  <div v-if="page && slides" id="page-home">
+  <div v-if="page && slides.length" id="page-home">
 
 
     <section class="hero">
@@ -71,6 +71,8 @@
 <script>
 import gql from 'graphql-tag';
 import ExhibitionThumb from '~/components/ExhibitionThumb'
+import meta, {metaGql} from '~/plugins/meta.js'
+
 export default {
   data () {
     return {
@@ -79,6 +81,14 @@ export default {
       cycleSlides: null
     }
   },
+  head () {
+    if (this.page && this.page.seo) {
+      return {
+        title: this.page.seo.title,
+        meta: meta(this.page.seo)
+      }    
+    }
+  },  
   components: {
     ExhibitionThumb
   },
@@ -114,6 +124,7 @@ export default {
     result({data}) {
         console.log('data', data.page)
         this.slides = data.page.HomeFields.hero
+        console.log(this.slides.length, 'slides');
         if (this.slides[0].featuredImage) {
           this.$store.commit('setLogoBg', this.slides[0].featuredImage.node.sourceUrl)
         }
@@ -126,12 +137,13 @@ export default {
         page(id: "/", idType: URI) {
           id
           title
+          ${metaGql}              
           HomeFields {
             hero {
               ... on Exhibition {
                 id
                 slug
-                title
+                title             
                 featuredImage {
                   node {
                     sourceUrl(size: LARGE)
@@ -172,7 +184,7 @@ export default {
 
 <style lang="scss">
 
-$carouselHeight: 56vw;
+$carouselHeight: 46vw;
 
 .hero {
   position: relative;

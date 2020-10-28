@@ -31,12 +31,21 @@
 import gql from 'graphql-tag';
 import FadeImage from '~/components/FadeImage'
 import ExhibitionThumb from '~/components/ExhibitionThumb'
+import meta, {metaGql} from '~/plugins/meta.js'
 
 export default {
   components: {
     FadeImage,
     ExhibitionThumb
   },
+  head () {
+    if (this.page && this.page.seo) {
+      return {
+        title: this.page.seo.title,
+        meta: meta(this.page.seo)
+      }    
+    }
+  },    
   apollo: {
     page: {    
       query: gql`
@@ -44,6 +53,7 @@ export default {
           page(id: "71006", idType: DATABASE_ID) {
             id
             title
+            ${metaGql}              
             ExhibitionsLandingFields {
               featuredExhibition {
                 ... on Exhibition {

@@ -36,12 +36,21 @@
 import IgFeed from "~/components/IgFeed"
 import FadeImage from '~/components/FadeImage'
 import gql from 'graphql-tag';
+import meta, {metaGql} from '~/plugins/meta.js'
 
 export default {
   components: {
     IgFeed,
     FadeImage
   },
+  head () {
+    if (this.page && this.page.seo) {
+      return {
+        title: this.page.seo.title,
+        meta: meta(this.page.seo)
+      }    
+    }
+  },  
   apollo: {
     page: {  
       result({data}) {
@@ -57,6 +66,7 @@ export default {
           page(id: "67432", idType: DATABASE_ID) {
             id
             title
+            ${metaGql}              
             content(format: RENDERED)
             featuredImage {
               node {

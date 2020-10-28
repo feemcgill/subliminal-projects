@@ -21,16 +21,13 @@ export default {
       submitTerm: null
     }
   },
-  // updated() {
-  //   if (this.$route.params.term) {
-  //     this.submitTerm = this.$route.params.term
-  //   }
-  // },
-  // mounted() {
-  //   if (this.$route.params.term) {
-  //     this.submitTerm = this.$route.params.term
-  //   }
-  // },
+
+  head () {
+    return {
+      title: 'Subliminal Projects Search: ' + this.submitTerm,
+    }    
+  },
+
   methods: {
     getResults() {
       this.submitTerm = this.inputTerm
