@@ -173,7 +173,7 @@ export default {
 
 <style lang="scss">
 
-$carouselHeight: 80vh;
+$carouselHeight: 46vw;
 
 .hero {
   position: relative;
@@ -212,7 +212,7 @@ $carouselHeight: 80vh;
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover;
     background-color: $dark;
     object-position: center;
   }
@@ -239,6 +239,7 @@ $carouselHeight: 80vh;
     }
     .dates {
       //@include type-big-sub;
+      font-weight: 200;
       font-size: 1.2rem;
 
     }
