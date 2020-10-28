@@ -76,8 +76,9 @@ h3 {
 .instagram-feed {
     display: flex;
     flex-wrap: flex;
+    justify-content: space-between;
     .item {
-        width: 25%;
+        width: 23%;
         img {
             width: 100%;
             height: 100%;

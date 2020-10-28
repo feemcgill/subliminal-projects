@@ -140,7 +140,7 @@ export default {
   }
   .lockdown {
     display: flex;
-    font-size: 1.5rem;
+    //font-size: 1.5rem;
     font-weight: bold;
     @include breakpoint(small) {
       display: block;

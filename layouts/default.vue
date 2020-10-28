@@ -11,20 +11,20 @@
 
           <nav id="main-nav" v-bind:class="open? 'nav-open' : 'nav-closed'">
             <ul class="main">
-              <li v-on:click="close"><nuxt-link to="/info" exact tabindex="0">Info</nuxt-link></li>
+              <li v-on:click="close"><nuxt-link to="/info" tabindex="0">Info</nuxt-link></li>
               <li v-on:click="close">
-                <nuxt-link to="/exhibitions" exact tabindex="0">Exhibitions</nuxt-link>
+                <nuxt-link to="/exhibitions" tabindex="0">Exhibitions</nuxt-link>
                 <ul class="sub">
                   <li v-on:click="close">
-                    <nuxt-link to="/exhibitions" exact tabindex="0">Current & Upcoming</nuxt-link>
+                    <nuxt-link to="/exhibitions" tabindex="0">Current & Upcoming</nuxt-link>
                   </li>
                   <li v-on:click="close">
-                    <nuxt-link to="/exhibitions/all" exact tabindex="0">All</nuxt-link>
+                    <nuxt-link to="/exhibitions/all" tabindex="0">All</nuxt-link>
                   </li>              
                 </ul>      
               </li>
-              <li v-on:click="close"><nuxt-link to="/projects" exact tabindex="0">Projects</nuxt-link></li>  
-              <li v-on:click="close"><nuxt-link to="/artists" exact tabindex="0">Artists</nuxt-link></li>  
+              <li v-on:click="close"><nuxt-link to="/projects" tabindex="0">Projects</nuxt-link></li>  
+              <li v-on:click="close"><nuxt-link to="/artists" tabindex="0">Artists</nuxt-link></li>  
               <li v-on:click="close">
                 <a target="_blank" href="https://store.subliminalprojects.com/">Shop</a>
                 <ul class="sub">
@@ -309,6 +309,9 @@ export default {
         color: $grey;
       }
     }
+   .nuxt-link-active {
+     color: $grey;
+    }    
     .sub {
       //display: none;
       position: absolute;

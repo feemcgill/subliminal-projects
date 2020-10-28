@@ -212,7 +212,8 @@ $carouselHeight: 80vh;
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
+    background-color: $dark;
     object-position: center;
   }
   .carousel-info {
@@ -234,11 +235,11 @@ $carouselHeight: 80vh;
     font-weight: bold;
     h2, h3 {
       @include type-big;
-      font-size: 2rem;
+      font-size: 1.5rem;
     }
     .dates {
-      @include type-big-sub;
-      font-size: 1.7rem;
+      //@include type-big-sub;
+      font-size: 1.2rem;
 
     }
   }
