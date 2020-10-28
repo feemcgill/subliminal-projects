@@ -6,27 +6,11 @@
       <div class="carousel-view">
         <div class="carousel-wrap">
             <nuxt-link v-bind:to="'/exhibitions/'+slides[0].slug" v-show="slides[0].featuredImage.node.sourceUrl" class="slide" >
-              <img v-bind:src="slides[0].featuredImage.node.sourceUrl" alt="">
-              <div class="carousel-info">
-                <div class="lockup">
-                  <div>
-
-                    <ul class="artists" v-if="slides[0].artists && slides[0].artists && slides[0].artists.nodes.length < 3" >
-                      <li v-for="artist in slides[0].artists.nodes" v-bind:key="artist.slug"><h2>{{artist.name}}</h2></li>
-                    </ul>
-
-                    <h2 v-html="slides[0].title"></h2>
-                    <div class="dates">
-                      <span v-html="slides[0].ExhibitionFields.startDate" /> — <span v-html="slides[0].ExhibitionFields.endDate" />
-                    </div>
-
-                  </div>
-                </div>
-              </div>          
+              <img v-bind:src="slides[0].featuredImage.node.sourceUrl" alt="">      
             </nuxt-link>
         </div>
       </div>
-
+      
       <div v-if="slides.length > 1" class='carousel-controls'>
         <div class="container">
           <div class='carousel-controls__button prev' @click="() => {
@@ -46,12 +30,27 @@
             </svg>
           </div>
         </div>
-      </div>      
+      </div> 
+      <div class="carousel-info container">
+        <div class="lockup">
+          <div>
+            <h2 v-html="slides[0].title"></h2>
+
+            <ul class="artists" v-if="slides[0].artists && slides[0].artists && slides[0].artists.nodes.length < 3" >
+              <li v-for="(artist, index) in slides[0].artists.nodes" v-bind:key="artist.slug+index"><h2>{{artist.name}}</h2></li>
+            </ul>
+
+            <div class="dates">
+              <span v-html="slides[0].ExhibitionFields.startDate" /> — <span v-html="slides[0].ExhibitionFields.endDate" />
+            </div>
+          </div>
+        </div>
+      </div>          
     </section>
 
     
     <section class="features container">
-      <div class="feature" v-for="feature in page.HomeFields.features" :key="feature.title">
+      <div class="feature" v-for="(feature, index) in page.HomeFields.features" :key="feature.title +index">
         <div class="img-wrap">
           <div class="img">
             <img v-bind:src="feature.image.sourceUrl" :alt="feature.title">
@@ -177,12 +176,12 @@ $carouselHeight: 46vw;
 
 .hero {
   position: relative;
+  margin-bottom: $factor * 1.5;
 }
 .carousel-view {
   overflow: hidden;
   width: 100vw;
   height: $carouselHeight;
-  margin-bottom: $factor * 1.5;
   flex-wrap: wrap;  
   position: relative;
 }
@@ -216,35 +215,35 @@ $carouselHeight: 46vw;
     background-color: $dark;
     object-position: center;
   }
-  .carousel-info {
-    position: absolute;
-    left: 0;
-    width: 100%;
-    height: 100%;   
-    display: flex;
-    align-items: flex-end;
-    justify-content: flex-start;
-    z-index: 100;
-    text-align: left;
-  }
-  .lockup {
-    transition: all 0.2s ease-in;
-    background: $light;
-    padding: $factor * 0.5;
-    margin: $factor;
-    font-weight: bold;
-    h2, h3 {
-      @include type-big;
-      font-size: 1.5rem;
-    }
-    .dates {
-      //@include type-big-sub;
-      font-weight: 200;
-      font-size: 1.2rem;
+}
 
-    }
+.carousel-info {
+  //position: absolute;
+  /* left: 0;
+  width: 100%;
+  height: 100%;    */
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  z-index: 100;
+  text-align: left;
+}
+.lockup {
+  transition: all 0.2s ease-in;
+  background: $light;
+  padding: $factor * 0.5;
+  //margin: $factor;
+  font-weight: bold;
+  h2, h3 {
+    //@include type-big;
+    font-size: 1.5rem;
   }
+  .dates {
+    //@include type-big-sub;
+    font-weight: 200;
+    font-size: 1.2rem;
 
+  }
 }
 
 .carousel-controls {
@@ -274,15 +273,15 @@ $carouselHeight: 46vw;
 .features {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  //justify-content: space-between;
   margin-bottom: $factor;
   .feature {
-    @include halves;
+    @include thirds;
     /* display: flex;
     flex-wrap: wrap;
     align-items: flex-end;     */
     margin-bottom: $factor * 2;
-    max-width: 423px;
+    //max-width: 423px;
 
 
     .img-wrap {

@@ -7,11 +7,11 @@
         </div>
       </nuxt-link>
       <div class="lockdown">
+        <div class="title" v-html="page.ExhibitionsLandingFields.featuredExhibition[0].title"></div>
 
         <ul class="artists" v-if="page.ExhibitionsLandingFields.featuredExhibition[0].artists && page.ExhibitionsLandingFields.featuredExhibition[0].artists.nodes.length < 3" >
           <li v-for="artist in page.ExhibitionsLandingFields.featuredExhibition[0].artists.nodes" v-bind:key="artist.slug">{{artist.name}}</li>
         </ul>
-        <div class="title" v-html="page.ExhibitionsLandingFields.featuredExhibition[0].title"></div>
         <div class="dates">
           <span v-html="page.ExhibitionsLandingFields.featuredExhibition[0].ExhibitionFields.startDate" /> — <span v-html="page.ExhibitionsLandingFields.featuredExhibition[0].ExhibitionFields.endDate" />
         </div>              
@@ -111,7 +111,7 @@ export default {
     margin-bottom: $factor;
     display: block;
     color: $dark; 
-    .lockup {
+    /* .lockup {
       position: absolute;
       bottom: $factor * 0.5;
       left: $factor * 0.5;
@@ -123,7 +123,7 @@ export default {
       @include breakpoint(small) {
         font-size: 1rem;
       }
-    }
+    } */
     .feature-img {
       padding-bottom: 38%;
       position: relative;
@@ -140,8 +140,9 @@ export default {
   }
   .lockdown {
     display: flex;
-    //font-size: 1.5rem;
+    font-size: 1.5rem;
     font-weight: bold;
+    align-items: center;
     @include breakpoint(small) {
       display: block;
     }       
@@ -155,6 +156,10 @@ export default {
           display: none;
         }          
       }
+    }
+    .dates {
+      font-weight: 200;
+      font-size: 1.2rem
     }
     .artists {
       li {

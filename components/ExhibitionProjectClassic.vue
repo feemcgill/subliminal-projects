@@ -11,10 +11,11 @@
           <div class="intro">
             <div class="exhibition-title">
               <div class="info">
+                <h1>{{content.title}}</h1>
+
                 <ul v-bind:class="content.artists.nodes.length > 1 ? 'artists list' : 'artists'" v-if="content.artists" >
                   <li v-for="artist in content.artists.nodes" v-bind:key="artist.slug">{{artist.name}}</li>
                 </ul>             
-                <h1>{{content.title}}</h1>
                 <div v-if="content.ExhibitionFields.startDate || content.ExhibitionFields.endDate" class="date">
                   <span v-html="content.ExhibitionFields.startDate" /> — <span v-html="content.ExhibitionFields.endDate" />
                 </div>
@@ -202,15 +203,17 @@ export default {
       }          
       h1 {
         font-size: 1em;
-        font-weight: normal;
+        font-weight: bold;
         text-transform: unset;
       }
       .date {
         font-size: 0.75em;
+        font-weight: normal;
         //margin-bottom: 1em;
       }
       .opening {
         font-size: 0.75em;
+        font-weight: normal;
       }
       .artists {
         width: 50%;

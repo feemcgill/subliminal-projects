@@ -163,7 +163,10 @@ export default {
       @include breakpoint(small) {
         width: 100%;
         margin-bottom: $factor;
-      }     
+      }
+      h2 {
+        font-size: 1.5rem;
+      }   
     }
     .img {
       padding-bottom: 88%;
@@ -178,7 +181,6 @@ export default {
     }
     .info {
       width: 50%;
-      //font-size: 1.5em;
       @include breakpoint(small) {
         width: 100%;
       }        
