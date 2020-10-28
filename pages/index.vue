@@ -3,7 +3,7 @@
 
 
     <section class="hero">
-      <div class="carousel-view">
+      <div class="carousel-view container">
         <div class="carousel-wrap">
             <nuxt-link v-bind:to="'/exhibitions/'+slides[0].slug" v-show="slides[0].featuredImage.node.sourceUrl" class="slide" >
               <img v-bind:src="slides[0].featuredImage.node.sourceUrl" alt="">      
@@ -172,7 +172,7 @@ export default {
 
 <style lang="scss">
 
-$carouselHeight: 46vw;
+$carouselHeight: 56vw;
 
 .hero {
   position: relative;
@@ -249,7 +249,7 @@ $carouselHeight: 46vw;
 .carousel-controls {
   position: absolute;
   width: 100%;
-  bottom: calc(50% + 1.5em);
+  top: 27vw;
   z-index: 1000;
   //background: $light;
   //font-size: 3em;
@@ -263,10 +263,10 @@ $carouselHeight: 46vw;
     //text-shadow: 2px 2px 10px $light;
     position: absolute;
     &.prev {
-      left: $factor * 0.33;
+      left: $factor;
     }
     &.next {
-      right: $factor * 0.33;
+      right: $factor;
     }
   }
 }
