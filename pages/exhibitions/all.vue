@@ -21,7 +21,7 @@
 <script>
 import gql from 'graphql-tag'
 import ExhibitionThumb from  '~/components/ExhibitionThumb'
-const exhibitions_per_load = 22
+const exhibitions_per_load = 30
 
 export default {
   components: {
