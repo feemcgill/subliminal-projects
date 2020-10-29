@@ -136,6 +136,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+  .st0{fill:#B3B3B3;}
 	#site-logo {
 		position: relative;
 		overflow: hidden;
