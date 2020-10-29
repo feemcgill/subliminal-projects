@@ -39,28 +39,28 @@
             </ul>
 
             <ul class="socials">
-              <li>
-                <a target="_blank" href="https://www.instagram.com/subliminalprojects/">
+              <li v-if="globalContent.GlobalFields.instagramLink">
+                <a target="_blank" v-bind:href="globalContent.GlobalFields.instagramLink">
                   <img src="~/assets/socials/ig.svg" alt="Instagram Logo">
                 </a>
               </li>
-              <li>
-                <a target="_blank" href="https://twitter.com/subliminal_art">
+              <li v-if="globalContent.GlobalFields.twitterLink">
+                <a target="_blank" v-bind:href="globalContent.GlobalFields.twitterLink">
                   <img src="~/assets/socials/twitter.svg" alt="Twitter Logo">
                 </a>
               </li>
-              <li>
-                <a target="_blank" href="https://www.facebook.com/subliminalprojects/">
+              <li v-if="globalContent.GlobalFields.facebookLink">
+                <a target="_blank" v-bind:href="globalContent.GlobalFields.facebookLink">
                   <img src="~/assets/socials/fb.svg" alt="Facebook Logo">
                 </a>
               </li>
-              <li>
-                <a target="_blank" href="https://open.spotify.com/user/subliminalprojects?si=fcuyvR7zRFqlcrnRPdpjCQ">
+              <li v-if="globalContent.GlobalFields.spotifyLink">
+                <a target="_blank" v-bind:href="globalContent.GlobalFields.spotifyLink">
                   <img src="~/assets/socials/spotify.svg" alt="Spotify Logo">
                 </a>
               </li>  
-              <li>
-                <a target="_blank" href="https://vimeo.com/user59428909">
+              <li v-if="globalContent.GlobalFields.vimeoLink">
+                <a target="_blank" v-bind:href="globalContent.GlobalFields.vimeoLink">
                   <img src="~/assets/socials/vimeo.svg" alt="Vimeo Logo">
                 </a>
               </li>                                        
@@ -77,21 +77,7 @@
     </div>
     <footer>
       <div class="container footer-row">
-        <div class="address">
-          <p>
-          1331 W Sunset Blvd<br />
-          Los Angeles CA 90026<br />
-          <a target="_blank" href="https://www.google.com/maps/dir/''/1331+Sunset+Blvd,+Los+Angeles,+CA+90026/data=!4m5!4m4!1m0!1m2!1m1!1s0x80c2c6fdc692f445:0xd1c40714262209c3?sa=X&ved=0CDcQwwUwA2oVChMIpMmrubfCxwIVxT4-Ch0EpQRS">Directions</a>
-          </p>
-          <p>
-          213.213.0078<br /> 
-          info@subliminalprojects.com
-          </p>
-          <p>
-          Wednesday - Saturday 12-6pm<br /> 
-          By Appointment Only          
-          </p>
-        </div>
+        <div v-html="globalContent.GlobalFields.footerContent" class="address footer-content" />
         <div class="forms">
           <form class="form" v-on:submit.prevent="searchIt">
             <div class="input">
@@ -116,7 +102,7 @@
           <li><nuxt-link to="/privacy-policy">Privacy Policy</nuxt-link></li>
         </ul>
         <div class="copyright">
-          ©2020 Subliminal Projects 
+         {{globalContent.GlobalFields.footerCopyright}}
         </div>
       </div>
     </footer>
@@ -126,6 +112,8 @@
 <script>
 import Logo from '~/components/Logo';
 import Nav from '~/components/Nav';
+import gql from 'graphql-tag'
+
 export default {
   data() {
     return {
@@ -150,9 +138,34 @@ export default {
       this.$router.push("/search/" + this.inputTerm)
       this.inputTerm = null;
     }    
-  }  
+  },
+  apollo: {
+    globalContent: {
+      error: function(error) {
+        console.log(error)
+      },
+      result({data}) {
+      },
+      query: gql`
+        query GlobalQuery {
+          globalContent {
+            GlobalFields {
+              footerContent
+              footerCopyright      
+              facebookLink
+              instagramLink
+              spotifyLink
+              twitterLink
+              vimeoLink
+            }
+          }
+        }         
+      `
+    }    
+  }     
 }
 </script>
+
 
 <style lang="scss" scoped>
   .header-push {
@@ -370,12 +383,6 @@ export default {
       @include breakpoint(small) {
         margin-bottom: $factor;
       }      
-      p {
-        margin-bottom: $factor*.5;
-        &:last-of-type {
-          margin-bottom: 0;
-        }
-      }
     }
     .forms {
       display: flex;

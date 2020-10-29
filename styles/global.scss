@@ -138,6 +138,14 @@ input[type='submit'] {
   @include wysiwyg;
 }
 
+.footer-content {
+  p {
+    margin-bottom: $factor*.5;
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+  }  
+}
 
 .pagination {
   margin: $factor;
