@@ -168,7 +168,7 @@ export default {
       }
     }
     .dates {
-      font-weight: 200;
+      font-weight: bold;
       font-size: 1.2rem
     }
     .artists {
