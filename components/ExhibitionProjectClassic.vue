@@ -3,7 +3,7 @@
     <section class="hero">
       <div class="container img-intro">
         <div class="image-title">
-          <div class="img">
+          <div v-if="content.featuredImage" class="img">
             <FadeImage v-bind:src="content.featuredImage.node.sourceUrl" />
           </div>
         </div>
@@ -25,10 +25,9 @@
               </div>             
             </div>   
           </div>
-          <ul class="links">
-            <li v-for="(link, index) in content.ExhibitionFields.links" v-bind:key="link.link.url + index">
-          
-              <a v-bind:href="link.link.url" v-bind:target="link.link.target" >{{link.link.title}}</a>
+          <ul class="links" v-if="content.ExhibitionFields.links">
+            <li v-for="(link, index) in content.ExhibitionFields.links" v-bind:key="'link'+index">
+              <a v-if="link.link && link.link.url" v-bind:href="link.link.url" v-bind:target="link.link.target" >{{link.link.title}}</a>
             </li>
           </ul>
         </div>
@@ -40,14 +39,16 @@
     </section>
     <section v-if="content.ExhibitionFields.images" class="gallery container">
       <div class="gallery-wrap grid">
-        <div class="gallery-item" @click="launchLightbox(index)" v-for="(image, index) in content.ExhibitionFields.images" v-bind:key="image.sourceUrl + index" >
-          <FadeImage v-bind:src="image.sourceUrl" />
-          <div class="caption" v-html="image.caption" />
+        <div class="gallery-item" v-for="(image, index) in content.ExhibitionFields.images" v-bind:key="image.sourceUrl + index" >
+          <div v-if="image.sourceUrl" @click="launchLightbox(index)">
+            <FadeImage v-bind:src="image.sourceUrl" />
+            <div class="caption" v-html="image.caption" />
+          </div>
         </div>
       </div>
 
       <div v-if="showLightbox" class="lightbox">
-        <a class="close" @click="showLightbox = null" href="#">Close</a>
+        <a class="close" @click="showLightbox = null">Close</a>
         <div class="image" @click="() => {
            if(showLightbox.next != null) {
              launchLightbox(showLightbox.next)

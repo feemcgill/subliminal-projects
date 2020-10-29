@@ -6,7 +6,7 @@
         <div class="img">
           <FadeImage :src="pageData.ProjectPageFields.featuredProject.featuredImage.node.sourceUrl" :srcset="pageData.ProjectPageFields.featuredProject.featuredImage.node.srcSet" :alt="pageData.ProjectPageFields.featuredProject.featuredImage.node.altText" />
         </div>
-        <h2>Featured Project</h2>
+        <h2 v-html="pageData.ProjectPageFields.featuredProject.title" />
       </nuxt-link>
 
 
@@ -178,21 +178,37 @@ export default {
         font-size: 1.5rem;
       }   
     }
+    &:hover {
+      .img  img {
+        transform: scale(1.03);
+        transform-origin: center;
+      }      
+    }       
     .img {
       padding-bottom: 88%;
       position: relative;
       margin-bottom: $factor * 0.5;
+      overflow: hidden;      
       img {
         position: absolute;
         width: 100%;
         height: 100%;
         object-fit: cover;
+        transition: all 0.3s ease-out;
+        transform: scale(1);           
       }
     }
+    
     .info {
       width: 50%;
+      font-size: 2vw;
+      line-height: 1.5em;
+      font-weight: bold;
+      position: relative;
+      text-align: justify; 
       @include breakpoint(small) {
         width: 100%;
+        font-size: 2em;
       }        
     }
   }

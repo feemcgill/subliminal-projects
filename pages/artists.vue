@@ -42,20 +42,10 @@
 <script>
 import FadeImage from '~/components/FadeImage'
 import gql from 'graphql-tag';
-import meta, {metaGql} from '~/plugins/meta.js'
-
 export default {
   components: {
     FadeImage
   },
-  head () {
-    if (this.pageData && this.pageData.seo) {
-      return {
-        title: this.pageData.seo.title,
-        meta: meta(this.pageData.seo)
-      }    
-    }
-  },   
   data: () => {
     return {
       gotArtists: false,
@@ -153,7 +143,6 @@ export default {
           page(id: "67427", idType: DATABASE_ID) {
             id
             title
-            ${metaGql}              
             content(format: RENDERED)
             featuredImage {
               node {
@@ -196,7 +185,7 @@ export default {
     }
   }
   .artists {    
-    column-count: 3;
+    column-count: 4;
     column-gap: $factor;
     margin-bottom: $factor;
     @include breakpoint(small) {

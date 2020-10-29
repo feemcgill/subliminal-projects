@@ -101,6 +101,7 @@ export default {
   .hero {
     align-items: center;
     margin-bottom: $factor * 2;
+    justify-content: space-between;
     .quote-wrap {
       width: 47%;
       font-size: 2vw;
@@ -149,6 +150,7 @@ export default {
 
   }
   .contact {
+    justify-content: space-between;
     .contact-deets {
       h5, .email {
         font-size: 1.2em;
