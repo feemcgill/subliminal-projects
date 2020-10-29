@@ -34,8 +34,7 @@ export default {
         error: function(error) {
           console.log(error)
         },
-        result(data) {
-          console.log(data, 'got yr data here')
+        result({data}) {
         },        
         variables() {
           return {

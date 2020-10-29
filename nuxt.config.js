@@ -1,15 +1,17 @@
+const { createApolloFetch } = require('apollo-fetch')
+
 
 export default {
   /*
   ** Nuxt rendering mode
   ** See https://nuxtjs.org/api/configuration-mode
   */
-  mode: 'spa',
+  //mode: process.env.NUXT_MODE,
   /*
   ** Nuxt target
   ** See https://nuxtjs.org/api/configuration-target
   */
-  // target: 'static',
+  target: 'static',
   /*
   ** Headers of the page
   ** See https://nuxtjs.org/api/configuration-head
@@ -33,6 +35,7 @@ export default {
   /*
   ** Global CSS
   */
+ 
   styleResources: {
     scss: [
       "~/styles/resources/resources.scss",
@@ -54,6 +57,33 @@ export default {
   }, 
   plugins: [   
   ],
+  generate: {
+    fallback: 'index.html',
+    routes: function () {
+      const uri = process.env.WP_GRAPHQL_ENDPOINT
+      const apolloFetch = createApolloFetch({ uri })
+      const query = `
+        query GenerateQuery {
+          exhibitions(first: 500) {
+            edges {
+              node {
+                slug
+              }
+            }
+          }
+        }       
+      `
+      return apolloFetch({ query }).then(result => {
+        const { data } = result
+        console.log('Got data for dynamic routes')
+        return data.exhibitions.edges.map(exhibition => `exhibitions/${exhibition.node.slug}`)
+      }).catch(error => {
+        console.log('THERE WAS AN')
+
+        console.log(error)
+      })
+    }
+  }, 
   /*
   ** Auto import components
   ** See https://nuxtjs.org/api/configuration-components
@@ -75,7 +105,7 @@ export default {
   apollo: {
     clientConfigs: {
       default: {
-        httpEndpoint: 'https://subliminalprojects.d-e-v.group/graphql',          
+        httpEndpoint: process.env.WP_GRAPHQL_ENDPOINT,          
       }
     }
   },
