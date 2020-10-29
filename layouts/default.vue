@@ -19,7 +19,7 @@
                     <nuxt-link to="/exhibitions" tabindex="0">Current & Upcoming</nuxt-link>
                   </li>
                   <li v-on:click="close">
-                    <nuxt-link to="/exhibitions/all" tabindex="0">All</nuxt-link>
+                    <nuxt-link to="/exhibitions/past" tabindex="0">Past</nuxt-link>
                   </li>              
                 </ul>      
               </li>
