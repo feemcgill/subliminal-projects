@@ -38,7 +38,7 @@
               </li>  
             </ul>
 
-            <ul class="socials">
+            <ul class="socials" v-if="globalContent">
               <li v-if="globalContent.GlobalFields.instagramLink">
                 <a target="_blank" v-bind:href="globalContent.GlobalFields.instagramLink">
                   <img src="~/assets/socials/ig.svg" alt="Instagram Logo">
@@ -77,7 +77,7 @@
     </div>
     <footer>
       <div class="container footer-row">
-        <div v-html="globalContent.GlobalFields.footerContent" class="address footer-content" />
+        <div v-if="globalContent" v-html="globalContent.GlobalFields.footerContent" class="address footer-content" />
         <div class="forms">
           <form class="form" v-on:submit.prevent="searchIt">
             <div class="input">
@@ -101,7 +101,7 @@
           <li><nuxt-link to="/terms-of-use">Terms of Use</nuxt-link></li>
           <li><nuxt-link to="/privacy-policy">Privacy Policy</nuxt-link></li>
         </ul>
-        <div class="copyright">
+        <div class="copyright" v-if="globalContent">
          {{globalContent.GlobalFields.footerCopyright}}
         </div>
       </div>
@@ -438,7 +438,7 @@ export default {
     }    
   }  
   .page-wrapper {
-    min-height: 90vh;
+    min-height: 100vh;
     position: relative;
   }
 </style>
