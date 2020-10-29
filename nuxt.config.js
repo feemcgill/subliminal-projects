@@ -91,7 +91,9 @@ export default {
   ** Nuxt.js dev-modules
   */
   buildModules: [
-    '@nuxtjs/style-resources'
+    '@nuxtjs/style-resources',
+    '@nuxtjs/google-analytics'
+
   ],
   /*
   ** Nuxt.js modules
@@ -107,11 +109,9 @@ export default {
       }
     }
   },
-  pwa: {
-    icon: {
-      /* icon options */
-    }
-  },
+  googleAnalytics: {
+    id: 'UA-75388-5'
+  },  
   /*
   ** Build configuration
   ** See https://nuxtjs.org/api/configuration-build/
