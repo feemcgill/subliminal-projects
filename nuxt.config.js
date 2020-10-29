@@ -58,7 +58,6 @@ export default {
   plugins: [   
   ],
   generate: {
-    fallback: 'index.html',
     routes: function () {
       const uri = process.env.WP_GRAPHQL_ENDPOINT
       const apolloFetch = createApolloFetch({ uri })
@@ -79,7 +78,6 @@ export default {
         return data.exhibitions.edges.map(exhibition => `exhibitions/${exhibition.node.slug}`)
       }).catch(error => {
         console.log('THERE WAS AN')
-
         console.log(error)
       })
     }
