@@ -93,7 +93,6 @@ export default {
   buildModules: [
     '@nuxtjs/style-resources',
     '@nuxtjs/google-analytics'
-
   ],
   /*
   ** Nuxt.js modules

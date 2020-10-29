@@ -6,12 +6,12 @@
     <div class="feature-img">
       <FadeImage v-bind:src="exhibition.featuredImage.node.sourceUrl" />
     </div>
+    <h2 v-html="exhibition.title"></h2>
 
     <ul class="artists"  v-if="exhibition.artists && exhibition.artists.nodes.length < 3" >
       <li v-for="artist in exhibition.artists.nodes" v-bind:key="artist.slug">{{artist.name}}</li>
     </ul>
 
-    <h2 v-html="exhibition.title"></h2>
 
     <div class="date">
       <span v-html="exhibition.ExhibitionFields.startDate" /> — <span v-html="exhibition.ExhibitionFields.endDate" />
@@ -64,7 +64,7 @@ export default {
       @include sans;
     }
     h2 {
-      font-weight: normal;
+      font-weight: bold;
     }
     .artists {
       display: block;
