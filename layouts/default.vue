@@ -256,11 +256,11 @@ export default {
       position: relative;
       background: $light;
       position: absolute;
-      left: -2em;
+      left: 0;
       top: 0;
       margin: 0;
       height: 100vh;
-      width: calc(100vw + 2em);
+      width: 100%;
       align-items: center;
       justify-content: center;
       flex-wrap: wrap;

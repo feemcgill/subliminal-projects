@@ -46,29 +46,14 @@
           </div>
         </div>
       </div>
-
-      <div v-if="showLightbox" class="lightbox">
-        <a class="close" @click="showLightbox = null">Close</a>
-        <div class="image" @click="() => {
-           if(showLightbox.next != null) {
-             launchLightbox(showLightbox.next)
-           }
-          }">
-          <FadeImage v-bind:src="showLightbox.url" />
-        </div>
-        <div class="controls">
-          <div v-if="showLightbox.prev != null" @click="launchLightbox(showLightbox.prev)" class="prev">Prev</div>
-          <div v-if="showLightbox.next" @click="launchLightbox(showLightbox.next)" class="next">Next</div>
-        </div>
-      </div>
-
     </section>
-    
-
+    <Lightbox v-if="showLightbox" :imageArray="content.ExhibitionFields.images" :startingIndex="lightboxIndex" @closeLightbox="closeLightbox" />
   </div>  
 </template>
 
 <script>
+
+import Lightbox from '~/components/Lightbox'
 import FadeImage from '~/components/FadeImage'
 
 export default {
@@ -77,51 +62,23 @@ export default {
   },
   data() {
     return {
-      showLightbox: null,
+      lightboxIndex: 0,
+      showLightbox: null
     }
   },
   components: {
     FadeImage
   },
-  methods: {
+  mounted() {
+  },
+  methods: { 
     launchLightbox(index) {
-      const imgArray = this.content.ExhibitionFields.images[index].mediaDetails.sizes
-      const lbObj = {};
-
-      if (index == 0) {
-        lbObj.prev = null
-      } else {
-        lbObj.prev = index-1
-      }
-
-      if (index == this.content.ExhibitionFields.images.length - 1) {
-        lbObj.next = null
-      } else {
-        lbObj.next = index+1
-      }
-
-      lbObj.url = null
-      this.showLightbox = lbObj;
-
-
-      if (imgArray) {
-        imgArray.forEach(size => {
-          if (size.name == 'large') {
-            console.log('found a large')
-            lbObj.url = size.sourceUrl
-          } else {
-            lbObj.url = this.content.ExhibitionFields.images[index].sourceUrl
-          } 
-        })       
-      } else {
-        lbObj.url = this.content.ExhibitionFields.images[index].sourceUrl
-      }
-
-
-
-
-      this.showLightbox = lbObj;
-
+      this.showLightbox = true;
+      this.lightboxIndex = index;
+    },
+    closeLightbox() {
+      console.log('CLOSE LIGHTBOX');
+      this.showLightbox = false;
     }
   }
 }

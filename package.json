@@ -13,7 +13,8 @@
     "@nuxtjs/apollo": "^4.0.1-rc.3",
     "@nuxtjs/pwa": "^3.0.0-beta.20",
     "apollo-fetch": "^0.7.0",
-    "nuxt": "^2.14.0"
+    "nuxt": "^2.14.0",
+    "vue2-touch-events": "^2.3.2"
   },
   "devDependencies": {
     "@nuxtjs/google-analytics": "^2.4.0",
