@@ -1,6 +1,5 @@
 <template>
   <div v-if="content" id="page-exhibition">
-    <div ref="reftest" class="reftest">reftest</div>
     <section class="hero">
       <div class="container img-intro">
         <div class="image-title">
@@ -47,77 +46,14 @@
           </div>
         </div>
       </div>
-
-      <div v-if="showLightbox" class="lightbox">
-        <a class="close" @click="showLightbox = null">Close</a>
-        <div class="image"
-        ref="lightboxImg" 
-        @swipe-right="launchLightbox(showLightbox.next)"
-        @swipe-left="launchLightbox(showLightbox.prev)"
-        @swipe-up="bar"
-        @swipe-down="showLightbox = null"        
-        @click="() => {
-           if(showLightbox.next != null) {
-             launchLightbox(showLightbox.next)
-           }
-          }">
-          <FadeImage v-bind:src="showLightbox.url" />
-        </div>
-        <div class="controls">
-          <div v-if="showLightbox.prev != null" @click="launchLightbox(showLightbox.prev)" class="prev">Prev</div>
-          <div v-if="showLightbox.next" @click="launchLightbox(showLightbox.next)" class="next">Next</div>
-        </div>
-      </div>
-
     </section>
-    
-
+    <Lightbox v-if="showLightbox" :imageArray="content.ExhibitionFields.images" :startingIndex="lightboxIndex" @closeLightbox="closeLightbox" />
   </div>  
 </template>
 
 <script>
 
-
-const initSwipeEvents = (el, deltaMin = 80) => {
-    const swipeData = {
-        startX: 0,
-        startY: 0,
-        endX: 0,
-        endY: 0
-    }
-    let directionEvents = []
-    el.addEventListener("touchstart", e => {
-        const t = e.touches[0]
-        swipeData.startX = t.screenX
-        swipeData.startY = t.screenY
-    })
-    el.addEventListener("touchmove", e => {
-        const t = e.touches[0]
-        swipeData.endX = t.screenX
-        swipeData.endY = t.screenY
-    })
-    el.addEventListener("touchend", () => {
-        const deltaX = swipeData.endX - swipeData.startX
-        const deltaY = swipeData.endY - swipeData.startY
-
-        if (Math.abs(deltaX) > deltaMin) {
-            if (deltaX > 0) directionEvents.push("right")
-            else directionEvents.push("left")
-        }
-        if (Math.abs(deltaY) > deltaMin) {
-            if (deltaY > 0) directionEvents.push("down")
-            else directionEvents.push("up")
-        }
-
-        directionEvents.forEach(direction =>
-            el.dispatchEvent(new Event(`swipe-${direction}`))
-        )
-
-        directionEvents = []
-    })
-}
-
-
+import Lightbox from '~/components/Lightbox'
 import FadeImage from '~/components/FadeImage'
 
 export default {
@@ -126,7 +62,8 @@ export default {
   },
   data() {
     return {
-      showLightbox: null,
+      lightboxIndex: 0,
+      showLightbox: null
     }
   },
   components: {
@@ -134,55 +71,14 @@ export default {
   },
   mounted() {
   },
-  methods: {
-    foo(){
-      console.log('foo')
-    },
-    bar() {
-      console.log('bar')
-    },
+  methods: { 
     launchLightbox(index) {
-      const imgArray = this.content.ExhibitionFields.images[index].mediaDetails.sizes
-      const lbObj = {};
-
-      if (index == 0) {
-        lbObj.prev = null
-      } else {
-        lbObj.prev = index-1
-      }
-
-      if (index == this.content.ExhibitionFields.images.length - 1) {
-        lbObj.next = null
-      } else {
-        lbObj.next = index+1
-      }
-
-      lbObj.url = null
-      this.showLightbox = lbObj;
-
-
-      if (imgArray) {
-        imgArray.forEach(size => {
-          if (size.name == 'large') {
-            console.log('found a large')
-            lbObj.url = size.sourceUrl
-          } else {
-            lbObj.url = this.content.ExhibitionFields.images[index].sourceUrl
-          } 
-        })       
-      } else {
-        lbObj.url = this.content.ExhibitionFields.images[index].sourceUrl
-      }
-
-
-
-
-      this.showLightbox = lbObj;
-      setTimeout(() => {
-        initSwipeEvents(this.$refs.lightboxImg, 80)
-        console.log(this.$refs["lightboxImg"], this.$refs)
-      }, 500);
-
+      this.showLightbox = true;
+      this.lightboxIndex = index;
+    },
+    closeLightbox() {
+      console.log('CLOSE LIGHTBOX');
+      this.showLightbox = false;
     }
   }
 }

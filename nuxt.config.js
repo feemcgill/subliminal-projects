@@ -55,7 +55,8 @@ export default {
     //   console.log('Before enter...');
     // }
   }, 
-  plugins: [   
+  plugins: [
+    { src: '~/plugins/vue-touch', ssr: false }
   ],
   generate: {
     routes: function () {
