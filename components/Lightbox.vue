@@ -2,13 +2,11 @@
   <div class="lightbox">
     <a class="close" @click="close">Close</a>
     <div :class="'image '+ swipeClass"
-    ref="lightboxImg"      
-    v-touch:start="touchStart"
-    v-touch:moving="touchMove"
-    v-touch:end="touchEnd"
-    v-touch:swipe.left="next"
-    v-touch:swipe.right="prev"
-    v-touch:swipe.bottom="close"
+      ref="lightboxImg"
+      @click="next"
+      v-touch:start="touchStart"
+      v-touch:moving="touchMove"
+      v-touch:end="touchEnd"
     >
       <FadeImage v-if="url" v-bind:src="url" />
     </div>
@@ -20,11 +18,6 @@
 </template>
 
 <script>
-
-
-
-
-
 import FadeImage from '~/components/FadeImage'
 
 export default {
@@ -59,15 +52,40 @@ export default {
       const movedY = a.changedTouches[0].clientY
       const deltaX = movedX - this.swipeData.startX
       const deltaY = movedY - this.swipeData.startY
-        if (Math.abs(deltaX) > 5) {
-          if (deltaX > 0) this.swipeClass = "right"
-          else this.swipeClass = "left"
-        }
-        if (Math.abs(deltaY) > 15) {
+        if (Math.abs(deltaX) > 30) {
+          if (deltaX > 0) {
+            if(this.prevIndex != null) {
+              this.swipeClass = "right"
+            } else {
+              this.swipeClass = "naw"
+            }
+          } else {
+            if(this.nextIndex) {
+              this.swipeClass = "left"
+            } else {
+              this.swipeClass = "naw"
+            }
+          }
+        } else if (Math.abs(deltaY) > 80) {
           if (deltaY > 0) this.swipeClass = "down"
+          else this.swipeClass = "up"
+        } else {
+          this.swipeClass = null
         }
     },
     touchEnd() {
+
+      if (this.swipeClass == "left") {
+        this.next()
+      }
+
+      if (this.swipeClass == "right") {
+        this.prev()
+      }
+
+      if (this.swipeClass == "down") {
+        this.close()   
+      }      
       this.swipeClass = null
       this.swipeData = {}
     },   
@@ -88,34 +106,25 @@ export default {
       }      
     },
     updateLightbox(index) {
-      const imgArray = this.imageArray[index].mediaDetails.sizes
-      //const lbObj = {};
 
       if (index == 0) {
-        //lbObj.prev = null
         this.prevIndex = null
       } else {
-        //lbObj.prev = index-1
         this.prevIndex = index-1
       }
 
       if (index == this.imageArray.length - 1) {
-        //lbObj.next = null
         this.nextIndex = null
       } else {
-        //lbObj.next = index+1
         this.nextIndex = index+1
       }
 
-      //lbObj.url = null
-      //this.theLightbox = lbObj;
+      const imageSizeArray = this.imageArray[index].mediaDetails.sizes
       this.url = null
 
-
-      if (imgArray) {
-        imgArray.forEach(size => {
+      if (imageSizeArray) {
+        imageSizeArray.forEach(size => {
           if (size.name == 'large') {
-            console.log('found a large')
             this.url = size.sourceUrl
           } else {
             this.url = this.imageArray[index].sourceUrl
@@ -124,18 +133,20 @@ export default {
       } else {
         this.url = this.imageArray[index].sourceUrl
       }
-
-
-      //this.theLightbox = lbObj;
-      console.log('THE LIGHTBOX', this.theLightbox, this.imageArray)
     }
   }
 }
+
+/* 
+TODO: maybe remove Vue2TouchEvents and just use event listners
+TODO: Do data wrangling in parent component, right now we're looking for large version of the thumb here: imageSizeArray
+TODO: add alt text and caption
+*/
 </script>
 
 
 <style lang="scss" scoped>
-  $swipeMove: 20px;
+  $swipeMove: 55px;
   .lightbox {
     position: fixed;
     z-index: 100000;
@@ -144,16 +155,20 @@ export default {
     width: 100vw;
     height: 100vh;
     background: $light;
+    overflow: hidden;
     .image {
       &.down img {
         transform: scale(0.9) translateY($swipeMove) translatex(0px);
       }
       &.left img {
-        transform: scale(0.95) translateY(0px) translateX(-$swipeMove);
+        transform: scale(0.96) translateY(0px) translateX(-$swipeMove);
       }  
       &.right img {
-        transform: scale(0.95) translateY(0px) translateX($swipeMove);
-      }            
+        transform: scale(0.96) translateY(0px) translateX($swipeMove);
+      }
+      &.naw img {
+        opacity: 0.2;
+      }                  
     }
     img {
       top: 5vw;
