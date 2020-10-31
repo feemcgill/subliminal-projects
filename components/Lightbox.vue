@@ -59,13 +59,12 @@ export default {
       const movedY = a.changedTouches[0].clientY
       const deltaX = movedX - this.swipeData.startX
       const deltaY = movedY - this.swipeData.startY
-        if (Math.abs(deltaX) > 30) {
+        if (Math.abs(deltaX) > 5) {
           if (deltaX > 0) this.swipeClass = "right"
           else this.swipeClass = "left"
         }
-        if (Math.abs(deltaY) > 30) {
+        if (Math.abs(deltaY) > 15) {
           if (deltaY > 0) this.swipeClass = "down"
-          else this.swipeClass = "up"
         }
     },
     touchEnd() {
@@ -150,10 +149,10 @@ export default {
         transform: scale(0.9) translateY($swipeMove) translatex(0px);
       }
       &.left img {
-        transform: scale(1) translateY(0px) translateX(-$swipeMove);
+        transform: scale(0.95) translateY(0px) translateX(-$swipeMove);
       }  
       &.right img {
-        transform: scale(1) translateY(0px) translateX($swipeMove);
+        transform: scale(0.95) translateY(0px) translateX($swipeMove);
       }            
     }
     img {
