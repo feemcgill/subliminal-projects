@@ -1,5 +1,12 @@
 <template>
-  <div class="lightbox">
+  <div class="lightbox"
+      v-on:keyup.left="prev"
+      v-on:keyup.right="next"
+      v-on:keyup.down="close"
+      v-on:keyup="(a) => {
+        console.log('LIGHTBOX KEY', a);
+      }"
+  >
     <a class="close" @click="close">Close</a>
     <div :class="'image '+ swipeClass"
       ref="lightboxImg"
@@ -41,17 +48,35 @@ export default {
   },
   mounted() {
     this.updateLightbox(this.startingIndex)
+
+    //if (process.client) {
+      window.addEventListener('keyup', event => {
+        console.log('keys', event.keyCode)
+        if (event.keyCode === 37) { 
+          this.prev()
+        }
+        if (event.keyCode === 39) { 
+          this.next()
+        }  
+        if (event.keyCode === 40 || event.keyCode == 27) { 
+          this.close()
+        }            
+      })
+    //}  
   },
   methods: {
     touchStart(a) {
-      this.swipeData.startX = a.changedTouches[0].clientX
-      this.swipeData.startY = a.changedTouches[0].clientY
+      if (a.changedTouches) {
+        this.swipeData.startX = a.changedTouches[0].clientX
+        this.swipeData.startY = a.changedTouches[0].clientY
+      }
     },
     touchMove(a) {
-      const movedX = a.changedTouches[0].clientX
-      const movedY = a.changedTouches[0].clientY
-      const deltaX = movedX - this.swipeData.startX
-      const deltaY = movedY - this.swipeData.startY
+      if (a.changedTouches) {
+        const movedX = a.changedTouches[0].clientX
+        const movedY = a.changedTouches[0].clientY
+        const deltaX = movedX - this.swipeData.startX
+        const deltaY = movedY - this.swipeData.startY
         if (Math.abs(deltaX) > 30) {
           if (deltaX > 0) {
             if(this.prevIndex != null) {
@@ -72,6 +97,7 @@ export default {
         } else {
           this.swipeClass = null
         }
+      }
     },
     touchEnd() {
 
@@ -90,17 +116,14 @@ export default {
       this.swipeData = {}
     },   
     close() {
-      console.log('CLOSE CALLED')
       this.$emit('closeLightbox', true)
     },
     prev() {
-      console.log('PREV: ', this.prevIndex, this.nextIndex)
       if(this.prevIndex != null) {
         this.updateLightbox(this.prevIndex)
       }       
     },
     next() {
-      console.log('NEXT: ', this.prevIndex, this.nextIndex)
       if(this.nextIndex) {
         this.updateLightbox(this.nextIndex)
       }      
@@ -199,11 +222,11 @@ TODO: add alt text and caption
       z-index: 100;
       > div {
         margin: 0 10px;
-        cursor: pointer;
+        cursor: not-allowed;
         opacity: 0.5;
         &.active {
           opacity: 1;
-          cursor: none;
+          cursor: pointer;
         }
       }
     }
