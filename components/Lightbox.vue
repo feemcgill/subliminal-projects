@@ -48,10 +48,7 @@ export default {
   },
   mounted() {
     this.updateLightbox(this.startingIndex)
-
-    //if (process.client) {
       window.addEventListener('keyup', event => {
-        console.log('keys', event.keyCode)
         if (event.keyCode === 37) { 
           this.prev()
         }
@@ -62,7 +59,6 @@ export default {
           this.close()
         }            
       })
-    //}  
   },
   methods: {
     touchStart(a) {
