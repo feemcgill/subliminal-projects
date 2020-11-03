@@ -219,7 +219,7 @@ TODO: add alt text and caption
       > div {
         margin: 0 10px;
         cursor: not-allowed;
-        opacity: 0.5;
+        opacity: 0.9;
         &.active {
           opacity: 1;
           cursor: pointer;
