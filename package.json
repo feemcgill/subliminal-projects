@@ -7,7 +7,8 @@
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",
-    "spa": "nuxt generate --spa"
+    "spa": "nuxt generate --spa",
+    "build-spa": "nuxt build --spa"
   },
   "dependencies": {
     "@nuxtjs/apollo": "^4.0.1-rc.3",
