@@ -1,29 +1,28 @@
 <template>
   <div v-if="page">
+
     <section class="current-show container">
-      <nuxt-link v-bind:to="'/exhibitions/'+ page.ExhibitionsLandingFields.featuredExhibition[0].slug" class="current-show-wrap">
-        <div class="feature-img">
-          <FadeImage v-bind:src="page.ExhibitionsLandingFields.featuredExhibition[0].featuredImage.node.sourceUrl" />
-        </div>
-      </nuxt-link>
-      <div class="lockdown">
-        <div class="title" v-html="page.ExhibitionsLandingFields.featuredExhibition[0].title"></div>
+      <div v-for="exhibition in page.ExhibitionsLandingFields.featuredExhibition" class="featured-exhibition" v-bind:key="exhibition.slug">
+        <nuxt-link v-bind:to="'/exhibitions/' + exhibition.slug" class="current-show-wrap">
+          <div class="feature-img">
+            <div class="wrap">
+              <FadeImage v-bind:src="exhibition.featuredImage.node.sourceUrl" />
+            </div>
+          </div>
+          <div class="lockdown">
+            <div class="title" v-html="exhibition.title"></div>
 
-        <ul class="artists" v-if="page.ExhibitionsLandingFields.featuredExhibition[0].artists && page.ExhibitionsLandingFields.featuredExhibition[0].artists.nodes.length < 3" >
-          <li v-for="artist in page.ExhibitionsLandingFields.featuredExhibition[0].artists.nodes" v-bind:key="artist.slug">{{artist.name}}</li>
-        </ul>
-        <div class="dates">
-          <span v-html="page.ExhibitionsLandingFields.featuredExhibition[0].ExhibitionFields.startDate" /> — <span v-html="page.ExhibitionsLandingFields.featuredExhibition[0].ExhibitionFields.endDate" />
-        </div>              
-      </div>      
-    </section>
-
-    <section class="upcoming-shows container">
-      <h2 class="upcoming-shows-title">Upcoming Shows</h2>
-      <div class="grid">
-        <ExhibitionThumb class="show" v-for="feature in page.ExhibitionsLandingFields.upcomingExhibitions" :key="feature.slug" v-bind:exhibition="feature" />
+            <ul class="artists" v-if="exhibition.artists && exhibition.artists.nodes.length < 3" >
+              <li v-for="artist in exhibition.artists.nodes" v-bind:key="artist.slug">{{artist.name}}</li>
+            </ul>
+            <div class="dates">
+              <span v-html="exhibition.ExhibitionFields.startDate" /> — <span v-html="exhibition.ExhibitionFields.endDate" />
+            </div>              
+          </div>
+        </nuxt-link>          
       </div>
     </section>
+    <AllExhibitions />
   </div>
 </template>
 
@@ -31,12 +30,14 @@
 import gql from 'graphql-tag';
 import FadeImage from '~/components/FadeImage'
 import ExhibitionThumb from '~/components/ExhibitionThumb'
+import AllExhibitions from '~/components/AllExhibitions'
 import meta, {metaGql} from '~/plugins/meta.js'
 
 export default {
   components: {
     FadeImage,
-    ExhibitionThumb
+    ExhibitionThumb,
+    AllExhibitions
   },
   head () {
     if (this.page && this.page.seo) {
@@ -116,62 +117,62 @@ export default {
   .current-show {
     margin-bottom: $factor * 2;
   }
+  .featured-exhibition {
+    &:nth-last-of-type(even) {
+      .current-show-wrap{
+        flex-direction: row-reverse;
+      }
+    }
+  }
   .current-show-wrap {
     position: relative;
-    margin-bottom: $factor;
+    margin-bottom: $factor * 2.5;
     display: block;
     color: $dark; 
-    /* .lockup {
-      position: absolute;
-      bottom: $factor * 0.5;
-      left: $factor * 0.5;
-      font-size: 2em;
-      transition: all 0.2s ease-in;
-      background: $light;
-      padding: $factor * 0.25;
-      //text-align: center;
-      @include breakpoint(small) {
-        font-size: 1rem;
-      }
-    } */
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    text-decoration: none;
     .feature-img {
-      padding-bottom: 38%;
-      position: relative;
-      @include breakpoint(small) {
-        padding-bottom: 65vh;
-      }      
+      width: 66%;
+      .wrap {
+        width: 100%;
+        padding-bottom: 57%;
+        position: relative;
+        overflow: hidden;
+      }  
       img {
         position: absolute;
         width: 100%;
         height: 100%;
         object-fit: cover;
+        transform: scale(1);
+        transition: all 0.2s ease-in;
       }      
+    }
+    &:hover {
+      img {
+        transform: scale(1.03);
+      }
     }
   }
   .lockdown {
-    display: flex;
+    width: 33%;
     font-size: 1.5rem;
     font-weight: bold;
     align-items: center;
+    text-align: center;
     @include breakpoint(small) {
       display: block;
     }       
-    .title,
-    .artists {
-      &:after {
-        content: ' / ';
-        margin: 0 $factor * 0.25;
-        font-weight: 100;
-        @include breakpoint(small) {
-          display: none;
-        }          
-      }
-    }
     .dates {
-      font-weight: bold;
-      font-size: 1.2rem
+      margin-top: 0.5rem;
+      font-weight: normal;
+      font-size: 1rem
     }
     .artists {
+      text-align: center;
+      display: block;
       li {
         display: inline-block;
         &:after {

@@ -96,6 +96,7 @@ export default {
       display: flex;
       li {
         @include badge;
+        margin-left: 5px;
       }
     }
   }
