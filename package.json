@@ -8,7 +8,7 @@
     "start": "nuxt start",
     "generate": "nuxt generate",
     "spa": "nuxt generate --spa",
-    "build-spa": "nuxt build --spa"
+    "staging": "npm run spa && echo 'User-agent: *\nDisallow: /' > dist/robots.txt"
   },
   "dependencies": {
     "@nuxtjs/apollo": "^4.0.1-rc.3",
