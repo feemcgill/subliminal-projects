@@ -61,6 +61,11 @@ export default {
                       imageCaption
                       content
                       verticalAlign
+                      imageLink {
+                        url
+                        title
+                        target
+                      }  
                       image {
                         altText
                         sourceUrl(size: LARGE)

@@ -5,10 +5,16 @@
       <div v-for="(column, colindex) in row.columns" v-bind:key="colindex" v-bind:class="'project-col '+ column.type+ ' '+column.verticalAlign">
       
         <div v-if="column.type == 'image' && column.image" v-bind:class="'image-wrap ' + column.imageFit">
-          <FadeImage :src="column.image.sourceUrl" :srcset="column.image.srcSet" :alt="column.image.altText" :width="column.image.mediaDetails.width" :height="column.image.mediaDetails.height" />
-          <div v-if="column.imageCaption"  class="caption" v-html="column.imageCaption"></div>
+          <a v-if="column.imageLink"  class="link" v-bind:href="column.imageLink.url" v-bind:target="column.imageLink.target">
+            <FadeImage :src="column.image.sourceUrl" :srcset="column.image.srcSet" :alt="column.image.altText" :width="column.image.mediaDetails.width" :height="column.image.mediaDetails.height" />
+            <div v-if="column.imageCaption"  class="caption" v-html="column.imageCaption"></div>
+          </a>
+          <div v-else>
+            <FadeImage :src="column.image.sourceUrl" :srcset="column.image.srcSet" :alt="column.image.altText" :width="column.image.mediaDetails.width" :height="column.image.mediaDetails.height" />
+            <div v-if="column.imageCaption"  class="caption" v-html="column.imageCaption"></div>            
+          </div>
         </div>
-      
+
         <div v-if="column.type == 'content'">
           <div class="formatted-content" v-html="column.content"></div>
         </div>
