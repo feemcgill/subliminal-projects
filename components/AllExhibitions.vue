@@ -133,6 +133,9 @@ export default {
   .exhibition-thumb,
   .past-exhibition {
     @include thirds;
+    @include breakpoint(small) {
+      margin-bottom: 1em;
+    }
   }
 
 </style>

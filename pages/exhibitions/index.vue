@@ -135,6 +135,10 @@ export default {
     text-decoration: none;
     .feature-img {
       width: 66%;
+      @include breakpoint(small) {
+        width: 100%;
+        margin-bottom: 1em;
+      }
       .wrap {
         width: 100%;
         padding-bottom: 57%;
@@ -164,6 +168,7 @@ export default {
     text-align: center;
     @include breakpoint(small) {
       display: block;
+      width: 100%;
     }       
     .dates {
       margin-top: 0.5rem;
