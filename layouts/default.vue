@@ -12,17 +12,7 @@
           <nav id="main-nav" v-bind:class="open? 'nav-open' : 'nav-closed'">
             <ul class="main">
               <li v-on:click="close"><nuxt-link to="/info" tabindex="0">Info</nuxt-link></li>
-              <li v-on:click="close">
-                <nuxt-link to="/exhibitions" tabindex="0">Exhibitions</nuxt-link>
-                <ul class="sub">
-                  <li v-on:click="close">
-                    <nuxt-link to="/exhibitions" tabindex="0">Current & Upcoming</nuxt-link>
-                  </li>
-                  <li v-on:click="close">
-                    <nuxt-link to="/exhibitions/past" tabindex="0">Past</nuxt-link>
-                  </li>              
-                </ul>      
-              </li>
+              <li v-on:click="close"><nuxt-link to="/exhibitions" tabindex="0">Exhibitions</nuxt-link></li>
               <li v-on:click="close"><nuxt-link to="/projects" tabindex="0">Projects</nuxt-link></li>  
               <li v-on:click="close"><nuxt-link to="/artists" tabindex="0">Artists</nuxt-link></li>  
               <li v-on:click="close">
