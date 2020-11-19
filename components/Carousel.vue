@@ -182,11 +182,19 @@ export default {
     opacity: 0;
     &:hover {
       opacity: 1;
+      &.prev {
+        transform: translateX(0);
+      }
+      &.next {
+        transform: translateX(0);
+      }      
     }
     &.prev {
+      transform: translateX(10px);
       left: 0;
     }
     &.next {
+      transform: translateX(-10px);
       right: 0;
     }
   }
