@@ -1,51 +1,46 @@
 <template>
   <div v-if="page && slides.length" id="page-home">
-
-
     <section class="hero">
       <div class="carousel-view container">
         <div class="carousel-wrap">
             <nuxt-link v-bind:to="'/exhibitions/'+slides[0].slug" v-show="slides[0].featuredImage.node.sourceUrl" class="slide" >
-              <img v-bind:src="slides[0].featuredImage.node.sourceUrl" alt="">      
+              <div class="img-wrap">
+                <div class="img">
+                  <img v-bind:src="slides[0].featuredImage.node.sourceUrl" alt="">      
+                </div>
+              </div>
+              <div class="lockup">
+                <div>
+                  <h2 v-html="slides[0].title"></h2>
+                  <ul class="artists" v-if="slides[0].artists && slides[0].artists && slides[0].artists.nodes.length < 3" >
+                    <li v-for="(artist, index) in slides[0].artists.nodes" v-bind:key="artist.slug+index"><h2>{{artist.name}}</h2></li>
+                  </ul>
+                  <div class="dates">
+                    <span v-html="slides[0].ExhibitionFields.startDate" /> — <span v-html="slides[0].ExhibitionFields.endDate" />
+                  </div>
+                </div>
+              </div>            
             </nuxt-link>
+        </div> 
+        <div v-if="slides.length >= 1" class='carousel-controls__button prev' @click="() => {
+          previous()
+          stopCycle()          
+          }">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32.826" height="57.653" viewBox="0 0 32.826 57.653">
+            <path id="Path_11" data-name="Path 11" d="M407.739,614.292l-28,26,28,26" transform="translate(-377.739 -611.466)" fill="none" stroke="#b3b3b3" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="4"/>
+          </svg>        
+        </div>
+        <div v-if="slides.length >= 1" class='carousel-controls__button next' @click="() => {
+          next()
+          stopCycle()
+          }">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32.827" height="57.653" viewBox="0 0 32.827 57.653">
+              <path id="Path_12" data-name="Path 12" d="M1509.739,666.292l28-26-28-26" transform="translate(-1506.912 -611.466)" fill="none" stroke="#b3b3b3" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="4"/>
+            </svg>          
         </div>
       </div>
       
-      <div v-if="slides.length > 1" class='carousel-controls'>
-        <div class="container">
-          <div class='carousel-controls__button prev' @click="() => {
-            previous()
-            stopCycle()          
-            }">
-              <svg xmlns="http://www.w3.org/2000/svg" width="32.826" height="57.653" viewBox="0 0 32.826 57.653">
-                <path id="Path_11" data-name="Path 11" d="M407.739,614.292l-28,26,28,26" transform="translate(-377.739 -611.466)" fill="none" stroke="#b3b3b3" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="4"/>
-              </svg>
-            </div>
-          <div class='carousel-controls__button next' @click="() => {
-            next()
-            stopCycle()
-            }">
-            <svg xmlns="http://www.w3.org/2000/svg" width="32.827" height="57.653" viewBox="0 0 32.827 57.653">
-              <path id="Path_12" data-name="Path 12" d="M1509.739,666.292l28-26-28-26" transform="translate(-1506.912 -611.466)" fill="none" stroke="#b3b3b3" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="4"/>
-            </svg>
-          </div>
-        </div>
-      </div> 
-      <div class="carousel-info container">
-        <div class="lockup">
-          <div>
-            <h2 v-html="slides[0].title"></h2>
-
-            <ul class="artists" v-if="slides[0].artists && slides[0].artists && slides[0].artists.nodes.length < 3" >
-              <li v-for="(artist, index) in slides[0].artists.nodes" v-bind:key="artist.slug+index"><h2>{{artist.name}}</h2></li>
-            </ul>
-
-            <div class="dates">
-              <span v-html="slides[0].ExhibitionFields.startDate" /> — <span v-html="slides[0].ExhibitionFields.endDate" />
-            </div>
-          </div>
-        </div>
-      </div>          
+    
     </section>
 
     
@@ -122,7 +117,6 @@ export default {
   apollo: {
     page: {
     result({data}) {
-        console.log('data', data.page)
         this.slides = data.page.HomeFields.hero
         console.log(this.slides.length, 'slides');
         if (this.slides[0].featuredImage) {
@@ -184,7 +178,7 @@ export default {
 
 <style lang="scss">
 
-$carouselHeight: 46vw;
+$carouselHeight: 56vw;
 
 .hero {
   position: relative;
@@ -193,111 +187,114 @@ $carouselHeight: 46vw;
 .carousel-view {
   overflow: hidden;
   width: 100vw;
-  height: $carouselHeight;
   flex-wrap: wrap;  
   position: relative;
-}
-.carousel {
-  //margin-top: -$carouselHeight;
-  //position: absolute;
-  // \width: 100%;
-}
-.carousel-wrap {
-
 }
 .slide {
   position: relative;
   width: 100%;
-  height: $carouselHeight;
   //transition: transform 1.2s ease-in-out;
   display: block;
   color: $dark;
+  display: flex;
+  text-decoration: none;
+  align-items: center;
+  justify-content: space-between;
+  @include breakpoint(small) {
+    display: block;
+  }  
   &.v-move {
     .lockup {
       opacity: 0;
       transform: translateX(-100px);
     }
   }
-  img {
-    position: absolute;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    background-color: $dark;
-    object-position: center;
+  .img-wrap {
+    width: 66%;
+    @include breakpoint(small) {
+      width: 100%;
+    }    
+    .img {
+      padding-bottom: 57%;
+      width: 100%;
+      position: relative;   
+      img {
+        position: absolute;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        background-color: $dark;
+        object-position: center;
+      }   
+    }
+  }
+  .lockup {
+    width: 33%;
+    transition: all 0.2s ease-in;
+    background: $light;
+    padding: $factor * 0.5;
+    font-weight: bold;
+    text-align: center;
+    h2, h3 {
+      font-size: 1.5rem;
+    }
+    @include breakpoint(small) {
+      width: 100%;
+    }
+    .artists {
+      display: block;
+    }
+    .dates {
+      font-weight: 200;
+      font-size: 1.2rem;
+
+    }
   }
 }
 
 .carousel-info {
-  //position: absolute;
-  /* left: 0;
-  width: 100%;
-  height: 100%;    */
   display: flex;
   align-items: flex-end;
   justify-content: flex-start;
   z-index: 100;
   text-align: left;
 }
-.lockup {
-  transition: all 0.2s ease-in;
-  background: $light;
-  padding: $factor * 0.5;
-  //margin: $factor;
-  font-weight: bold;
-  h2, h3 {
-    //@include type-big;
-    font-size: 1.5rem;
-  }
-  .dates {
-    //@include type-big-sub;
-    font-weight: 200;
-    font-size: 1.2rem;
 
-  }
-}
 
 .carousel-controls {
-  position: absolute;
-  width: 100%;
-  top: 27vw;
-  z-index: 1000;
-  //background: $light;
-  //font-size: 3em;
-  .container {
-    position: relative;
-  }
   &__button {
     color: $dark;
     cursor: pointer;
     font-size: 3em;
-    //text-shadow: 2px 2px 10px $light;
     position: absolute;
+    width: 10%;
+    height: 100%;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.6s ease-out;
+    opacity: 0;
+    &:hover {
+      opacity: 1;
+    }
     &.prev {
-      left: $factor;
+      left: 0;
     }
     &.next {
-      right: $factor;
+      right: 0;
     }
   }
 }
 .features {
   display: flex;
   flex-wrap: wrap;
-  //justify-content: space-between;
   margin-bottom: $factor;
   .feature {
     @include thirds;
-    /* display: flex;
-    flex-wrap: wrap;
-    align-items: flex-end;     */
     margin-bottom: $factor * 2;
-    //max-width: 423px;
-
-
     .img-wrap {
-      /* width: 65%; */
       margin-bottom: 1em;
     }
     .img {
