@@ -76,8 +76,8 @@ export default {
       `
       return apolloFetch({ query }).then(result => {
         const { data } = result
-        console.log('Got data for dynamic routes')
-        return data.exhibitions.edges.map(exhibition => `exhibitions/${exhibition.node.slug}`)
+        console.log('Got data for dynamic routes', process.env.WP_GRAPHQL_ENDPOINT, 'XXX XXX XXX')
+        return data.exhibitions.edges.map(exhibition => `/exhibitions/${exhibition.node.slug}`)
       }).catch(error => {
         console.log('THERE WAS AN ERROR')
         console.log(error)
