@@ -76,8 +76,8 @@ export default {
       `
       return apolloFetch({ query }).then(result => {
         const { data } = result
-        console.log('Got data for dynamic routes', data, data.exhibitions.edges[0])
-        return data.exhibitions.edges.map(exhibition => `exhibitions/${exhibition.node.slug}`)
+        console.log('Got data for dynamic routes', data.exhibitions.edges[0])
+        return data.exhibitions.edges.map(exhibition => `/exhibitions/${exhibition.node.slug}`)
       }).catch(error => {
         console.log('THERE WAS AN ERRRRRORRR')
         console.log(error)
