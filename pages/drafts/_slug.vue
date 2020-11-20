@@ -1,8 +1,8 @@
 
 <template>
-  <div v-if="project">
-    <PageBuilder v-if="project.ProjectBuilder.project.length" v-bind:content="project"/>
-    <ExhibitionProjectClassic v-else v-bind:content="project"/>
+  <div v-if="draft">
+    <PageBuilder v-if="draft.ProjectBuilder.project.length" v-bind:content="draft"/>
+    <ExhibitionProjectClassic v-else v-bind:content="draft"/>
   </div>
 </template>
 <script>
@@ -10,25 +10,16 @@
 import gql from 'graphql-tag'
 import ExhibitionProjectClassic from '~/components/ExhibitionProjectClassic'
 import PageBuilder from '~/components/PageBuilder'
-import meta, {metaGql} from '~/plugins/meta.js'
 
 export default {
   components: {
     ExhibitionProjectClassic,
     PageBuilder
   },
-  head () {
-    if (this.project && this.project.seo) {
-      return {
-        title: this.project.seo.title,
-        meta: meta(this.project.seo)
-      }    
-    }
-  },  
   mounted() {
   },   
   apollo: {
-      project: {
+      draft: {
         error: function(error) {
           console.log(error)
         },
@@ -45,7 +36,6 @@ export default {
               id
               title
               content
-              ${metaGql}
               featuredImage {
                 node {
                   sourceUrl(size: LARGE)
@@ -53,7 +43,7 @@ export default {
               }
               ProjectBuilder {
                 project {
-                  ... on Project_Projectbuilder_Project_Row {
+                  ... on Draft_Projectbuilder_Project_Row {
                     fieldGroupName
                     columns {
                       type
