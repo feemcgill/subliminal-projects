@@ -60,29 +60,29 @@ export default {
     { src: '~/plugins/vue-touch', ssr: false }
   ],
   generate: {
-    routes: function () {
-      const uri = process.env.WP_GRAPHQL_ENDPOINT
-      const apolloFetch = createApolloFetch({ uri })
-      const query = `
-        query GenerateQuery {
-          exhibitions(first: 500) {
-            edges {
-              node {
-                slug
-              }
-            }
-          }
-        }       
-      `
-      return apolloFetch({ query }).then(result => {
-        const { data } = result
-        console.log('Got data for dynamic routes', data.exhibitions.edges[0])
-        return data.exhibitions.edges.map(exhibition => `/exhibitions/${exhibition.node.slug}`)
-      }).catch(error => {
-        console.log('THERE WAS AN ERRRRRORRR')
-        console.log(error)
-      })
-    }
+    // routes: function () {
+    //   const uri = process.env.WP_GRAPHQL_ENDPOINT
+    //   const apolloFetch = createApolloFetch({ uri })
+    //   const query = `
+    //     query GenerateQuery {
+    //       exhibitions(first: 500) {
+    //         edges {
+    //           node {
+    //             slug
+    //           }
+    //         }
+    //       }
+    //     }       
+    //   `
+    //   return apolloFetch({ query }).then(result => {
+    //     const { data } = result
+    //     console.log('Got data for dynamic routes', data.exhibitions.edges[0])
+    //     return data.exhibitions.edges.map(exhibition => `/exhibitions/${exhibition.node.slug}`)
+    //   }).catch(error => {
+    //     console.log('THERE WAS AN ERRRRRORRR')
+    //     console.log(error)
+    //   })
+    // }
   }, 
   /*
   ** Auto import components
