@@ -110,7 +110,7 @@ export default {
   &:hover {
     .img-wrap .img {
       img {
-        transform: scale(1.03);
+        //transform: scale(1.03);
       }
     }
   }
