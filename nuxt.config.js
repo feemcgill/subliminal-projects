@@ -79,7 +79,7 @@ export default {
         console.log('Got data for dynamic routes')
         return data.exhibitions.edges.map(exhibition => `exhibitions/${exhibition.node.slug}`)
       }).catch(error => {
-        console.log('THERE WAS AN')
+        console.log('THERE WAS AN ERROR')
         console.log(error)
       })
     }
