@@ -32,5 +32,7 @@ export default {
   .page-wrapper {
     min-height: 100vh;
     position: relative;
+    width: 100%;
+    overflow-x: hidden;
   }
 </style>
