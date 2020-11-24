@@ -138,11 +138,6 @@ export default {
         transition: all 0.2s ease-in;
       }      
     }
-    &:hover {
-      img {
-        transform: scale(1.03);
-      }
-    }
   }
   .lockdown {
     width: 33%;
