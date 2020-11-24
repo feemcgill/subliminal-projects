@@ -45,7 +45,7 @@ export default {
       direction: 1,
       transitionName: "fade",
       show: false,
-      displayClass: "odd",
+      displayClass: "even",
     }
   },
   components: {
