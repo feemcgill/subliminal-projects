@@ -1,22 +1,20 @@
 <template>
   <div class="carousel">
     <transition-group tag="div" :name="transitionName" class="carousel-view">
-      <nuxt-link :to="'/exhibitions/' + slides[current].slug" v-if="show" :key="current" class="slide">
-        <div class="img-wrap">
-          <div v-if="slides[current].featuredImage" class="img">
+      <nuxt-link :to="'/exhibitions/' + slides[current].slug" v-if="show" :key="current" :class="'slide ' + displayClass">
+        <div class="feature-img">
+          <div v-if="slides[current].featuredImage" class="wrap">
             <img v-bind:src="slides[current].featuredImage.node.sourceUrl" alt="">      
           </div>
         </div>
-        <div class="lockup">
-          <div>
-            <h2 v-html="slides[current].title"></h2>
+        <div class="lockdown">
+            <div class="title" v-html="slides[current].title"></div>
             <ul class="artists" v-if="slides[current].artists && slides[current].artists && slides[current].artists.nodes.length < 3" >
-              <li v-for="(artist, index) in slides[current].artists.nodes" v-bind:key="artist.slug+index"><h2>{{artist.name}}</h2></li>
+              <li v-for="(artist, index) in slides[current].artists.nodes" v-bind:key="artist.slug+index">{{artist.name}}</li>
             </ul>
             <div class="dates">
               <span v-html="slides[current].ExhibitionFields.startDate" /> — <span v-html="slides[current].ExhibitionFields.endDate" />
             </div>
-          </div>
         </div>   
       </nuxt-link>
     </transition-group>
@@ -46,7 +44,8 @@ export default {
       current: 0,
       direction: 1,
       transitionName: "fade",
-      show: false
+      show: false,
+      displayClass: "odd",
     }
   },
   components: {
@@ -71,6 +70,11 @@ export default {
         : (this.transitionName = "fade")
       var len = this.slides.length;
       this.current = (this.current + dir % len + len) % len
+      if (this.current%2 == 0) {
+        this.displayClass = "even"
+      } else {
+        this.displayClass = "odd"
+      }
     }    
   },
   mounted() {
@@ -84,7 +88,7 @@ export default {
 </script>
 
 
-<style lang="scss">
+<style lang="scss" scoped>
 
 .carousel-view {
   width: 100%;
@@ -96,6 +100,88 @@ export default {
   }    
 
 }
+
+  .slide{
+    position: relative;
+    margin-bottom: $factor * 2.5;
+    display: block;
+    color: $dark; 
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    text-decoration: none;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    &.even {
+      flex-direction: row-reverse;
+    }
+    .feature-img {
+      width: 66%;
+      transition: all 1.5s ease-out;
+      @include breakpoint(small) {
+        width: 100%;
+        margin-bottom: 1em;
+      }
+      .wrap {
+        width: 100%;
+        padding-bottom: 57%;
+        position: relative;
+        overflow: hidden;
+      }  
+      img {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transform: scale(1);
+        transition: all 0.2s ease-in;
+      }      
+    }
+    &:hover {
+      img {
+        transform: scale(1.03);
+      }
+    }
+  }
+  .lockdown {
+    width: 33%;
+    font-size: 1.5rem;
+    font-weight: bold;
+    align-items: center;
+    text-align: center;
+    transition: all 1.3s ease-in 0.3s;
+    @include breakpoint(small) {
+      display: block;
+      width: 100%;
+    }       
+    .dates {
+      margin-top: 0.5rem;
+      font-weight: normal;
+      font-size: 1rem
+    }
+    .artists {
+      text-align: center;
+      display: block;
+      li {
+        display: inline-block;
+        &:after {
+          content: ',';
+          margin-right: 0.5rem;
+        }
+        &:last-of-type {
+          &:after {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+
+
+
+
+/*
 .slide {
   position: absolute;
   top: 0;
@@ -163,7 +249,7 @@ export default {
     }
   }
 }
-
+*/
 
 
 .carousel-controls {
@@ -205,10 +291,10 @@ export default {
 /* FADE IN */
 .fade-enter-active {
   transition: all 0.2s;
-  .img-wrap {
+  .feature-img {
     opacity: 0;
   }
-  .lockup {
+  .lockdown {
     transform: translateY(5px);
     opacity: 0;
   }    

@@ -67,7 +67,8 @@ export default {
     }
   },
   components: {
-    FadeImage
+    FadeImage,
+    Lightbox
   },
   mounted() {
   },
