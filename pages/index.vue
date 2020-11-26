@@ -1,51 +1,8 @@
 <template>
   <div v-if="page && slides.length" id="page-home">
 
-
-    <section class="hero">
-      <div class="carousel-view container">
-        <div class="carousel-wrap">
-            <nuxt-link v-bind:to="'/exhibitions/'+slides[0].slug" v-show="slides[0].featuredImage.node.sourceUrl" class="slide" >
-              <img v-bind:src="slides[0].featuredImage.node.sourceUrl" alt="">      
-            </nuxt-link>
-        </div>
-      </div>
-      
-      <div v-if="slides.length > 1" class='carousel-controls'>
-        <div class="container">
-          <div class='carousel-controls__button prev' @click="() => {
-            previous()
-            stopCycle()          
-            }">
-              <svg xmlns="http://www.w3.org/2000/svg" width="32.826" height="57.653" viewBox="0 0 32.826 57.653">
-                <path id="Path_11" data-name="Path 11" d="M407.739,614.292l-28,26,28,26" transform="translate(-377.739 -611.466)" fill="none" stroke="#b3b3b3" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="4"/>
-              </svg>
-            </div>
-          <div class='carousel-controls__button next' @click="() => {
-            next()
-            stopCycle()
-            }">
-            <svg xmlns="http://www.w3.org/2000/svg" width="32.827" height="57.653" viewBox="0 0 32.827 57.653">
-              <path id="Path_12" data-name="Path 12" d="M1509.739,666.292l28-26-28-26" transform="translate(-1506.912 -611.466)" fill="none" stroke="#b3b3b3" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="4"/>
-            </svg>
-          </div>
-        </div>
-      </div> 
-      <div class="carousel-info container">
-        <div class="lockup">
-          <div>
-            <h2 v-html="slides[0].title"></h2>
-
-            <ul class="artists" v-if="slides[0].artists && slides[0].artists && slides[0].artists.nodes.length < 3" >
-              <li v-for="(artist, index) in slides[0].artists.nodes" v-bind:key="artist.slug+index"><h2>{{artist.name}}</h2></li>
-            </ul>
-
-            <div class="dates">
-              <span v-html="slides[0].ExhibitionFields.startDate" /> — <span v-html="slides[0].ExhibitionFields.endDate" />
-            </div>
-          </div>
-        </div>
-      </div>          
+    <section v-if="slides.length" class="hero container">
+      <Carousel v-bind:slides="slides" />
     </section>
 
     
@@ -70,15 +27,16 @@
 
 <script>
 import gql from 'graphql-tag';
-import ExhibitionThumb from '~/components/ExhibitionThumb'
 import meta, {metaGql} from '~/plugins/meta.js'
+import Carousel from '~/components/Carousel'
 
 export default {
+  components: {
+    Carousel
+  },
   data () {
     return {
-      slides: null,
-      slide: null,
-      cycleSlides: null
+      slides: null
     }
   },
   head () {
@@ -88,46 +46,11 @@ export default {
         meta: meta(this.page.seo)
       }    
     }
-  },  
-  components: {
-    ExhibitionThumb
-  },
-  methods: {
-    shuffle() {
-      this.slides = _.shuffle(this.slides);
-    },    
-    next () {
-      const first = this.slides.shift()
-      this.slides = this.slides.concat(first)
-    },
-    previous () {
-      const last = this.slides.pop()
-      this.slides = [last].concat(this.slides)
-    },
-    startCycle() {
-      this.cycleSlides = setInterval(() => {
-        this.next()
-      }, 5000)
-    },
-    stopCycle() {
-      clearInterval(this.cycleSlides)
-    }
-  },
-  mounted() {
-    this.startCycle()
-  },
-  beforeDestroy() {
-    this.stopCycle()
   },
   apollo: {
     page: {
     result({data}) {
-        console.log('data', data.page)
         this.slides = data.page.HomeFields.hero
-        console.log(this.slides.length, 'slides');
-        if (this.slides[0].featuredImage) {
-          this.$store.commit('setLogoBg', this.slides[0].featuredImage.node.sourceUrl)
-        }
       },
       error: function(error) {
         console.log(error)
@@ -184,120 +107,21 @@ export default {
 
 <style lang="scss">
 
-$carouselHeight: 46vw;
+$carouselHeight: 56vw;
 
 .hero {
   position: relative;
   margin-bottom: $factor * 1.5;
 }
-.carousel-view {
-  overflow: hidden;
-  width: 100vw;
-  height: $carouselHeight;
-  flex-wrap: wrap;  
-  position: relative;
-}
-.carousel {
-  //margin-top: -$carouselHeight;
-  //position: absolute;
-  // \width: 100%;
-}
-.carousel-wrap {
 
-}
-.slide {
-  position: relative;
-  width: 100%;
-  height: $carouselHeight;
-  //transition: transform 1.2s ease-in-out;
-  display: block;
-  color: $dark;
-  &.v-move {
-    .lockup {
-      opacity: 0;
-      transform: translateX(-100px);
-    }
-  }
-  img {
-    position: absolute;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    background-color: $dark;
-    object-position: center;
-  }
-}
-
-.carousel-info {
-  //position: absolute;
-  /* left: 0;
-  width: 100%;
-  height: 100%;    */
-  display: flex;
-  align-items: flex-end;
-  justify-content: flex-start;
-  z-index: 100;
-  text-align: left;
-}
-.lockup {
-  transition: all 0.2s ease-in;
-  background: $light;
-  padding: $factor * 0.5;
-  //margin: $factor;
-  font-weight: bold;
-  h2, h3 {
-    //@include type-big;
-    font-size: 1.5rem;
-  }
-  .dates {
-    //@include type-big-sub;
-    font-weight: 200;
-    font-size: 1.2rem;
-
-  }
-}
-
-.carousel-controls {
-  position: absolute;
-  width: 100%;
-  top: 27vw;
-  z-index: 1000;
-  //background: $light;
-  //font-size: 3em;
-  .container {
-    position: relative;
-  }
-  &__button {
-    color: $dark;
-    cursor: pointer;
-    font-size: 3em;
-    //text-shadow: 2px 2px 10px $light;
-    position: absolute;
-    &.prev {
-      left: $factor;
-    }
-    &.next {
-      right: $factor;
-    }
-  }
-}
 .features {
   display: flex;
   flex-wrap: wrap;
-  //justify-content: space-between;
   margin-bottom: $factor;
   .feature {
     @include thirds;
-    /* display: flex;
-    flex-wrap: wrap;
-    align-items: flex-end;     */
     margin-bottom: $factor * 2;
-    //max-width: 423px;
-
-
     .img-wrap {
-      /* width: 65%; */
       margin-bottom: 1em;
     }
     .img {
@@ -333,6 +157,4 @@ $carouselHeight: 46vw;
     }
   }
 }
-
- 
 </style>
