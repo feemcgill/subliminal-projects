@@ -1,15 +1,16 @@
 <template>
   <div>
     <section v-if="pageData" class="intro container">
-      <div class="img">
+      <div class="img" v-if="pageData.featuredImage">
         <FadeImage v-bind:src="pageData.featuredImage.node.sourceUrl" v-bind:alt="pageData.featuredImage.node.altText" v-bind:srcset="pageData.featuredImage.node.srcSet" />
       </div>
-      <div class="content" v-html="pageData.content" />
+      <div class="content" v-if="pageData.content" v-html="pageData.content" />
     </section>
     <section class="artists-list">
       <div v-if="gotArtists">
         <div class="container">
-          <div class="artists">
+          <ArtistsStatic />
+          <!-- <div class="artists">
             <div  class="artist" v-for="item in filteredArtists" v-bind:key="item.node.slug">
               <h4>{{item.node.name}}</h4>
               <div v-if="item.node.ArtistFields.instagramHandle || item.node.ArtistFields.link" class="links">
@@ -25,7 +26,7 @@
                 <a target="_blank" v-bind:href="item.node.ArtistFields.siteLink">Website</a>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
       <div class="loader" v-else>
@@ -41,14 +42,16 @@
 
 <script>
 import FadeImage from '~/components/FadeImage'
+import ArtistsStatic from '~/components/ArtistsStatic'
 import gql from 'graphql-tag';
 export default {
   components: {
-    FadeImage
+    FadeImage,
+    ArtistsStatic
   },
   data: () => {
     return {
-      gotArtists: false,
+      gotArtists: true,
       pageData: null
     }
   },
@@ -102,16 +105,7 @@ export default {
         first: 100
       },      
       result({data}) {
-        this.pageData = data.page
-        if (this.pageData.featuredImage) {
-          this.$store.commit('setLogoBg', this.pageData.featuredImage.node.sourceUrl)
-        }
-        if (data.artists.pageInfo.hasNextPage) {
-          this.loadMore();
-        } else {
-          console.log('GOT EM ALL');
-          this.gotArtists = true
-        }        
+        this.pageData = data.page     
       },
       error: function(error) {
         console.log(error)
