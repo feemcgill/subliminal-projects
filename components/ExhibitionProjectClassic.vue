@@ -11,7 +11,7 @@
           <div class="intro">
             <div class="exhibition-title">
               <div class="info">
-                <h1>{{content.title}}</h1>
+                <div class="title">{{content.title}}</div>
 
                 <ul v-bind:class="content.artists.nodes.length > 1 ? 'artists list' : 'artists'" v-if="content.artists" >
                   <li v-for="artist in content.artists.nodes" v-bind:key="artist.slug">{{artist.name}}</li>
@@ -155,30 +155,31 @@ export default {
       margin-bottom: $factor;
     }        
     .info {
-      font-size: 2em;
+      font-size: 1.5rem;
       @include breakpoint(small) {
         margin-bottom: $factor;
         width: 100%;
       }          
-      h1 {
-        font-size: 1em;
+      h1, .title {
+        //font-size: 1em;
         font-weight: bold;
         text-transform: unset;
       }
       .date {
-        font-size: 0.75em;
+        //font-size: 0.75em;
         font-weight: normal;
         //margin-bottom: 1em;
+        font-size: 1rem;
       }
       .opening {
-        font-size: 0.75em;
+        //font-size: 0.75em;
         font-weight: normal;
       }
       .artists {
         width: 50%;
-
+        font-weight: bold;
         &.list {
-          font-size: 0.5em;
+          //font-size: 0.5em;
           display: block;
           margin-bottom: 1em;
           li {

@@ -220,6 +220,9 @@ export default {
       text-decoration: none;
       display: block;
       margin-bottom: $factor * 2;
+      @include breakpoint(small) {
+        margin-bottom: $factor;
+      }
       &:hover {
         .img  img {
           transform: scale(1.03);
