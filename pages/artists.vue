@@ -7,26 +7,26 @@
       <div class="content" v-if="pageData.content" v-html="pageData.content" />
     </section>
     <section class="artists-list">
-      <div v-if="gotArtists">
+      <div v-if="artistData">
         <div class="container">
-          <ArtistsStatic />
-          <!-- <div class="artists">
-            <div  class="artist" v-for="item in filteredArtists" v-bind:key="item.node.slug">
-              <h4>{{item.node.name}}</h4>
-              <div v-if="item.node.ArtistFields.instagramHandle || item.node.ArtistFields.link" class="links">
-                  <a target="_blank" v-if="item.node.ArtistFields.link" v-bind:href="item.node.ArtistFields.link"> 
-                    <span v-if="item.node.ArtistFields.linkText" v-html="item.node.ArtistFields.linkText" />
-                    <span v-else v-html="item.node.ArtistFields.link">Website </span>
+          <!-- <ArtistsStatic /> -->
+          <div class="artists">
+            <div  class="artist" v-for="item in artistData.artists" v-bind:key="item.name">
+              <h4>{{item.name}}</h4>
+              <div v-if="item.instagramHandle || item.link" class="links">
+                  <a target="_blank" v-if="item.link" v-bind:href="item.link"> 
+                    <span v-if="item.linkText" v-html="item.linkText" />
+                    <span v-else v-html="item.link">Website </span>
                   </a>
-                  <a target="_blank" v-if="item.node.ArtistFields.instagramHandle" v-bind:href="'https://instagram.com/' + item.node.ArtistFields.instagramHandle"> 
-                    @{{item.node.ArtistFields.instagramHandle}}
+                  <a target="_blank" v-if="item.instagramHandle" v-bind:href="'https://instagram.com/' + item.instagramHandle"> 
+                    @{{item.instagramHandle}}
                   </a>                
               </div>
-              <div v-else-if="item.node.ArtistFields.siteLink">
-                <a target="_blank" v-bind:href="item.node.ArtistFields.siteLink">Website</a>
+              <div v-else-if="item.siteLink">
+                <a target="_blank" v-bind:href="item.siteLink">Website</a>
               </div>
             </div>
-          </div> -->
+          </div>
         </div>
       </div>
       <div class="loader" v-else>
@@ -52,7 +52,8 @@ export default {
   data: () => {
     return {
       gotArtists: true,
-      pageData: null
+      pageData: null,
+      artistData: {}
     }
   },
   methods: {
@@ -76,11 +77,14 @@ export default {
       })
     }      
   },
+  async fetch() {
+    this.artistData = await fetch(
+      'https://subliminalprojects.d-e-v.group/wp-json/api/v1/data'
+    ).then(res => res.json())
+  },  
   mounted() {
-    //this.loadMore();
   },
   updated() {
-
   },
   beforeDestroy() {
   },
