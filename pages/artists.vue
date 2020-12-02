@@ -78,6 +78,7 @@ export default {
     }      
   },
   async fetch() {
+    //'https://wp.subliminalprojects.com/wp-json/api/v1/data'
     this.artistData = await fetch(
       'https://subliminalprojects.d-e-v.group/wp-json/api/v1/data'
     ).then(res => res.json())
