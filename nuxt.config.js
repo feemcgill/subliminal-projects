@@ -1,4 +1,3 @@
-const { createApolloFetch } = require('apollo-fetch')
 
 
 export default {
@@ -81,13 +80,6 @@ export default {
     '@nuxtjs/pwa',
     "@nuxtjs/apollo"
   ],
-  apollo: {
-    clientConfigs: {
-      default: {
-        httpEndpoint: process.env.WP_GRAPHQL_ENDPOINT,          
-      }
-    }
-  },
   graphql: {
     clients: {
       default: {
@@ -96,7 +88,10 @@ export default {
     },
     useFetchPolyfill: true,
     includeNodeModules: true,
-  },  
+  },
+  generate: {
+    interval: 200,
+  },
   googleAnalytics: {
     id: 'UA-75388-5'
   },  

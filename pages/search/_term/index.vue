@@ -8,8 +8,8 @@
       </div>
       <div class="pagination">
         <div v-if="exhibitions.pageInfo.hasNextPage" class="load-more">
-          <div v-if="$apollo.loading" class="loading">Loading...</div>
-          <div v-else @click="loadMore()" class="primary-button">Load More</div>
+          <div v-if="$fetchState.pending" class="loading">Loading...</div>
+          <div v-else @click="fetchMore()" class="primary-button">Load More</div>
         </div>    
         <div v-else class="all-loaded">
           <div v-if="exhibitions.edges.length == 0" class="none-found">Sorry, we couldn't find any articles matching this criteria.</div>
@@ -20,9 +20,50 @@
 </template>
 
 <script>
-import gql from 'graphql-tag'
+import { gql } from 'nuxt-graphql-request'
 import ExhibitionThumb from  '~/components/ExhibitionThumb'
 const exhibitions_per_load = 18
+const query = gql`
+    query SearchEx (
+      $term: String
+      $first: Int
+      $after: String          
+    ){
+    exhibitions(first: $first, after: $after, where: {search: $term}) {
+      edges {
+        node {
+          slug
+          title
+          featuredImage {
+            node {
+              sourceUrl(size: MEDIUM)
+              altText
+              srcSet(size: MEDIUM)
+              mediaDetails {
+                width
+                height
+              }                      
+            }
+          }
+          artists {
+            nodes {
+              name
+              slug
+            }
+          }                                  
+          ExhibitionFields {
+            startDate
+            endDate
+          }                            
+        }
+      }
+      pageInfo {
+        hasNextPage
+        endCursor
+      }          
+    }
+  }     
+`
 
 export default {
   components: {
@@ -30,80 +71,23 @@ export default {
   },
 
   methods: {
-    loadMore(){
-      this.$apollo.queries.exhibitions.fetchMore({
-        variables: {
-          after: this.exhibitions.pageInfo.endCursor,
-          first: exhibitions_per_load         
-        },
-        updateQuery: (previousResult, { fetchMoreResult }) => {
-          const newEdges = fetchMoreResult.exhibitions.edges;
-          const pageInfo = fetchMoreResult.exhibitions.pageInfo;          
-          return {
-            exhibitions: {
-              __typename: previousResult.exhibitions.__typename,
-              edges: [...previousResult.exhibitions.edges, ...newEdges],
-              pageInfo
-            }
-          }
-        }
-      })
-    }    
-  },  
-  apollo: {
-    exhibitions: {
-      result({data}) {
-        console.log('SEARCH RESULTS', data, this.$route.params.term);
-      },
-      variables() {
-        return {
-          term: this.$route.params.term,
-          after: null,
-          first: exhibitions_per_load          
-        }
-      },
-      query: gql`
-        query SearchEx (
-          $term: String
-          $first: Int
-          $after: String          
-        ){
-        exhibitions(first: $first, after: $after, where: {search: $term}) {
-          edges {
-            node {
-              slug
-              title
-              featuredImage {
-                node {
-                  sourceUrl(size: MEDIUM)
-                  altText
-                  srcSet(size: MEDIUM)
-                  mediaDetails {
-                    width
-                    height
-                  }                      
-                }
-              }
-              artists {
-                nodes {
-                  name
-                  slug
-                }
-              }                                  
-              ExhibitionFields {
-                startDate
-                endDate
-              }                            
-            }
-          }
-          pageInfo {
-            hasNextPage
-            endCursor
-          }          
-        }
-      }     
-      `
+    async fetchMore() {
+      const variables = { first: exhibitions_per_load, after: this.exhibitions.pageInfo.endCursor, term: this.searchTerm }
+      const data = await this.$graphql.default.request(query, variables)
+      console.log(data)
+      this.exhibitions.edges = [...this.exhibitions.edges, ...data.exhibitions.edges]
+      this.exhibitions.pageInfo.endCursor = data.exhibitions.pageInfo.endCursor;
+    } 
+  },
+  async asyncData({ $graphql, route }) {
+    const variables = { 
+      first: exhibitions_per_load, 
+      after: null,
+      term: route.params.term 
     }
+    const data = await $graphql.default.request(query, variables)
+    const exhibitions = data.exhibitions;
+    return { exhibitions }
   }
 }
 </script>

@@ -1,20 +1,20 @@
 <template>
   <div>
-    <section v-if="pageData" class="featured-project container">
+    <section v-if="page" class="featured-project container">
 
-      <nuxt-link :to="'/projects/' + pageData.ProjectPageFields.featuredProject.slug" class="thumb">
+      <nuxt-link :to="'/projects/' + page.ProjectPageFields.featuredProject.slug" class="thumb">
         <div class="img">
-          <FadeImage :src="pageData.ProjectPageFields.featuredProject.featuredImage.node.sourceUrl" :srcset="pageData.ProjectPageFields.featuredProject.featuredImage.node.srcSet" :alt="pageData.ProjectPageFields.featuredProject.featuredImage.node.altText" />
+          <FadeImage :src="page.ProjectPageFields.featuredProject.featuredImage.node.sourceUrl" :srcset="page.ProjectPageFields.featuredProject.featuredImage.node.srcSet" :alt="page.ProjectPageFields.featuredProject.featuredImage.node.altText" />
         </div>
-        <h2 v-html="pageData.ProjectPageFields.featuredProject.title" />
+        <h2 v-html="page.ProjectPageFields.featuredProject.title" />
       </nuxt-link>
 
 
-      <div class="info" v-html="pageData.content" />
+      <div class="info" v-html="page.content" />
 
     </section>
-    <section v-if="pageData" class="projects container grid">
-      <nuxt-link :to="'/projects/'+project.slug" class="project" v-for="project in pageData.ProjectPageFields.projects" v-bind:key="project.slug" >
+    <section v-if="page" class="projects container grid">
+      <nuxt-link :to="'/projects/'+project.slug" class="project" v-for="project in page.ProjectPageFields.projects" v-bind:key="project.slug" >
         <div class="img" v-if="project.featuredImage">
           <FadeImage :src="project.featuredImage.node.sourceUrl" :srcset="project.featuredImage.node.srcSet" :alt="project.featuredImage.node.altText" />
         </div>
@@ -33,12 +33,57 @@
 
 
 <script>
-import gql from 'graphql-tag'
+import { gql } from 'nuxt-graphql-request'
 import FadeImage from '~/components/FadeImage'
 import meta, {metaGql} from '~/plugins/meta.js'
-
-const projects_per_load = 3
-
+const query = gql`
+  query Projects {
+    page(id: "71102", idType: DATABASE_ID) {
+      id
+      title
+      content
+      ${metaGql}              
+      ProjectPageFields {
+        featuredProject {
+          ... on Project {
+            id
+            slug
+            title
+            featuredImage {
+              node {
+                sourceUrl(size: MEDIUM)
+                altText
+                srcSet(size: MEDIUM)
+                mediaDetails {
+                  width
+                  height
+                }
+              }
+            }                       
+          }
+        } 
+        projects {
+          ... on Project {
+            id
+            slug
+            title
+            featuredImage {
+              node {
+                sourceUrl(size: MEDIUM)
+                altText
+                srcSet(size: MEDIUM)
+                mediaDetails {
+                  width
+                  height
+                }
+              }
+            }                       
+          }
+        }                                
+      }
+    }            
+  }
+`
 export default {
   components: {
     FadeImage
@@ -48,7 +93,7 @@ export default {
       foundPosts: null,
       queryCursor: null,
       displayedPosts: [],
-      pageData: null
+      page: null
     };
   },
   head () {
@@ -62,83 +107,11 @@ export default {
   mounted() {
     
   },
-  methods: {
-    loadMore(){
-      this.$apollo.queries.projects.fetchMore({
-        variables: {
-          after: this.projects.pageInfo.endCursor,
-          first: projects_per_load         
-        },
-        updateQuery: (previousResult, { fetchMoreResult }) => {
-          const newEdges = fetchMoreResult.projects.edges;
-          const pageInfo = fetchMoreResult.projects.pageInfo;          
-          return {
-            projects: {
-              __typename: previousResult.projects.__typename,
-              edges: [...previousResult.projects.edges, ...newEdges],
-              pageInfo
-            }
-          }
-        }
-      })
-    }    
+  async asyncData({ $graphql, route }) {
+    const { page } = await $graphql.default.request(query)
+    return { page }
   },
-  apollo: {
-      page: {
-        result({data}) {
-          console.log('past data', data)
-          this.pageData = data.page
-        },        
-        query: gql`
-          query Projects {
-            page(id: "71102", idType: DATABASE_ID) {
-              id
-              title
-              content
-              ${metaGql}              
-              ProjectPageFields {
-                featuredProject {
-                  ... on Project {
-                    id
-                    slug
-                    title
-                    featuredImage {
-                      node {
-                        sourceUrl(size: MEDIUM)
-                        altText
-                        srcSet(size: MEDIUM)
-                        mediaDetails {
-                          width
-                          height
-                        }
-                      }
-                    }                       
-                  }
-                } 
-                projects {
-                  ... on Project {
-                    id
-                    slug
-                    title
-                    featuredImage {
-                      node {
-                        sourceUrl(size: MEDIUM)
-                        altText
-                        srcSet(size: MEDIUM)
-                        mediaDetails {
-                          width
-                          height
-                        }
-                      }
-                    }                       
-                  }
-                }                                
-              }
-            }            
-          }
-        `
-    }
-  }   
+  
 }  
 // https://hackernoon.com/how-to-build-a-load-more-button-with-vue-js-and-graphql-5e6de1b61a6b
 </script>

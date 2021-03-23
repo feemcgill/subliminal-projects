@@ -23,7 +23,6 @@
 </template>
 
 <script>
-// import gql from 'graphql-tag';
 import { gql } from 'nuxt-graphql-request'
 import meta, {metaGql} from '~/plugins/meta.js'
 import Carousel from '~/components/Carousel'

@@ -4,118 +4,100 @@
         <h1>All Exhibitions</h1>
       </div> -->
       <div class="container grid">
-        <ExhibitionThumb class="past-exhibition" v-for="item in exhibitions.edges" v-bind:key="item.node.slug" v-bind:exhibition="item.node" />
+        <ExhibitionThumb class="past-exhibition" v-for="item in exhibitions" v-bind:key="item.node.slug" v-bind:exhibition="item.node" />
       </div>
       <div class="pagination">
-        <div v-if="exhibitions.pageInfo.hasNextPage" class="load-more">
-          <div v-if="$apollo.loading" class="loading">Loading...</div>
-          <div v-else @click="loadMore()" class="primary-button">Load More</div>
+        <div v-if="pageInfo && pageInfo.hasNextPage" class="load-more">
+          <div v-if="$fetchState.pending" class="loading">Loading...</div>
+          <div v-else @click="fetchMore()" class="primary-button">Load More</div>
         </div>    
         <div v-else class="all-loaded">
-          <div v-if="exhibitions.edges.length == 0" class="none-found">Sorry, we couldn't find any articles matching this criteria.</div>
-          <div v-else>All {{exhibitions.edges.length}} exhibition<span v-if="exhibitions.edges.length > 1">s</span> loaded</div>
+          <div v-if="exhibitions.length == 0" class="none-found">Sorry, we couldn't find any articles matching this criteria.</div>
+          <div v-else>All {{exhibitions.length}} exhibition<span v-if="exhibitions.length > 1">s</span> loaded</div>
         </div>
       </div>
     </div>  
 </template>
 <script>
-import gql from 'graphql-tag'
+import { gql } from 'nuxt-graphql-request'
 import ExhibitionThumb from  '~/components/ExhibitionThumb'
 const exhibitions_per_load = 30
-
+const query = gql`
+  query L8estPosts (
+      $first: Int
+      $after: String
+    ){
+    exhibitions(first: $first, after: $after) {
+      edges {
+        node {
+          slug
+          title
+          featuredImage {
+            node {
+              sourceUrl(size: MEDIUM)
+              altText
+              srcSet(size: MEDIUM)
+              mediaDetails {
+                width
+                height
+              }                      
+            }
+          }
+          exhibition_categories {
+            nodes {
+              slug
+              name
+            }
+          }                  
+          artists {
+            nodes {
+              name
+              slug
+            }
+          }                                  
+          ExhibitionFields {
+            startDate
+            endDate                   
+          }                
+        }
+      }
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+    }
+  }
+`
 export default {
   components: {
     ExhibitionThumb
   },
   data() {
     return {
-      foundPosts: null,
-      queryCursor: null,
-      displayedPosts: []
+      exhibitions: null,
+      pageInfo: null
     };
   },  
-  mounted() {
-    //this.$store.commit('setNavColor', 'black')
-  },
   methods: {
-    loadMore(){
-      this.$apollo.queries.exhibitions.fetchMore({
-        variables: {
-          after: this.exhibitions.pageInfo.endCursor,
-          first: exhibitions_per_load         
-        },
-        updateQuery: (previousResult, { fetchMoreResult }) => {
-          const newEdges = fetchMoreResult.exhibitions.edges;
-          const pageInfo = fetchMoreResult.exhibitions.pageInfo;          
-          return {
-            exhibitions: {
-              __typename: previousResult.exhibitions.__typename,
-              edges: [...previousResult.exhibitions.edges, ...newEdges],
-              pageInfo
-            }
-          }
-        }
-      })
-    }    
+    async fetchMore() {
+      const variables = { 
+        first: exhibitions_per_load, 
+        after: this.pageInfo.endCursor
+      }
+      const data = await this.$graphql.default.request(query, variables)
+      this.exhibitions = [...this.exhibitions, ...data.exhibitions.edges]
+      this.pageInfo = data.exhibitions.pageInfo;
+    }   
   },
-  apollo: {
-      exhibitions: {
-        result({data}) {
-          if (data.exhibitions.edges[0].node.featuredImage) {
-            this.$store.commit('setLogoBg', data.exhibitions.edges[0].node.featuredImage.node.sourceUrl)
-          }
-        },        
-        variables: {
-          after: null,
-          first: exhibitions_per_load
-        },
-        query: gql`
-          query L8estPosts (
-              $first: Int
-              $after: String
-            ){
-            exhibitions(first: $first, after: $after) {
-              edges {
-                node {
-                  slug
-                  title
-                  featuredImage {
-                    node {
-                      sourceUrl(size: MEDIUM)
-                      altText
-                      srcSet(size: MEDIUM)
-                      mediaDetails {
-                        width
-                        height
-                      }                      
-                    }
-                  }
-                  exhibition_categories {
-                    nodes {
-                      slug
-                      name
-                    }
-                  }                  
-                  artists {
-                    nodes {
-                      name
-                      slug
-                    }
-                  }                                  
-                  ExhibitionFields {
-                    startDate
-                    endDate                   
-                  }                
-                }
-              }
-              pageInfo {
-                hasNextPage
-                endCursor
-              }
-            }
-          }
-        `
+  async fetch() {
+    const variables = { 
+      first: exhibitions_per_load, 
+      after: null,
     }
+    const data = await this.$graphql.default.request(query, variables)
+    this.exhibitions = data.exhibitions.edges;
+    this.pageInfo = data.exhibitions.pageInfo
+
   }   
 }  
 </script>

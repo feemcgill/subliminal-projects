@@ -65,36 +65,8 @@
 
 <script>
 import Logo from '~/components/Logo';
-import gql from 'graphql-tag'
-
-export default {
-  data() {
-    return {
-      open: false,
-      inputTerm: null,
-    }
-  }, 
-  components: {
-    Logo
-  },
-
-  
-  methods: {
-    toggle: function() {
-      this.open = !this.open
-    },
-    close: function () {
-      this.open = false
-    }, 
-  },
-  apollo: {
-    globalContent: {
-      error: function(error) {
-        console.log(error)
-      },
-      result({data}) {
-      },
-      query: gql`
+import { gql } from 'nuxt-graphql-request'
+const query = gql`
         query GlobalQuery {
           globalContent {
             GlobalFields { 
@@ -107,8 +79,29 @@ export default {
           }
         }         
       `
-    }    
-  }     
+export default {
+  data() {
+    return {
+      open: false,
+      inputTerm: null,
+      globalContent: null
+    }
+  }, 
+  components: {
+    Logo
+  },
+  async fetch() {
+    const data = await this.$graphql.default.request(query)
+    this.globalContent = data.globalContent;
+  },
+  methods: {
+    toggle: function() {
+      this.open = !this.open
+    },
+    close: function () {
+      this.open = false
+    }, 
+  }   
 }
 </script>
 

@@ -34,12 +34,22 @@
 
 <script>
 import Logo from '~/components/Logo';
-import gql from 'graphql-tag'
-
+import { gql } from 'nuxt-graphql-request'
+const query = gql`
+  query GlobalQuery {
+    globalContent {
+      GlobalFields { 
+        footerContent
+        footerCopyright
+      }
+    }
+  } 
+`
 export default {
   data() {
     return {
       inputTerm: null,
+      globalContent: null
     }
   }, 
   methods: {
@@ -48,26 +58,11 @@ export default {
       this.$router.push("/search/" + this.inputTerm)
       this.inputTerm = null;
     }    
-  },  
-  apollo: {
-    globalContent: {
-      error: function(error) {
-        console.log(error)
-      },
-      result({data}) {
-      },
-      query: gql`
-        query GlobalQuery {
-          globalContent {
-            GlobalFields { 
-              footerContent
-              footerCopyright
-            }
-          }
-        }         
-      `
-    }    
-  }     
+  },
+  async fetch() {
+    const data = await this.$graphql.default.request(query)
+    this.globalContent = data.globalContent;
+  }    
 }
 </script>
 
