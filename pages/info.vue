@@ -27,20 +27,19 @@
         </ul>
       </div>
     </section>
-    <section class="feed">
-      <IgFeed />
-    </section>
+    <!-- <section class="feed">
+    </section> -->
   </div>
 </template>
 <script>
-import IgFeed from "~/components/IgFeed"
+//import IgFeed from "~/components/IgFeed"
 import FadeImage from '~/components/FadeImage'
-import gql from 'graphql-tag';
+import { gql } from 'nuxt-graphql-request'
 import meta, {metaGql} from '~/plugins/meta.js'
 
 export default {
   components: {
-    IgFeed,
+    // IgFeed,
     FadeImage
   },
   head () {
@@ -50,48 +49,39 @@ export default {
         meta: meta(this.page.seo)
       }    
     }
-  },  
-  apollo: {
-    page: {  
-      result({data}) {
-        if (data.page.featuredImage) {
-          this.$store.commit('setLogoBg', data.page.featuredImage.node.sourceUrl)
-        }
-      },
-      error: function(error) {
-        console.log(error)
-      }, 
-      query: gql`
-        query InfoPageQuery {
-          page(id: "67432", idType: DATABASE_ID) {
-            id
-            title
-            ${metaGql}              
-            content(format: RENDERED)
-            featuredImage {
-              node {
-                sourceUrl(size: LARGE)
-                srcSet(size: LARGE)
-                altText
-              }
+  },
+  async asyncData({ $graphql, route }) {
+    const query = gql`
+      query InfoPageQuery {
+        page(id: "67432", idType: DATABASE_ID) {
+          id
+          title
+          ${metaGql}              
+          content(format: RENDERED)
+          featuredImage {
+            node {
+              sourceUrl(size: LARGE)
+              srcSet(size: LARGE)
+              altText
             }
-            InfoFields {
-              quote
-              quoteAttribute
-              contactSection              
-              collabs {
-                image {
-                  sourceUrl
-                }
-                link
+          }
+          InfoFields {
+            quote
+            quoteAttribute
+            contactSection              
+            collabs {
+              image {
+                sourceUrl
               }
+              link
             }
           }
         }
-      `
-    }
-  }  
-  
+      }    
+    `
+    const { page } = await $graphql.default.request(query)
+    return { page }
+  }
 }
 </script>
 <style lang="scss" scoped>

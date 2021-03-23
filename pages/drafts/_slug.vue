@@ -7,7 +7,7 @@
 </template>
 <script>
 
-import gql from 'graphql-tag'
+import { gql } from 'nuxt-graphql-request'
 import ExhibitionProjectClassic from '~/components/ExhibitionProjectClassic'
 import PageBuilder from '~/components/PageBuilder'
 
@@ -17,87 +17,80 @@ export default {
     PageBuilder
   },
   mounted() {
-  },   
-  apollo: {
-      draft: {
-        error: function(error) {
-          console.log(error)
-        },
-        result(data) {
-        },        
-        variables() {
-          return {
-            uri: 'drafts/' + this.$route.params.slug
+  },
+  async asyncData({ $graphql, route }) {
+    const post_uri = route.params.slug
+
+    const query = gql`
+      query PortfolioSingleQuery ($uri: ID!) {
+        draft(id: $uri, idType: URI) {
+          id
+          title
+          content
+          featuredImage {
+            node {
+              sourceUrl(size: LARGE)
+            }
           }
-        },            
-        query: gql`
-          query PortfolioSingleQuery ($uri: ID!) {
-            draft(id: $uri, idType: URI) {
-              id
-              title
-              content
-              featuredImage {
-                node {
-                  sourceUrl(size: LARGE)
-                }
-              }
-              ProjectBuilder {
-                project {
-                  ... on Draft_Projectbuilder_Project_Row {
-                    fieldGroupName
-                    columns {
-                      type
-                      imageFit
-                      imageCaption
-                      content
-                      verticalAlign
-                      imageLink {
-                        url
-                        title
-                        target
-                      }  
-                      image {
-                        altText
-                        sourceUrl(size: LARGE)
-                        srcSet(size: LARGE)
-                        mediaDetails {
-                          width
-                          height
-                        }                        
-                      }
-                    }
-                  }
-                }
-              }               
-              ExhibitionFields {
-                startDate
-                endDate
-                openingReceptionDate
-                openingReceptionTime
-                links {
-                  link {
+          ProjectBuilder {
+            project {
+              ... on Draft_Projectbuilder_Project_Row {
+                fieldGroupName
+                columns {
+                  type
+                  imageFit
+                  imageCaption
+                  content
+                  verticalAlign
+                  imageLink {
                     url
                     title
                     target
+                  }  
+                  image {
+                    altText
+                    sourceUrl(size: LARGE)
+                    srcSet(size: LARGE)
+                    mediaDetails {
+                      width
+                      height
+                    }                        
                   }
-                }                    
-                images {
-                  caption
-                  description(format: RENDERED)
-                  altText                  
-                  sourceUrl(size: MEDIUM)
-                  mediaDetails {
-                    sizes {
-                      sourceUrl
-                      name
-                    }
-                  }                  
-                }      
-              }  
+                }
+              }
             }
-          }          
-        `
-    }
-  }   
+          }               
+          ExhibitionFields {
+            startDate
+            endDate
+            openingReceptionDate
+            openingReceptionTime
+            links {
+              link {
+                url
+                title
+                target
+              }
+            }                    
+            images {
+              caption
+              description(format: RENDERED)
+              altText                  
+              sourceUrl(size: MEDIUM)
+              mediaDetails {
+                sizes {
+                  sourceUrl
+                  name
+                }
+              }                  
+            }      
+          }  
+        }
+      }           
+    `
+    const variables = { uri: post_uri }
+    const { draft } = await $graphql.default.request(query, variables)
+    return { draft }
+  }  
 }
 </script> 

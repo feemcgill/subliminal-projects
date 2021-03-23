@@ -1,15 +1,14 @@
 <template>
   <div>
-    <section v-if="pageData" class="intro container">
-      <div class="img" v-if="pageData.featuredImage">
-        <FadeImage v-bind:src="pageData.featuredImage.node.sourceUrl" v-bind:alt="pageData.featuredImage.node.altText" v-bind:srcset="pageData.featuredImage.node.srcSet" />
+    <section v-if="page" class="intro container">
+      <div class="img" v-if="page.featuredImage">
+        <FadeImage v-bind:src="page.featuredImage.node.sourceUrl" v-bind:alt="page.featuredImage.node.altText" v-bind:srcset="page.featuredImage.node.srcSet" />
       </div>
-      <div class="content" v-if="pageData.content" v-html="pageData.content" />
+      <div class="content" v-if="page.content" v-html="page.content" />
     </section>
     <section class="artists-list">
       <div v-if="artistData.artists">
         <div class="container">
-          <!-- <ArtistsStatic /> -->
           <div class="artists">
             <div  class="artist" v-for="item in artistData.artists" v-bind:key="item.name">
               <h4>{{item.name}}</h4>
@@ -43,7 +42,7 @@
 <script>
 import FadeImage from '~/components/FadeImage'
 import ArtistsStatic from '~/components/ArtistsStatic'
-import gql from 'graphql-tag';
+import { gql } from 'nuxt-graphql-request'
 export default {
   components: {
     FadeImage,
@@ -52,37 +51,11 @@ export default {
   data: () => {
     return {
       gotArtists: true,
-      pageData: null,
       artistData: {}
     }
   },
-  methods: {
-    loadMore(){
-      this.$apollo.queries.artists.fetchMore({
-        variables: {
-          after: this.artists.pageInfo.endCursor,
-          first: 100          
-        },
-        updateQuery: (previousResult, { fetchMoreResult }) => {
-          const newEdges = fetchMoreResult.artists.edges;
-          const pageInfo = fetchMoreResult.artists.pageInfo;          
-          return {
-            artists: {
-              __typename: previousResult.artists.__typename,
-              edges: [...previousResult.artists.edges, ...newEdges],
-              pageInfo
-            }
-          }
-        }
-      })
-    }      
-  },
-  async fetch() {
-    //'https://wp.subliminalprojects.com/wp-json/api/v1/data'
-    this.artistData = await fetch(
-      'https://subliminalprojects.d-e-v.group/wp-json/api/v1/data'
-    ).then(res => res.json())
-  },  
+  methods: {     
+  }, 
   mounted() {
   },
   updated() {
@@ -103,42 +76,11 @@ export default {
       return filteredGuys;
     }
   },
-  apollo: {
-    artists: {
-      variables: {
-        after: null,
-        first: 100
-      },      
-      result({data}) {
-        this.pageData = data.page     
-      },
-      error: function(error) {
-        console.log(error)
-      }, 
-      query: gql`
-        query Artists (
-            $first: Int
-            $after: String
-          ){          
-          artists(first: $first, after: $after) {
-            pageInfo {
-              endCursor
-              hasNextPage
-            }
-            edges {
-              node {
-                name
-                slug
-                ArtistFields {
-                  siteLink
-                  instagramHandle
-                  link
-                  linkText
-                  hideInArtistList
-                }
-              }
-            }
-          }
+  async asyncData({ $graphql, route }) {
+
+
+    const query = gql`
+        query Artists {          
           page(id: "67427", idType: DATABASE_ID) {
             id
             title
@@ -151,9 +93,15 @@ export default {
               }
             }
           }          
-        }
-      `
-    }
+        }    
+    `
+    const { page } = await $graphql.default.request(query)
+
+    const artistData = await fetch(
+      'https://wp.subliminalprojects.com/wp-json/api/v1/data'
+    ).then(res => res.json())
+
+    return { page, artistData }
   }
 }
 </script>

@@ -1,11 +1,8 @@
 <template>
   <div v-if="page && slides.length" id="page-home">
-
     <section v-if="slides.length" class="hero container">
       <Carousel v-bind:slides="slides" />
     </section>
-
-    
     <section class="features container">
       <div class="feature" v-for="(feature, index) in page.HomeFields.features" :key="feature.title +index">
         <div class="img-wrap">
@@ -22,11 +19,12 @@
         </div>
       </div>
     </section>
-  </div>
+  </div> 
 </template>
 
 <script>
-import gql from 'graphql-tag';
+// import gql from 'graphql-tag';
+import { gql } from 'nuxt-graphql-request'
 import meta, {metaGql} from '~/plugins/meta.js'
 import Carousel from '~/components/Carousel'
 
@@ -47,15 +45,8 @@ export default {
       }    
     }
   },
-  apollo: {
-    page: {
-    result({data}) {
-        this.slides = data.page.HomeFields.hero
-      },
-      error: function(error) {
-        console.log(error)
-      }, 
-      query: gql`
+  async asyncData({ $graphql, params }) {
+    const query = gql`
       query HomeQuery {
         page(id: "/", idType: URI) {
           id
@@ -99,7 +90,9 @@ export default {
         }
       }
     `
-    }
+    const { page } = await $graphql.default.request(query)
+    const slides = page.HomeFields.hero
+    return { page, slides }
   }
 }
 </script>

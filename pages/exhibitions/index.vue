@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import gql from 'graphql-tag';
+import { gql } from 'nuxt-graphql-request'
 import FadeImage from '~/components/FadeImage'
 import ExhibitionThumb from '~/components/ExhibitionThumb'
 import AllExhibitions from '~/components/AllExhibitions'
@@ -46,10 +46,9 @@ export default {
         meta: meta(this.page.seo)
       }    
     }
-  },    
-  apollo: {
-    page: {    
-      query: gql`
+  },
+  async asyncData({ $graphql, params }) {
+    const query = gql`
         query ExhibitionsQuery {
           page(id: "71006", idType: DATABASE_ID) {
             id
@@ -106,9 +105,10 @@ export default {
               }
             }
           }
-        }      
-      `
-    }
+        }          
+    `
+    const { page } = await $graphql.default.request(query)
+    return { page }
   }
 }
 </script>

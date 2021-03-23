@@ -17,26 +17,22 @@ export default {
         meta: meta(this.page.seo)
       }    
     }
-  },    
-  apollo: {
-    page: {  
-      result({data}) {
-      },
-      error: function(error) {
-        console.log(error)
-      }, 
-      query: gql`
-        query InfoPageQuery {
-          page(id: "69183", idType: DATABASE_ID) {
-            id
-            title
-            content(format: RENDERED)
-            ${metaGql}              
-          }
+  },
+  async asyncData({ $graphql, route }) {
+    const query = gql`
+      query InfoPageQuery {
+        page(id: "69183", idType: DATABASE_ID) {
+          id
+          title
+          content(format: RENDERED)
+          ${metaGql}              
         }
-      `
-    }
-  }  
+      }    
+    `
+    const { page } = await $graphql.default.request(query)
+    const slides = page.HomeFields.hero
+    return { page, slides }
+  }
 }
 </script>
 

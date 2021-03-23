@@ -7,7 +7,7 @@
 </template>
 <script>
 
-import gql from 'graphql-tag'
+import { gql } from 'nuxt-graphql-request'
 import ExhibitionProjectClassic from '~/components/ExhibitionProjectClassic'
 import PageBuilder from '~/components/PageBuilder'
 import meta, {metaGql} from '~/plugins/meta.js'
@@ -28,101 +28,94 @@ export default {
   updated() {
   },
   mounted() {
-  },   
-  apollo: {
-      exhibition: {
-        error: function(error) {
-          console.log(error)
-        },
-        result({data}) {
-        },        
-        variables() {
-          return {
-            uri: 'exhibitions/' + this.$route.params.slug
-          }
-        },            
-        query: gql`
-          query PortfolioSingleQuery ($uri: ID!) {
-            exhibition(id: $uri, idType: URI) {
-              id
-              title
-              content
-              ${metaGql}
-              featuredImage {
-                node {
-                  sourceUrl(size: LARGE)
-                }
-              }
-              ProjectBuilder {
-                project {
-                  ... on Exhibition_Projectbuilder_Project_Row {
-                    fieldGroupName
+  },
+  async asyncData({ $graphql, route }) {
+    const post_uri = route.params.slug
 
-                    columns {
-                      type
-                      imageFit
-                      imageCaption
-                      content
-                      verticalAlign
-                      imageLink {
-                        url
-                        title
-                        target
-                      }                      
-                      image {
-                        altText
-                        sourceUrl(size: LARGE)
-                        srcSet(size: LARGE)
-                        mediaDetails {
-                          width
-                          height
-                        }                        
-                      }
-                    }
-                  }
-                }
-              }              
-              ExhibitionFields {
-                startDate
-                endDate
-                openingReceptionDate
-                openingReceptionTime
-                links {
-                  link {
+    const query = gql`
+      query PortfolioSingleQuery ($uri: ID!) {
+        exhibition(id: $uri, idType: URI) {
+          id
+          title
+          content
+          ${metaGql}
+          featuredImage {
+            node {
+              sourceUrl(size: LARGE)
+            }
+          }
+          ProjectBuilder {
+            project {
+              ... on Exhibition_Projectbuilder_Project_Row {
+                fieldGroupName
+
+                columns {
+                  type
+                  imageFit
+                  imageCaption
+                  content
+                  verticalAlign
+                  imageLink {
                     url
                     title
                     target
+                  }                      
+                  image {
+                    altText
+                    sourceUrl(size: LARGE)
+                    srcSet(size: LARGE)
+                    mediaDetails {
+                      width
+                      height
+                    }                        
                   }
-                }                    
-                images {
-                  caption
-                  description(format: RENDERED)
-                  altText                  
-                  sourceUrl(size: MEDIUM)
-                  mediaDetails {
-                    sizes {
-                      sourceUrl
-                      name
-                    }
-                  }                  
-                }      
-              }          
-              artists {
-                nodes {
-                  ArtistFields {
-                    instagramHandle
-                    link
-                    siteLink
-                    hideInArtistList
-                  }
-                  name
-                  slug
                 }
-              }                
+              }
             }
+          }              
+          ExhibitionFields {
+            startDate
+            endDate
+            openingReceptionDate
+            openingReceptionTime
+            links {
+              link {
+                url
+                title
+                target
+              }
+            }                    
+            images {
+              caption
+              description(format: RENDERED)
+              altText                  
+              sourceUrl(size: MEDIUM)
+              mediaDetails {
+                sizes {
+                  sourceUrl
+                  name
+                }
+              }                  
+            }      
           }          
-        `
-    }
-  }   
+          artists {
+            nodes {
+              ArtistFields {
+                instagramHandle
+                link
+                siteLink
+                hideInArtistList
+              }
+              name
+              slug
+            }
+          }                
+        }
+      }              
+    `;
+    const variables = { uri: post_uri }
+    const { exhibition } = await $graphql.default.request(query, variables)
+    return { exhibition }
+  } 
 }
 </script>
