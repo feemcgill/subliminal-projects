@@ -78,7 +78,6 @@ export default {
   */
   modules: [
     '@nuxtjs/pwa',
-    "@nuxtjs/apollo"
   ],
   graphql: {
     clients: {
