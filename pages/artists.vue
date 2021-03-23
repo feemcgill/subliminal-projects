@@ -7,7 +7,7 @@
       <div class="content" v-if="pageData.content" v-html="pageData.content" />
     </section>
     <section class="artists-list">
-      <div v-if="artistData">
+      <div v-if="artistData.artists">
         <div class="container">
           <!-- <ArtistsStatic /> -->
           <div class="artists">
