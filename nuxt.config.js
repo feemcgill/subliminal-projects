@@ -89,8 +89,10 @@ export default {
     includeNodeModules: true,
   },
   generate: {
+    fallback: "404.html",
     interval: 200,
   },
+  
   googleAnalytics: {
     id: 'UA-75388-5'
   },  
