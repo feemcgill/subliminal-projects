@@ -89,7 +89,7 @@ export default {
     includeNodeModules: true,
   },
   generate: {
-    fallback: "404.html",
+    fallback: true,
     interval: 200,
   },
   
