@@ -30,8 +30,7 @@ export default {
       }    
     `
     const { page } = await $graphql.default.request(query)
-    const slides = page.HomeFields.hero
-    return { page, slides }
+    return { page }
   }
 }
 </script>
