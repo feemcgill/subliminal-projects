@@ -1,7 +1,7 @@
 <template>
   <nuxt-link :to="'/exhibitions/'+exhibition.slug" class="exhibition-thumb">
-    <div class="labels" v-if="exhibition.exhibition_categories">
-      <li v-for="label in exhibition.exhibition_categories.nodes" v-bind:key="label.slug">{{label.name}}</li>
+    <div class="labels" v-if="exhibition.exhibitionCategories">
+      <li v-for="label in exhibition.exhibitionCategories.nodes" v-bind:key="label.slug">{{label.name}}</li>
     </div>  
     <div class="feature-img">
       <FadeImage v-bind:src="exhibition.featuredImage.node.sourceUrl" />
