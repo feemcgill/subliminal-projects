@@ -78,7 +78,6 @@ export default {
       this.lightboxIndex = index;
     },
     closeLightbox() {
-      console.log('CLOSE LIGHTBOX');
       this.showLightbox = false;
     }
   }
