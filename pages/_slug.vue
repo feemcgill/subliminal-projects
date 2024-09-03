@@ -46,7 +46,7 @@ export default {
         }
       }
     `;
-    const variables = { uri: post_uri, asPreview: false };
+    const variables = { uri: post_uri, asPreview: is_preview };
 
     let { page } = await $graphql.default.request(query, variables);
     if (is_preview && page.preview) {
