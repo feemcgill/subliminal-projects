@@ -18,16 +18,16 @@
         </div>   
       </nuxt-link>
     </transition-group>
-    <div class="carousel-controls__button prev" aria-label="Previous" @click="slideIt(-1, true)">
+    <button type="button" class="carousel-controls__button prev" aria-label="Previous" @click="slideIt(-1, true)">
       <svg xmlns="http://www.w3.org/2000/svg" width="32.826" height="57.653" viewBox="0 0 32.826 57.653">
         <path id="Path_11" data-name="Path 11" d="M407.739,614.292l-28,26,28,26" transform="translate(-377.739 -611.466)" fill="none" stroke="#b3b3b3" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="4"/>
       </svg>     
-    </div>
-    <div class="carousel-controls__button next" aria-label="Next" @click="slideIt(1, true)">
+    </button>
+    <button type="button" class="carousel-controls__button next" aria-label="Next" @click="slideIt(1, true)">
       <svg xmlns="http://www.w3.org/2000/svg" width="32.827" height="57.653" viewBox="0 0 32.827 57.653">
         <path id="Path_12" data-name="Path 12" d="M1509.739,666.292l28-26-28-26" transform="translate(-1506.912 -611.466)" fill="none" stroke="#b3b3b3" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="4"/>
       </svg>  
-    </div>
+    </button>
   </div>
 </template>
 
@@ -249,6 +249,8 @@ export default {
 
 .carousel-controls {
   &__button {
+    background: transparent;
+    border: none;
     color: $dark;
     cursor: pointer;
     font-size: 3em;
